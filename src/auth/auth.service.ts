@@ -35,12 +35,12 @@ export class AuthService {
       name: data.name,
       email: data.email,
       password: hashed_password,
-      method: 'singup',
+      method: 'signup',
     });
     const magic_link = `${process.env.FRONT_ORIGIN}/auth/verify-magic-link/?token=${verify_token}`;
 
     // sending mail
-    const mailer = this.mailer.sendMail({
+    this.mailer.sendMail({
       to: data.email,
       subject: 'Verify your email | Svolve',
       text: 'You can verify your email by clicking the link below',
@@ -53,6 +53,7 @@ export class AuthService {
   }
 
   async LoginUser(data: LoginDto) {
+    // checking
     const the_user = await this.prisma.user.findUnique({
       where: { email: data.email },
     });
@@ -66,6 +67,7 @@ export class AuthService {
     if (!is_password_ok) {
       throw new HttpException('Password is incorrect', 404);
     }
+    // generating token
     const verify_token = this.jwt.sign({
       email: the_user.email,
       password: the_user.password,
@@ -73,13 +75,13 @@ export class AuthService {
       method: 'signin',
     });
     const magic_link = `${process.env.FRONT_ORIGIN}/auth/verify-magic-link/?token=${verify_token}`;
-    const mailer = this.mailer.sendMail({
+    // sending mail
+    this.mailer.sendMail({
       to: data.email,
       subject: 'Welcome back | Svolve',
       text: 'You can verify your email by clicking the link below',
       html: `<a href=${magic_link} target="_blanck">Verify my email</a>`,
     });
-    console.log(mailer);
     return {
       message: `welcome back, Magic link send to ${data.email}`,
       ok: true,
@@ -89,7 +91,13 @@ export class AuthService {
   async verifyMagicLink(token: string) {
     const data = this.jwt.verify(token);
     if (data.method == 'signup') {
-      const new_user = await this.prisma.user.create({ data: data });
+      const userdata = {
+        name: data.name,
+        username: data.username,
+        password: data.password,
+        email: data.email,
+      };
+      const new_user = await this.prisma.user.create({ data: userdata });
       if (!new_user) {
         throw new HttpException('Server Error', 400);
       }
