@@ -4,7 +4,7 @@ import { Queue } from 'bullmq';
 import { QUEUE_NAME } from 'src/constants';
 
 @Injectable()
-export class MailQueueService {
+export class MailQueue {
   constructor(@InjectQueue(QUEUE_NAME) private mailQueue: Queue) {}
 
   async sendVerificationMail(email: string) {

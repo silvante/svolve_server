@@ -2,7 +2,7 @@ import { MailerModule } from '@nestjs-modules/mailer';
 import { BullModule } from '@nestjs/bullmq';
 import { Module } from '@nestjs/common';
 import { QUEUE_NAME } from 'src/constants';
-import { MailQueueService } from './processors/mail/mail.queue';
+import { MailQueue } from './processors/mail/mail.queue';
 import { MailProcessor } from './processors/mail/mail.processor';
 
 @Module({
@@ -18,7 +18,8 @@ import { MailProcessor } from './processors/mail/mail.processor';
       name: QUEUE_NAME,
     }),
   ],
-  providers: [MailQueueService, MailProcessor],
-  exports: [MailQueueService],
+  providers: [MailQueue, MailProcessor],
+  exports: [MailQueue],
 })
 export class JobsModule {}
+``
