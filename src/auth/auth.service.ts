@@ -8,6 +8,7 @@ import { SALT_RESULT } from 'src/constants';
 import { GenerateUsernameService } from 'src/global/generate_username/generate_username.service';
 import { MailerService } from '@nestjs-modules/mailer';
 import { LoginDto } from './dtos/login.dto';
+import { RequestWithUser } from 'src/interfaces/request-with-user.interface';
 
 @Injectable()
 export class AuthService {
@@ -18,7 +19,7 @@ export class AuthService {
     private mailer: MailerService,
   ) {}
 
-  async RegisterUser(data: RegisterDto) {
+  async registerUser(data: RegisterDto) {
     // resiecing data
     const present_user = await this.prisma.user.findUnique({
       where: { email: data.email },
@@ -52,7 +53,7 @@ export class AuthService {
     };
   }
 
-  async LoginUser(data: LoginDto) {
+  async loginUser(data: LoginDto) {
     // checking
     const the_user = await this.prisma.user.findUnique({
       where: { email: data.email },
@@ -143,5 +144,15 @@ export class AuthService {
     } else {
       throw new HttpException('Invalid Token', 404);
     }
+  }
+
+  async getUserProfile(req: RequestWithUser) {
+    const userdata = await this.prisma.user.findUnique({
+      where: { id: req.user.id },
+    });
+    if (!userdata) {
+      throw new HttpException('user is not defined', 404);
+    }
+    return userdata;
   }
 }
