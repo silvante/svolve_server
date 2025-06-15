@@ -1,6 +1,5 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { RegisterDto } from './dtos/register.dto';
-import { MailQueue } from 'src/jobs/processors/mail/mail.queue';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
