@@ -37,7 +37,7 @@ export class AuthService {
       password: hashed_password,
       method: 'signup',
     });
-    const magic_link = `${process.env.FRONT_ORIGIN}/auth/verify-magic-link/?token=${verify_token}`;
+    const magic_link = `${process.env.FRONT_ORIGIN}/verification/?token=${verify_token}`;
 
     // sending mail
     this.mailer.sendMail({
@@ -74,7 +74,7 @@ export class AuthService {
       username: the_user.username,
       method: 'signin',
     });
-    const magic_link = `${process.env.FRONT_ORIGIN}/auth/verify-magic-link/?token=${verify_token}`;
+    const magic_link = `${process.env.FRONT_ORIGIN}/verification/?token=${verify_token}`;
     // sending mail
     this.mailer.sendMail({
       to: data.email,
