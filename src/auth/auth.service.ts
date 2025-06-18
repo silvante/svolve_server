@@ -157,5 +157,16 @@ export class AuthService {
   }
 
   async githubHandler(req: RequestWithUser, res: Response) {
+    const github_user_data = req.user;
+
+    const existing_user = await this.prisma.user.findFirst({
+      where: { github_id: github_user_data.github_id },
+    });
+
+    if (!existing_user) {
+      // create user here
+    } else {
+      // login user hire
+    }
   }
 }

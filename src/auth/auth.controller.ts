@@ -49,5 +49,7 @@ export class AuthController {
 
   @Get('github/callback')
   @UseGuards(PassportStrategy.AuthGuard('github'))
-  githubValidator(@Req() req: RequestWithUser, @Res() res: Response) {}
+  githubValidator(@Req() req: RequestWithUser, @Res() res: Response) {
+    return this.authService.githubHandler(req, res);
+  }
 }
