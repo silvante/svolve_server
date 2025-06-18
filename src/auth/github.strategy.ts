@@ -1,0 +1,24 @@
+import { PassportStrategy } from '@nestjs/passport';
+import { Strategy } from 'passport-github2';
+
+export class GithubStrategy extends PassportStrategy(Strategy, 'github') {
+  constructor() {
+    super({
+      clientID: '',
+      clientSecret: '',
+      callbackURL: '',
+      scope: ['user:email'],
+    });
+  }
+
+  async validate(accessToken: string, refreshToken: string, profile: any) {
+    return {
+      accessToken,
+      refreshToken,
+      github_id: profile.id,
+      username: profile.username,
+      email: profile.emails?.[0]?.value,
+      avatar: profile.photos?.[0]?.value,
+    };
+  }
+}
