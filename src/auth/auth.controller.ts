@@ -5,6 +5,7 @@ import {
   Post,
   Query,
   Req,
+  Res,
   UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
@@ -12,6 +13,8 @@ import { RegisterDto } from './dtos/register.dto';
 import { LoginDto } from './dtos/login.dto';
 import { AuthGuard } from 'src/guards/auth/auth.guard';
 import { RequestWithUser } from 'src/interfaces/request-with-user.interface';
+import { Response } from 'express';
+import * as PassportStrategy from '@nestjs/passport';
 
 @Controller('auth')
 export class AuthController {
@@ -37,4 +40,14 @@ export class AuthController {
   getProfile(@Req() req: RequestWithUser) {
     return this.authService.getUserProfile(req);
   }
+
+  @Get('github')
+  @UseGuards(PassportStrategy.AuthGuard('github'))
+  githubDirector() {
+    // redirects to github login page
+  }
+
+  @Get('github/callback')
+  @UseGuards(PassportStrategy.AuthGuard('github'))
+  githubValidator(@Req() req: RequestWithUser, @Res() res: Response) {}
 }
