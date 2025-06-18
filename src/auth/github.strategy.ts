@@ -4,9 +4,9 @@ import { Strategy } from 'passport-github2';
 export class GithubStrategy extends PassportStrategy(Strategy, 'github') {
   constructor() {
     super({
-      clientID: '',
-      clientSecret: '',
-      callbackURL: '',
+      clientID: process.env.GITHUB_CLIENT_ID,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET,
+      callbackURL: 'http://localhost:8080/auth/github/callback',
       scope: ['user:email'],
     });
   }
