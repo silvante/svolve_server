@@ -8,6 +8,7 @@ import { GenerateUsernameService } from 'src/global/generate_username/generate_u
 import { MailerService } from '@nestjs-modules/mailer';
 import { LoginDto } from './dtos/login.dto';
 import { RequestWithUser } from 'src/interfaces/request-with-user.interface';
+import { Response } from 'express';
 
 @Injectable()
 export class AuthService {
@@ -153,5 +154,8 @@ export class AuthService {
       throw new HttpException('user is not defined', 404);
     }
     return userdata;
+  }
+
+  async githubHandler(req: RequestWithUser, res: Response) {
   }
 }
