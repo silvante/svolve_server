@@ -162,6 +162,23 @@ export class AuthService {
     const existing_user = await this.prisma.user.findFirst({
       where: { github_id: github_user_data.github_id },
     });
+    const existing_email = await this.prisma.user.findFirst({
+      where: { email: github_user_data.email },
+    });
+
+    if (existing_email) {
+      return res.send(`
+        <html>
+          <body>
+            <script>
+              window.opener.postMessage({ is_ok: false, message: "User with email of this github accaunt already exists"}, "http://localhost:3000");
+              window.close();
+            </script>
+          </body>
+        </html>
+      `);
+    }
+
     const u_username = await this.unique_username.generate(
       github_user_data.username,
     );
