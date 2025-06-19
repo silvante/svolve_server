@@ -7,5 +7,6 @@ export interface RequestWithUser extends Request {
     email: string;
     github_id: string;
     avatar: string;
+    name: string;
   };
 }

@@ -162,11 +162,70 @@ export class AuthService {
     const existing_user = await this.prisma.user.findFirst({
       where: { github_id: github_user_data.github_id },
     });
+    const u_username = await this.unique_username.generate(
+      github_user_data.username,
+    );
+
+    const password = await bcrypt.hash(
+      Math.random().toString(36).slice(-8),
+      SALT_RESULT,
+    );
 
     if (!existing_user) {
-      // create user here
+      const new_user = await this.prisma.user.create({
+        data: {
+          name: github_user_data.name,
+          username: u_username,
+          email: github_user_data.email,
+          github_id: github_user_data.github_id,
+          password: password,
+        },
+      });
+      const access_token = this.jwt.sign({
+        id: new_user.id,
+        username: new_user.username,
+        email: new_user.email,
+      });
+      const reset_token = this.jwt.sign(
+        {
+          email: new_user.email,
+          password: new_user.password,
+        },
+        { expiresIn: '45d' },
+      );
+      res.send(`
+        <html>
+          <body>
+            <script>
+              window.opener.postMessage({ access_token: "${access_token}", reset_token: "${reset_token}" }, "http://localhost:3000");
+              window.close();
+            </script>
+          </body>
+        </html>
+      `);
     } else {
-      // login user hire
+      const access_token = this.jwt.sign({
+        id: existing_user.id,
+        username: existing_user.username,
+        email: existing_user.email,
+      });
+      const reset_token = this.jwt.sign(
+        {
+          email: existing_user.email,
+          password: existing_user.password,
+        },
+        { expiresIn: '45d' },
+      );
+      res.send(`
+        <html>
+          <body>
+            <script>
+              window.opener.postMessage({ access_token: "${access_token}", reset_token: "${reset_token}" }, "http://localhost:3000");
+              window.close();
+            </script>
+          </body>
+        </html>
+      `);
     }
   }
 }
