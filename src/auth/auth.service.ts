@@ -243,7 +243,7 @@ export class AuthService {
     const google_user_data = req.user;
 
     const existing_user = await this.prisma.user.findFirst({
-      where: { github_id: google_user_data.github_id },
+      where: { google_id: google_user_data.google_id },
     });
     const existing_email = await this.prisma.user.findFirst({
       where: { email: google_user_data.email },
@@ -260,7 +260,7 @@ export class AuthService {
 
     if (!existing_user) {
       const u_username = await this.unique_username.generate(
-        google_user_data.username,
+        google_user_data.name,
       );
       const password = await bcrypt.hash(
         Math.random().toString(36).slice(-8),
@@ -271,7 +271,7 @@ export class AuthService {
           name: google_user_data.name,
           username: u_username,
           email: google_user_data.email,
-          github_id: google_user_data.github_id,
+          google_id: google_user_data.google_id,
           password: password,
           provider: google_user_data.provider,
         },

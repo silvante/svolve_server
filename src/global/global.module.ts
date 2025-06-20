@@ -6,6 +6,6 @@ import { SocialAuthResponceService } from './social_auth_responce/social_auth_re
 @Module({
   imports: [PrismaModule],
   providers: [GenerateUsernameService, SocialAuthResponceService],
-  exports: [GenerateUsernameService],
+  exports: [GenerateUsernameService, SocialAuthResponceService],
 })
 export class GlobalModule {}
