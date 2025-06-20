@@ -182,7 +182,7 @@ export class AuthService {
     const github_user_data = req.user;
 
     const existing_user = await this.prisma.user.findFirst({
-      where: { github_id: github_user_data.github_id },
+      where: { github_id: github_user_data.github_id, provider: 'github' },
     });
     const existing_email = await this.prisma.user.findFirst({
       where: { email: github_user_data.email },
@@ -192,7 +192,7 @@ export class AuthService {
       return res.send(
         this.window_responder.respond({
           is_ok: false,
-          message: 'User with email of this github accaunt already exists',
+          message: `provider of ${existing_email.email} is ${existing_email.provider}, please use ${existing_email.provider} to register`,
         }),
       );
     }
@@ -259,7 +259,7 @@ export class AuthService {
     const google_user_data = req.user;
 
     const existing_user = await this.prisma.user.findFirst({
-      where: { google_id: google_user_data.google_id },
+      where: { google_id: google_user_data.google_id, provider: 'google' },
     });
     const existing_email = await this.prisma.user.findFirst({
       where: { email: google_user_data.email },
@@ -269,7 +269,7 @@ export class AuthService {
       return res.send(
         this.window_responder.respond({
           is_ok: false,
-          message: 'User with email of this google accaunt already exists',
+          message: `provider of ${existing_email.email} is ${existing_email.provider}, please use ${existing_email.provider} to register`,
         }),
       );
     }
