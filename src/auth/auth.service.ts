@@ -25,7 +25,10 @@ export class AuthService {
       where: { email: data.email },
     });
     if (present_user) {
-      throw new HttpException('User with this email already exists', 404);
+      throw new HttpException(
+        `User with this email already exists, provider: ${present_user.provider}`,
+        404,
+      );
     }
 
     // formating
