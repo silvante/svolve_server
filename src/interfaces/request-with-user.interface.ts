@@ -5,9 +5,12 @@ export interface RequestWithUser extends Request {
     id: number;
     username: string;
     email: string;
-    github_id: string;
     avatar: string;
     name: string;
     provider: string;
+
+    // provider ids
+    github_id: string;
+    google_id: string;
   };
 }

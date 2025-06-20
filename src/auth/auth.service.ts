@@ -248,4 +248,93 @@ export class AuthService {
       `);
     }
   }
+
+  async googleHandler(req: RequestWithUser, res: Response) {
+    const google_user_data = req.user;
+
+    const existing_user = await this.prisma.user.findFirst({
+      where: { github_id: google_user_data.github_id },
+    });
+    const existing_email = await this.prisma.user.findFirst({
+      where: { email: google_user_data.email },
+    });
+
+    if (!existing_user && existing_email) {
+      return res.send(`
+        <html>
+          <body>
+            <script>
+              window.opener.postMessage({ is_ok: false, message: "User with email of this github accaunt already exists"}, "http://localhost:3000");
+              window.close();
+            </script>
+          </body>
+        </html>
+      `);
+    }
+
+    if (!existing_user) {
+      const u_username = await this.unique_username.generate(
+        google_user_data.username,
+      );
+      const password = await bcrypt.hash(
+        Math.random().toString(36).slice(-8),
+        SALT_RESULT,
+      );
+      const new_user = await this.prisma.user.create({
+        data: {
+          name: google_user_data.name,
+          username: u_username,
+          email: google_user_data.email,
+          github_id: google_user_data.github_id,
+          password: password,
+          provider: google_user_data.provider,
+        },
+      });
+      const access_token = this.jwt.sign({
+        id: new_user.id,
+        username: new_user.username,
+        email: new_user.email,
+      });
+      const reset_token = this.jwt.sign(
+        {
+          email: new_user.email,
+          password: new_user.password,
+        },
+        { expiresIn: '45d' },
+      );
+      res.send(`
+        <html>
+          <body>
+            <script>
+              window.opener.postMessage({ access_token: "${access_token}", reset_token: "${reset_token}" }, "http://localhost:3000");
+              window.close();
+            </script>
+          </body>
+        </html>
+      `);
+    } else {
+      const access_token = this.jwt.sign({
+        id: existing_user.id,
+        username: existing_user.username,
+        email: existing_user.email,
+      });
+      const reset_token = this.jwt.sign(
+        {
+          email: existing_user.email,
+          password: existing_user.password,
+        },
+        { expiresIn: '45d' },
+      );
+      res.send(`
+        <html>
+          <body>
+            <script>
+              window.opener.postMessage({ access_token: "${access_token}", reset_token: "${reset_token}" }, "http://localhost:3000");
+              window.close();
+            </script>
+          </body>
+        </html>
+      `);
+    }
+  }
 }

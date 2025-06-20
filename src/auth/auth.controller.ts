@@ -52,4 +52,16 @@ export class AuthController {
   githubValidator(@Req() req: RequestWithUser, @Res() res: Response) {
     return this.authService.githubHandler(req, res);
   }
+
+  @Get('google')
+  @UseGuards(PassportStrategy.AuthGuard('google'))
+  googleDirector() {
+    // redirects to google login page
+  }
+
+  @Get('google/callback')
+  @UseGuards(PassportStrategy.AuthGuard('google'))
+  googleValidator(@Req() req: RequestWithUser, @Res() res: Response) {
+    return this.authService.googleHandler(req, res);
+  }
 }
