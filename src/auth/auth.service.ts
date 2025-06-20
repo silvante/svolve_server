@@ -97,6 +97,7 @@ export class AuthService {
         username: data.username,
         password: data.password,
         email: data.email,
+        provider: 'email',
       };
       const new_user = await this.prisma.user.create({ data: userdata });
       if (!new_user) {
@@ -166,7 +167,7 @@ export class AuthService {
       where: { email: github_user_data.email },
     });
 
-    if (existing_email) {
+    if (!existing_user && existing_email) {
       return res.send(`
         <html>
           <body>
@@ -179,16 +180,14 @@ export class AuthService {
       `);
     }
 
-    const u_username = await this.unique_username.generate(
-      github_user_data.username,
-    );
-
-    const password = await bcrypt.hash(
-      Math.random().toString(36).slice(-8),
-      SALT_RESULT,
-    );
-
     if (!existing_user) {
+      const u_username = await this.unique_username.generate(
+        github_user_data.username,
+      );
+      const password = await bcrypt.hash(
+        Math.random().toString(36).slice(-8),
+        SALT_RESULT,
+      );
       const new_user = await this.prisma.user.create({
         data: {
           name: github_user_data.name,
@@ -196,6 +195,7 @@ export class AuthService {
           email: github_user_data.email,
           github_id: github_user_data.github_id,
           password: password,
+          provider: github_user_data.provider,
         },
       });
       const access_token = this.jwt.sign({

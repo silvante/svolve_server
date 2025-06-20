@@ -22,6 +22,7 @@ export class GithubStrategy extends PassportStrategy(Strategy, 'github') {
       email: profile.emails?.[0]?.value,
       avatar: profile.photos?.[0]?.value,
       name: profile.displayName,
+      provider: "github"
     };
   }
 }
