@@ -9,6 +9,7 @@ import { MailerService } from '@nestjs-modules/mailer';
 import { LoginDto } from './dtos/login.dto';
 import { RequestWithUser } from 'src/interfaces/request-with-user.interface';
 import { Response } from 'express';
+import { SocialAuthResponceService } from 'src/global/social_auth_responce/social_auth_responce.service';
 
 @Injectable()
 export class AuthService {
@@ -17,6 +18,7 @@ export class AuthService {
     private jwt: JwtService,
     private unique_username: GenerateUsernameService,
     private mailer: MailerService,
+    private window_responder: SocialAuthResponceService,
   ) {}
 
   async registerUser(data: RegisterDto) {
@@ -171,16 +173,12 @@ export class AuthService {
     });
 
     if (!existing_user && existing_email) {
-      return res.send(`
-        <html>
-          <body>
-            <script>
-              window.opener.postMessage({ is_ok: false, message: "User with email of this github accaunt already exists"}, "http://localhost:3000");
-              window.close();
-            </script>
-          </body>
-        </html>
-      `);
+      return res.send(
+        this.window_responder.respond({
+          is_ok: false,
+          message: 'User with email of this github accaunt already exists',
+        }),
+      );
     }
 
     if (!existing_user) {
@@ -201,51 +199,43 @@ export class AuthService {
           provider: github_user_data.provider,
         },
       });
-      const access_token = this.jwt.sign({
+      const access_token: string = this.jwt.sign({
         id: new_user.id,
         username: new_user.username,
         email: new_user.email,
       });
-      const reset_token = this.jwt.sign(
+      const reset_token: string = this.jwt.sign(
         {
           email: new_user.email,
           password: new_user.password,
         },
         { expiresIn: '45d' },
       );
-      res.send(`
-        <html>
-          <body>
-            <script>
-              window.opener.postMessage({ access_token: "${access_token}", reset_token: "${reset_token}" }, "http://localhost:3000");
-              window.close();
-            </script>
-          </body>
-        </html>
-      `);
+      res.send(
+        this.window_responder.respond({
+          access_token: access_token,
+          reset_token: reset_token,
+        }),
+      );
     } else {
-      const access_token = this.jwt.sign({
+      const access_token: string = this.jwt.sign({
         id: existing_user.id,
         username: existing_user.username,
         email: existing_user.email,
       });
-      const reset_token = this.jwt.sign(
+      const reset_token: string = this.jwt.sign(
         {
           email: existing_user.email,
           password: existing_user.password,
         },
         { expiresIn: '45d' },
       );
-      res.send(`
-        <html>
-          <body>
-            <script>
-              window.opener.postMessage({ access_token: "${access_token}", reset_token: "${reset_token}" }, "http://localhost:3000");
-              window.close();
-            </script>
-          </body>
-        </html>
-      `);
+      res.send(
+        this.window_responder.respond({
+          access_token: access_token,
+          reset_token: reset_token,
+        }),
+      );
     }
   }
 
@@ -260,16 +250,12 @@ export class AuthService {
     });
 
     if (!existing_user && existing_email) {
-      return res.send(`
-        <html>
-          <body>
-            <script>
-              window.opener.postMessage({ is_ok: false, message: "User with email of this github accaunt already exists"}, "http://localhost:3000");
-              window.close();
-            </script>
-          </body>
-        </html>
-      `);
+      return res.send(
+        this.window_responder.respond({
+          is_ok: false,
+          message: 'User with email of this google accaunt already exists',
+        }),
+      );
     }
 
     if (!existing_user) {
@@ -302,16 +288,12 @@ export class AuthService {
         },
         { expiresIn: '45d' },
       );
-      res.send(`
-        <html>
-          <body>
-            <script>
-              window.opener.postMessage({ access_token: "${access_token}", reset_token: "${reset_token}" }, "http://localhost:3000");
-              window.close();
-            </script>
-          </body>
-        </html>
-      `);
+      res.send(
+        this.window_responder.respond({
+          access_token: access_token,
+          reset_token: reset_token,
+        }),
+      );
     } else {
       const access_token = this.jwt.sign({
         id: existing_user.id,
@@ -325,16 +307,12 @@ export class AuthService {
         },
         { expiresIn: '45d' },
       );
-      res.send(`
-        <html>
-          <body>
-            <script>
-              window.opener.postMessage({ access_token: "${access_token}", reset_token: "${reset_token}" }, "http://localhost:3000");
-              window.close();
-            </script>
-          </body>
-        </html>
-      `);
+      res.send(
+        this.window_responder.respond({
+          access_token: access_token,
+          reset_token: reset_token,
+        }),
+      );
     }
   }
 }
