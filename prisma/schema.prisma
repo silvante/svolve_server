@@ -15,12 +15,13 @@ datasource db {
 }
 
 model User {
-  id        Int     @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   provider  String
   name      String
-  username  String  @unique
-  email     String  @unique
+  username  String   @unique
+  email     String   @unique
   password  String
   github_id String?
   google_id String?
+  createdAt DateTime @default(now())
 }
