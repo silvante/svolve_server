@@ -13,7 +13,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     });
   }
 
-  async(accessToken: string, refreshToken: string, profile: Profile) {
+  async validate(accessToken: string, refreshToken: string, profile: Profile) {
     return {
       accessToken,
       refreshToken,
