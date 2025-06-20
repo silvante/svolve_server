@@ -26,9 +26,15 @@ export class AuthService {
     const present_user = await this.prisma.user.findUnique({
       where: { email: data.email },
     });
-    if (present_user) {
+    if (present_user && present_user.provider === 'email') {
       throw new HttpException(
-        `User with this email already exists, provider: ${present_user.provider}`,
+        `User with this email already exists, please sign-in`,
+        404,
+      );
+    }
+    if (present_user && present_user.provider !== 'email') {
+      throw new HttpException(
+        `provider of ${present_user.email} is ${present_user.provider}, please use ${present_user.provider} to register`,
         404,
       );
     }
@@ -63,9 +69,19 @@ export class AuthService {
     const the_user = await this.prisma.user.findUnique({
       where: { email: data.email },
     });
+
+    // error handling
     if (!the_user) {
       throw new HttpException('User is not defined', 404);
     }
+    if (the_user.provider !== 'email') {
+      throw new HttpException(
+        `provider of ${the_user.email} is ${the_user.provider}, please use ${the_user.provider} to register`,
+        404,
+      );
+    }
+
+    // validating
     const is_password_ok = await bcrypt.compare(
       data.password,
       the_user.password,
