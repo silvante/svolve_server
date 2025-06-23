@@ -230,10 +230,6 @@ export class AuthService {
       const u_username = await this.unique_username.generate(
         google_user_data.name,
       );
-      const password = await bcrypt.hash(
-        Math.random().toString(36).slice(-8),
-        SALT_RESULT,
-      );
       const new_user = await this.prisma.user.create({
         data: {
           name: google_user_data.name,
