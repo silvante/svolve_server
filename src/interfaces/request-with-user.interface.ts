@@ -8,9 +8,6 @@ export interface RequestWithUser extends Request {
     avatar: string;
     name: string;
     provider: string;
-
-    // provider ids
-    github_id: string;
-    google_id: string;
+    provider_id: string;
   };
 }

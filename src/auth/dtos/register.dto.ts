@@ -6,7 +6,4 @@ export class RegisterDto {
 
   @IsString()
   name: string;
-
-  @IsString()
-  password: string;
 }

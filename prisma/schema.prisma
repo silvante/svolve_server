@@ -20,6 +20,6 @@ model User {
   username    String   @unique
   email       String   @unique
   provider    String
-  provider_id String
+  provider_id String?
   createdAt   DateTime @default(now())
 }

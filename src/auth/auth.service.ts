@@ -10,6 +10,8 @@ import { LoginDto } from './dtos/login.dto';
 import { RequestWithUser } from 'src/interfaces/request-with-user.interface';
 import { Response } from 'express';
 import { SocialAuthResponceService } from 'src/global/social_auth_responce/social_auth_responce.service';
+import { AccessTokenService } from 'src/global/access_token/access_token.service';
+import { ResetTokenService } from 'src/global/reset_token/reset_token.service';
 
 @Injectable()
 export class AuthService {
@@ -19,10 +21,12 @@ export class AuthService {
     private unique_username: GenerateUsernameService,
     private mailer: MailerService,
     private window_responder: SocialAuthResponceService,
+    private access_token: AccessTokenService,
+    private reset_token: ResetTokenService,
   ) {}
 
   async registerUser(data: RegisterDto) {
-    // resiecing data
+    // recieving data
     const present_user = await this.prisma.user.findUnique({
       where: { email: data.email },
     });
@@ -40,15 +44,16 @@ export class AuthService {
     }
 
     // formating
-    const hashed_password = await bcrypt.hash(data.password, SALT_RESULT);
     const username = await this.unique_username.generate(data.name);
-    const verify_token = this.jwt.sign({
-      username: username,
-      name: data.name,
-      email: data.email,
-      password: hashed_password,
-      method: 'signup',
-    });
+    const verify_token = this.jwt.sign(
+      {
+        username: username,
+        name: data.name,
+        email: data.email,
+        method: 'signup',
+      },
+      { expiresIn: '15m' },
+    );
     const magic_link = `${process.env.FRONT_ORIGIN}/verification/?token=${verify_token}`;
 
     // sending mail
@@ -81,21 +86,14 @@ export class AuthService {
       );
     }
 
-    // validating
-    const is_password_ok = await bcrypt.compare(
-      data.password,
-      the_user.password,
-    );
-    if (!is_password_ok) {
-      throw new HttpException('Password is incorrect', 404);
-    }
     // generating token
-    const verify_token = this.jwt.sign({
-      email: the_user.email,
-      password: the_user.password,
-      username: the_user.username,
-      method: 'signin',
-    });
+    const verify_token = this.jwt.sign(
+      {
+        email: the_user.email,
+        method: 'signin',
+      },
+      { expiresIn: '15m' },
+    );
     const magic_link = `${process.env.FRONT_ORIGIN}/verification/?token=${verify_token}`;
     // sending mail
     this.mailer.sendMail({
@@ -116,26 +114,15 @@ export class AuthService {
       const userdata = {
         name: data.name,
         username: data.username,
-        password: data.password,
         email: data.email,
         provider: 'email',
       };
       const new_user = await this.prisma.user.create({ data: userdata });
       if (!new_user) {
-        throw new HttpException('Server Error', 400);
+        throw new HttpException('Server Error, try again later', 400);
       }
-      const reset_token = this.jwt.sign(
-        {
-          email: new_user.email,
-          password: new_user.password,
-        },
-        { expiresIn: '45d' },
-      );
-      const access_token = this.jwt.sign({
-        id: new_user.id,
-        email: new_user.email,
-        username: new_user.username,
-      });
+      const access_token = this.access_token.generate(new_user);
+      const reset_token = this.reset_token.generate(new_user);
       return {
         access_token: access_token,
         reset_token: reset_token,
@@ -147,18 +134,8 @@ export class AuthService {
       if (!user) {
         throw new HttpException('User is not defined', 404);
       }
-      const reset_token = this.jwt.sign(
-        {
-          email: user.email,
-          password: user.password,
-        },
-        { expiresIn: '45d' },
-      );
-      const access_token = this.jwt.sign({
-        id: user.id,
-        email: user.email,
-        username: user.username,
-      });
+      const access_token = this.access_token.generate(user);
+      const reset_token = this.reset_token.generate(user);
       return {
         access_token: access_token,
         reset_token: reset_token,
@@ -170,7 +147,7 @@ export class AuthService {
 
   async getUserProfile(req: RequestWithUser) {
     const userdata = await this.prisma.user.findUnique({
-      where: { id: req.user.id },
+      where: { id: req.user.id, email: req.user.email },
     });
     if (!userdata) {
       throw new HttpException('user is not defined', 404);
@@ -182,7 +159,7 @@ export class AuthService {
     const github_user_data = req.user;
 
     const existing_user = await this.prisma.user.findFirst({
-      where: { provider_id: github_user_data.github_id, provider: 'github' },
+      where: { provider_id: github_user_data.provider_id, provider: 'github' },
     });
     const existing_email = await this.prisma.user.findFirst({
       where: { email: github_user_data.email },
@@ -206,21 +183,12 @@ export class AuthService {
           name: github_user_data.name,
           username: u_username,
           email: github_user_data.email,
-          provider_id: github_user_data.github_id,
+          provider_id: github_user_data.provider_id,
           provider: github_user_data.provider,
         },
       });
-      const access_token: string = this.jwt.sign({
-        id: new_user.id,
-        username: new_user.username,
-        email: new_user.email,
-      });
-      const reset_token: string = this.jwt.sign(
-        {
-          email: new_user.email,
-        },
-        { expiresIn: '45d' },
-      );
+      const access_token = this.access_token.generate(new_user);
+      const reset_token = this.reset_token.generate(new_user);
       res.send(
         this.window_responder.respond({
           access_token: access_token,
@@ -228,17 +196,8 @@ export class AuthService {
         }),
       );
     } else {
-      const access_token: string = this.jwt.sign({
-        id: existing_user.id,
-        username: existing_user.username,
-        email: existing_user.email,
-      });
-      const reset_token: string = this.jwt.sign(
-        {
-          email: existing_user.email,
-        },
-        { expiresIn: '45d' },
-      );
+      const access_token = this.access_token.generate(existing_user);
+      const reset_token = this.reset_token.generate(existing_user);
       res.send(
         this.window_responder.respond({
           access_token: access_token,
@@ -252,7 +211,7 @@ export class AuthService {
     const google_user_data = req.user;
 
     const existing_user = await this.prisma.user.findFirst({
-      where: { google_id: google_user_data.google_id, provider: 'google' },
+      where: { provider_id: google_user_data.provider_id, provider: 'google' },
     });
     const existing_email = await this.prisma.user.findFirst({
       where: { email: google_user_data.email },
@@ -280,23 +239,12 @@ export class AuthService {
           name: google_user_data.name,
           username: u_username,
           email: google_user_data.email,
-          google_id: google_user_data.google_id,
-          password: password,
+          provider_id: google_user_data.provider_id,
           provider: google_user_data.provider,
         },
       });
-      const access_token = this.jwt.sign({
-        id: new_user.id,
-        username: new_user.username,
-        email: new_user.email,
-      });
-      const reset_token = this.jwt.sign(
-        {
-          email: new_user.email,
-          password: new_user.password,
-        },
-        { expiresIn: '45d' },
-      );
+      const access_token = this.access_token.generate(new_user);
+      const reset_token = this.reset_token.generate(new_user);
       res.send(
         this.window_responder.respond({
           access_token: access_token,
@@ -304,18 +252,8 @@ export class AuthService {
         }),
       );
     } else {
-      const access_token = this.jwt.sign({
-        id: existing_user.id,
-        username: existing_user.username,
-        email: existing_user.email,
-      });
-      const reset_token = this.jwt.sign(
-        {
-          email: existing_user.email,
-          password: existing_user.password,
-        },
-        { expiresIn: '45d' },
-      );
+      const access_token = this.access_token.generate(existing_user);
+      const reset_token = this.reset_token.generate(existing_user);
       res.send(
         this.window_responder.respond({
           access_token: access_token,

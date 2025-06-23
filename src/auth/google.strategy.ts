@@ -17,7 +17,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     return {
       accessToken,
       refreshToken,
-      google_id: profile.id,
+      provider_id: profile.id,
       email: profile.emails?.[0]?.value,
       name: profile.displayName,
       avata: profile.photos?.[0]?.value,
