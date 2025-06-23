@@ -2,6 +2,7 @@ import { MailerModule } from '@nestjs-modules/mailer';
 import { Module } from '@nestjs/common';
 import { join } from 'path';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
+import { VerifyMailService } from './verify_mail/verify_mail.service';
 
 @Module({
   imports: [
@@ -27,5 +28,7 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
       },
     }),
   ],
+  providers: [VerifyMailService],
+  exports: [VerifyMailService],
 })
 export class MailersModule {}

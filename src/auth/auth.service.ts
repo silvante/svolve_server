@@ -12,6 +12,7 @@ import { Response } from 'express';
 import { SocialAuthResponceService } from 'src/global/social_auth_responce/social_auth_responce.service';
 import { AccessTokenService } from 'src/global/access_token/access_token.service';
 import { ResetTokenService } from 'src/global/reset_token/reset_token.service';
+import { VerifyMailService } from 'src/mailers/verify_mail/verify_mail.service';
 
 @Injectable()
 export class AuthService {
@@ -19,10 +20,10 @@ export class AuthService {
     private prisma: PrismaService,
     private jwt: JwtService,
     private unique_username: GenerateUsernameService,
-    private mailer: MailerService,
     private window_responder: SocialAuthResponceService,
     private access_token: AccessTokenService,
     private reset_token: ResetTokenService,
+    private verify_mail: VerifyMailService,
   ) {}
 
   async registerUser(data: RegisterDto) {
@@ -57,12 +58,7 @@ export class AuthService {
     const magic_link = `${process.env.FRONT_ORIGIN}/verification/?token=${verify_token}`;
 
     // sending mail
-    this.mailer.sendMail({
-      to: data.email,
-      subject: 'Verify your email | Svolve',
-      text: 'You can verify your email by clicking the link below',
-      html: `<a href=${magic_link} target="_blanck">Verify my email</a>`,
-    });
+    this.verify_mail.send(data.email, magic_link);
     return {
       message: `Magic link send to ${data.email}`,
       ok: true,
@@ -96,12 +92,8 @@ export class AuthService {
     );
     const magic_link = `${process.env.FRONT_ORIGIN}/verification/?token=${verify_token}`;
     // sending mail
-    this.mailer.sendMail({
-      to: data.email,
-      subject: 'Welcome back | Svolve',
-      text: 'You can verify your email by clicking the link below',
-      html: `<a href=${magic_link} target="_blanck">Verify my email</a>`,
-    });
+    this.verify_mail.send(data.email, magic_link);
+
     return {
       message: `welcome back, Magic link send to ${data.email}`,
       ok: true,

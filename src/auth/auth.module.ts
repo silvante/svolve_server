@@ -7,9 +7,16 @@ import { GlobalModule } from 'src/global/global.module';
 import { AppJwtModule } from 'src/jwt/jwt.module';
 import { GithubStrategy } from './github.strategy';
 import { GoogleStrategy } from './google.strategy';
+import { MailersModule } from 'src/mailers/mailers.module';
 
 @Module({
-  imports: [PrismaModule, JobsModule, AppJwtModule, GlobalModule],
+  imports: [
+    PrismaModule,
+    JobsModule,
+    AppJwtModule,
+    GlobalModule,
+    MailersModule,
+  ],
   controllers: [AuthController],
   providers: [AuthService, GithubStrategy, GoogleStrategy],
 })
