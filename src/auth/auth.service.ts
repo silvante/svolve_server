@@ -182,7 +182,7 @@ export class AuthService {
     const github_user_data = req.user;
 
     const existing_user = await this.prisma.user.findFirst({
-      where: { github_id: github_user_data.github_id, provider: 'github' },
+      where: { provider_id: github_user_data.github_id, provider: 'github' },
     });
     const existing_email = await this.prisma.user.findFirst({
       where: { email: github_user_data.email },
@@ -201,17 +201,12 @@ export class AuthService {
       const u_username = await this.unique_username.generate(
         github_user_data.username,
       );
-      const password = await bcrypt.hash(
-        Math.random().toString(36).slice(-8),
-        SALT_RESULT,
-      );
       const new_user = await this.prisma.user.create({
         data: {
           name: github_user_data.name,
           username: u_username,
           email: github_user_data.email,
-          github_id: github_user_data.github_id,
-          password: password,
+          provider_id: github_user_data.github_id,
           provider: github_user_data.provider,
         },
       });
@@ -223,7 +218,6 @@ export class AuthService {
       const reset_token: string = this.jwt.sign(
         {
           email: new_user.email,
-          password: new_user.password,
         },
         { expiresIn: '45d' },
       );
@@ -242,7 +236,6 @@ export class AuthService {
       const reset_token: string = this.jwt.sign(
         {
           email: existing_user.email,
-          password: existing_user.password,
         },
         { expiresIn: '45d' },
       );
