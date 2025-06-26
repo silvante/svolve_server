@@ -263,6 +263,6 @@ export class AuthService {
     if (!user) {
       throw new HttpException('User is not defined', 404);
     }
-    return this.reset_token.generate(user);
+    return this.access_token.generate(user);
   }
 }
