@@ -13,6 +13,7 @@ import { SocialAuthResponceService } from 'src/global/social_auth_responce/socia
 import { AccessTokenService } from 'src/global/access_token/access_token.service';
 import { ResetTokenService } from 'src/global/reset_token/reset_token.service';
 import { VerifyMailService } from 'src/mailers/verify_mail/verify_mail.service';
+import { User } from '@prisma/client';
 
 @Injectable()
 export class AuthService {
@@ -256,6 +257,12 @@ export class AuthService {
     if (payload.action !== 'reset' || !payload.email) {
       return new HttpException('invalid reset token', 404);
     }
-    
+    const user = await this.prisma.user.findUnique({
+      where: { email: payload.email },
+    });
+    if (!user) {
+      throw new HttpException('User is not defined', 404);
+    }
+    return this.reset_token.generate(user);
   }
 }
