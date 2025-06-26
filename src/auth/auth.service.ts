@@ -250,4 +250,12 @@ export class AuthService {
       );
     }
   }
+
+  async ResetToken(token: string) {
+    const payload = this.jwt.verify(token);
+    if (payload.action !== 'reset' || !payload.email) {
+      return new HttpException('invalid reset token', 404);
+    }
+    
+  }
 }
