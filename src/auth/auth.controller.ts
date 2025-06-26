@@ -64,4 +64,9 @@ export class AuthController {
   googleValidator(@Req() req: RequestWithUser, @Res() res: Response) {
     return this.authService.googleHandler(req, res);
   }
+
+  @Get('/reset')
+  resetToken(@Query('token') token: string) {
+    return this.authService.ResetToken(token);
+  }
 }
