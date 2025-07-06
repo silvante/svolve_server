@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { OrganisationsService } from './organisations.service';
 import { AuthGuard } from 'src/guards/auth/auth.guard';
 import { RequestWithUser } from 'src/interfaces/request-with-user.interface';
@@ -21,5 +29,11 @@ export class OrganisationsController {
     @Body() data: CreateOrganisationDto,
   ) {
     return this.organistaionService.createOrganisation(req, data);
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('/:id')
+  getOrganisationById(@Req() req: RequestWithUser, @Param('id') id: string) {
+    return this.organistaionService.getOrganisationById(req, +id);
   }
 }

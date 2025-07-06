@@ -1,14 +1,16 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { RequestWithUser } from 'src/interfaces/request-with-user.interface';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateOrganisationDto } from './dtos/create_organisation.dto';
 import { GenerateUsernameService } from 'src/global/generate_username/generate_username.service';
+import { OrganisationCountQueue } from 'src/jobs/organisation_count/organisation_count.queue';
 
 @Injectable()
 export class OrganisationsService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly username: GenerateUsernameService,
+    private readonly OrganisationCountQueue: OrganisationCountQueue,
   ) {}
 
   async getOrganisations(req: RequestWithUser) {
@@ -36,7 +38,20 @@ export class OrganisationsService {
     });
     if (!new_organisation) {
       throw new Error('Failed to create organisation');
+    } else {
+      await this.OrganisationCountQueue.count(user.id);
     }
     return new_organisation;
+  }
+
+  async getOrganisationById(req: RequestWithUser, id: number) {
+    const user = req.user;
+    const organisation = await this.prisma.organisation.findUnique({
+      where: { id: id, owner_id: user.id },
+    });
+    if (!organisation) {
+      throw new HttpException('Organisation is not defined', 404);
+    }
+    return organisation;
   }
 }
