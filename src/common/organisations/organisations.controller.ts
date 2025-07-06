@@ -19,5 +19,7 @@ export class OrganisationsController {
   createOrganisation(
     @Req() req: RequestWithUser,
     @Body() data: CreateOrganisationDto,
-  ) {}
+  ) {
+    return this.organistaionService.createOrganisation(req, data);
+  }
 }
