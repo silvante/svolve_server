@@ -15,14 +15,15 @@ datasource db {
 }
 
 model User {
-  id            Int            @id @default(autoincrement())
-  name          String
-  username      String         @unique
-  email         String         @unique
-  provider      String
-  provider_id   String?
-  created_at    DateTime       @default(now())
-  organisations Organisation[]
+  id                 Int            @id @default(autoincrement())
+  name               String
+  username           String         @unique
+  email              String         @unique
+  provider           String
+  provider_id        String?
+  organisations      Organisation[]
+  organisation_count Int            @default(0)
+  created_at         DateTime       @default(now())
 }
 
 model Organisation {
@@ -31,6 +32,7 @@ model Organisation {
   unique_name String   @unique
   banner      String?
   logo        String?
+  pincode     Int
   owner_id    Int
   owner       User     @relation(fields: [owner_id], references: [id])
   created_at  DateTime @default(now())
