@@ -7,6 +7,7 @@ import { MailersModule } from './mailers/mailers.module';
 import { JobsModule } from './jobs/jobs.module';
 import { AuthModule } from './auth/auth.module';
 import { GlobalModule } from './global/global.module';
+import { OrganisationsModule } from './common/organisations/organisations.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { GlobalModule } from './global/global.module';
     JobsModule,
     AuthModule,
     GlobalModule,
+    OrganisationsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
