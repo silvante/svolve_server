@@ -31,3 +31,4 @@ export class AuthGuard implements CanActivate {
     }
   }
 }
+// This guard checks for a valid JWT token in the Authorization header.

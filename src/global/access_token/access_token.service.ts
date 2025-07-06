@@ -14,7 +14,7 @@ export class AccessTokenService {
         email: user.email,
         action: 'access',
       },
-      { expiresIn: '1m' },
+      { expiresIn: '48h' },
     );
     return access_token;
   }
