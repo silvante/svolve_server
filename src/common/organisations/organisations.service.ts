@@ -4,6 +4,8 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateOrganisationDto } from './dtos/create_organisation.dto';
 import { OrganisationCountQueue } from 'src/jobs/organisation_count/organisation_count.queue';
 import { GenerateUniquenameService } from 'src/global/generate_uniquename/generate_uniquename.service';
+import { ValidateOrganisationDto } from './dtos/validate.dto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class OrganisationsService {
@@ -23,10 +25,12 @@ export class OrganisationsService {
 
   async createOrganisation(req: RequestWithUser, data: CreateOrganisationDto) {
     const user = req.user;
+    const {pincode, ...form_data} = data
+    const hashed_pincode = bcrypt.hashSync(pincode, 10);
     const unique_name = await this.uniquename.generate(data.name);
     const new_organisation = await this.prisma.organisation.create({
       data: {
-        ...data,
+        ...form_data,
         unique_name,
         owner: {
           connect: {
@@ -52,5 +56,21 @@ export class OrganisationsService {
       throw new HttpException('Organisation is not defined', 404);
     }
     return organisation;
+  }
+
+  async ValidateOrganisation(
+    req: RequestWithUser,
+    id: number,
+    data: ValidateOrganisationDto,
+  ) {
+    const user = req.user;
+    const organisation = await this.prisma.organisation.findUnique({
+      where: { id: id, owner_id: user.id },
+    });
+    if (!organisation) {
+      throw new HttpException('Organisation is not defined', 404);
+    }
+
+    
   }
 }

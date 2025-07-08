@@ -13,6 +13,6 @@ export class CreateOrganisationDto {
   @IsString()
   logo: string;
 
-  @IsInt()
-  pincode: number;
+  @IsString()
+  pincode: string;
 }

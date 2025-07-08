@@ -2,10 +2,7 @@ import { HttpException, Injectable } from '@nestjs/common';
 import { RegisterDto } from './dtos/register.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
-import * as bcrypt from 'bcrypt';
-import { SALT_RESULT } from 'src/constants';
 import { GenerateUsernameService } from 'src/global/generate_username/generate_username.service';
-import { MailerService } from '@nestjs-modules/mailer';
 import { LoginDto } from './dtos/login.dto';
 import { RequestWithUser } from 'src/interfaces/request-with-user.interface';
 import { Response } from 'express';
@@ -13,7 +10,6 @@ import { SocialAuthResponceService } from 'src/global/social_auth_responce/socia
 import { AccessTokenService } from 'src/global/access_token/access_token.service';
 import { ResetTokenService } from 'src/global/reset_token/reset_token.service';
 import { VerifyMailService } from 'src/mailers/verify_mail/verify_mail.service';
-import { User } from '@prisma/client';
 
 @Injectable()
 export class AuthService {

@@ -11,6 +11,7 @@ import { OrganisationsService } from './organisations.service';
 import { AuthGuard } from 'src/guards/auth/auth.guard';
 import { RequestWithUser } from 'src/interfaces/request-with-user.interface';
 import { CreateOrganisationDto } from './dtos/create_organisation.dto';
+import { ValidateOrganisationDto } from './dtos/validate.dto';
 
 @Controller('organisations')
 export class OrganisationsController {
@@ -35,5 +36,15 @@ export class OrganisationsController {
   @Get('/:id')
   getOrganisationById(@Req() req: RequestWithUser, @Param('id') id: string) {
     return this.organistaionService.getOrganisationById(req, +id);
+  }
+
+  @UseGuards(AuthGuard)
+  @Post('/:id/validate')
+  ValidateOrganisation(
+    @Req() req: RequestWithUser,
+    @Param('id') id: string,
+    @Body() data: ValidateOrganisationDto,
+  ) {
+    return this.organistaionService.ValidateOrganisation(req, +id, data);
   }
 }
