@@ -5,6 +5,7 @@ import { SocialAuthResponceService } from './social_auth_responce/social_auth_re
 import { ResetTokenService } from './reset_token/reset_token.service';
 import { AccessTokenService } from './access_token/access_token.service';
 import { AppJwtModule } from 'src/jwt/jwt.module';
+import { GenerateUniquenameService } from './generate_uniquename/generate_uniquename.service';
 
 @Module({
   imports: [PrismaModule, AppJwtModule],
@@ -13,6 +14,7 @@ import { AppJwtModule } from 'src/jwt/jwt.module';
     SocialAuthResponceService,
     ResetTokenService,
     AccessTokenService,
+    GenerateUniquenameService,
   ],
   exports: [
     GenerateUsernameService,

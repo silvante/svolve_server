@@ -2,14 +2,14 @@ import { HttpException, Injectable } from '@nestjs/common';
 import { RequestWithUser } from 'src/interfaces/request-with-user.interface';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateOrganisationDto } from './dtos/create_organisation.dto';
-import { GenerateUsernameService } from 'src/global/generate_username/generate_username.service';
 import { OrganisationCountQueue } from 'src/jobs/organisation_count/organisation_count.queue';
+import { GenerateUniquenameService } from 'src/global/generate_uniquename/generate_uniquename.service';
 
 @Injectable()
 export class OrganisationsService {
   constructor(
     private readonly prisma: PrismaService,
-    private readonly username: GenerateUsernameService,
+    private readonly uniquename: GenerateUniquenameService,
     private readonly OrganisationCountQueue: OrganisationCountQueue,
   ) {}
 
@@ -23,7 +23,7 @@ export class OrganisationsService {
 
   async createOrganisation(req: RequestWithUser, data: CreateOrganisationDto) {
     const user = req.user;
-    const unique_name = await this.username.generate(data.name);
+    const unique_name = await this.uniquename.generate(data.name);
     const new_organisation = await this.prisma.organisation.create({
       data: {
         ...data,
