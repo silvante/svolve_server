@@ -27,7 +27,6 @@ export class OrganisationsService {
     const new_organisation = await this.prisma.organisation.create({
       data: {
         ...data,
-        userId: user.id,
         unique_name,
         owner: {
           connect: {

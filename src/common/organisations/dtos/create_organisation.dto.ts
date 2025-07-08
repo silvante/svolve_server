@@ -5,6 +5,9 @@ export class CreateOrganisationDto {
   name: string;
 
   @IsString()
+  description: string;
+
+  @IsString()
   banner: string;
 
   @IsString()

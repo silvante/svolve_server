@@ -30,11 +30,11 @@ model Organisation {
   id          Int      @id @default(autoincrement())
   name        String
   unique_name String   @unique
+  description String?
   banner      String?
   logo        String?
   pincode     Int
   owner_id    Int
   owner       User     @relation(fields: [owner_id], references: [id])
   created_at  DateTime @default(now())
-  userId      Int
 }
