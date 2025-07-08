@@ -21,6 +21,7 @@ import { GenerateUniquenameService } from './generate_uniquename/generate_unique
     SocialAuthResponceService,
     ResetTokenService,
     AccessTokenService,
+    GenerateUniquenameService,
   ],
 })
 export class GlobalModule {}
