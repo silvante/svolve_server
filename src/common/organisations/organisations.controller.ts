@@ -42,9 +42,13 @@ export class OrganisationsController {
   @Post('/:id/validate')
   ValidateOrganisation(
     @Req() req: RequestWithUser,
-    @Param('id') id: string,
+    @Param('unique_name') unique_name: string,
     @Body() data: ValidateOrganisationDto,
   ) {
-    return this.organistaionService.ValidateOrganisation(req, +id, data);
+    return this.organistaionService.ValidateOrganisation(
+      req,
+      unique_name,
+      data,
+    );
   }
 }

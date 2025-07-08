@@ -6,6 +6,7 @@ import { OrganisationCountQueue } from 'src/jobs/organisation_count/organisation
 import { GenerateUniquenameService } from 'src/global/generate_uniquename/generate_uniquename.service';
 import { ValidateOrganisationDto } from './dtos/validate.dto';
 import * as bcrypt from 'bcrypt';
+import { SALT_RESULT } from 'src/constants';
 
 @Injectable()
 export class OrganisationsService {
@@ -25,13 +26,14 @@ export class OrganisationsService {
 
   async createOrganisation(req: RequestWithUser, data: CreateOrganisationDto) {
     const user = req.user;
-    const {pincode, ...form_data} = data
-    const hashed_pincode = bcrypt.hashSync(pincode, 10);
+    const { pincode, ...form_data } = data;
+    const hashed_pincode = bcrypt.hashSync(pincode, SALT_RESULT);
     const unique_name = await this.uniquename.generate(data.name);
     const new_organisation = await this.prisma.organisation.create({
       data: {
         ...form_data,
         unique_name,
+        pincode: hashed_pincode,
         owner: {
           connect: {
             id: user.id,
@@ -60,17 +62,29 @@ export class OrganisationsService {
 
   async ValidateOrganisation(
     req: RequestWithUser,
-    id: number,
+    unique_name: string,
     data: ValidateOrganisationDto,
   ) {
     const user = req.user;
     const organisation = await this.prisma.organisation.findUnique({
-      where: { id: id, owner_id: user.id },
+      where: { unique_name: unique_name, owner_id: user.id },
     });
+
+    // Put the payment validation logic here in the future
+
     if (!organisation) {
-      throw new HttpException('Organisation is not defined', 404);
+      throw new HttpException('You do not own this organisation', 404);
     }
 
-    
+    const is_pincode_valid = bcrypt.compareSync(
+      data.pincode,
+      organisation.pincode,
+    );
+
+    if (!is_pincode_valid) {
+      throw new HttpException('Invalid pincode', 400);
+    }
+
+    return { validation: true };
   }
 }
