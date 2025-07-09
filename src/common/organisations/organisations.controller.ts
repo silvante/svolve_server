@@ -39,7 +39,7 @@ export class OrganisationsController {
   }
 
   @UseGuards(AuthGuard)
-  @Post('/:id/validate')
+  @Post('/:unique_name/validate')
   ValidateOrganisation(
     @Req() req: RequestWithUser,
     @Param('unique_name') unique_name: string,
