@@ -23,18 +23,52 @@ model User {
   provider_id        String?
   organisations      Organisation[]
   organisation_count Int            @default(0)
+  clients            Client[]
+  client_count       Int            @default(0)
   created_at         DateTime       @default(now())
 }
 
 model Organisation {
-  id          Int      @id @default(autoincrement())
-  name        String
-  unique_name String   @unique
-  description String?
-  banner      String?
-  logo        String?
-  pincode     String
-  owner_id    Int
-  owner       User     @relation(fields: [owner_id], references: [id])
-  created_at  DateTime @default(now())
+  id           Int      @id @default(autoincrement())
+  name         String
+  unique_name  String   @unique
+  description  String?
+  banner       String?
+  logo         String?
+  pincode      String
+  owner_id     Int
+  owner        User     @relation(fields: [owner_id], references: [id])
+  clients      Client[]
+  client_count Int      @default(0)
+  types        Type[]
+  type_count   Int      @default(0)
+  created_at   DateTime @default(now())
+}
+
+model Client {
+  id              Int          @id @default(autoincrement())
+  name            String
+  surname         String
+  born_in         DateTime
+  origin          String
+  price           Int
+  type            Type?        @relation(fields: [type_id], references: [id])
+  type_id         Int?
+  organisation    Organisation @relation(fields: [organisation_id], references: [id])
+  organisation_id Int
+  owner           User         @relation(fields: [owner_id], references: [id])
+  owner_id        Int
+  created_at      DateTime     @default(now())
+}
+
+model Type {
+  id              Int           @id @default(autoincrement())
+  name            String
+  description     String?
+  clients         Client[]
+  client_count    Int           @default(0)
+  price           Int
+  organisation    Organisation? @relation(fields: [organisation_id], references: [id])
+  organisation_id Int?
+  created_at      DateTime      @default(now())
 }
