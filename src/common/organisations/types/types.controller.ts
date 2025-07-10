@@ -1,26 +1,26 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Req, UseGuards } from '@nestjs/common';
 import { TypesService } from './types.service';
-import { CreateTypeDto } from './dto/create-type.dto';
-import { AuthGuard } from '@nestjs/passport';
+import { AuthGuard } from 'src/guards/auth/auth.guard';
 import { RequestWithUser } from 'src/interfaces/request-with-user.interface';
+import { CreateTypeDto } from './dto/create-type.dto';
 
-@Controller('types')
+@Controller('organisations/:org_id/types')
 export class TypesController {
   constructor(private readonly typesService: TypesService) {}
 
   @UseGuards(AuthGuard)
-  @Get('/:organisation_id')
-  findAll(@Param('organisation_id') organisation_id: string) {
-    return this.typesService.findAll(+organisation_id);
+  @Get()
+  findAll(@Param('org_id') org_id: string, @Req() req: RequestWithUser) {
+    return this.typesService.findAll(+org_id, req);
   }
 
   @UseGuards(AuthGuard)
-  @Post('/:organisation_id/new')
+  @Post('/new')
   createType(
     @Req() req: RequestWithUser,
-    @Param('organisation_id') organisation_id: string,
+    @Param('org_id') org_id: string,
     @Body() data: CreateTypeDto,
   ) {
-    return this.typesService.createType(req, +organisation_id, data);
+    return this.typesService.createType(req, +org_id, data);
   }
 }

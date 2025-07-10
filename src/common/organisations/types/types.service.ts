@@ -1,15 +1,21 @@
 import { HttpException, Injectable } from '@nestjs/common';
-import { CreateTypeDto } from './dto/create-type.dto';
-import { PrismaService } from 'src/prisma/prisma.service';
 import { RequestWithUser } from 'src/interfaces/request-with-user.interface';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class TypesService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async findAll(organisation_id: number) {
+  async findAll(org_id: number, req: RequestWithUser) {
+    const user = req.user;
+    const org = await this.prisma.organisation.findUnique({
+      where: { owner_id: user.id, id: org_id },
+    });
+    if (!org) {
+      throw new HttpException('you do not own this organisation', 404);
+    }
     const types = await this.prisma.type.findMany({
-      where: { organisation_id: organisation_id },
+      where: { organisation_id: org_id },
     });
     if (!types) {
       throw new HttpException('Server error, please try again later', 404);
@@ -17,28 +23,21 @@ export class TypesService {
     return types;
   }
 
-  async createType(req: RequestWithUser, organisation_id: number, data: CreateTypeDto) {
+  async createType(req: any, org_id: number, data: any) {
     const user = req.user;
     const organisation = await this.prisma.organisation.findUnique({
-      where: { id: organisation_id },
+      where: { id: org_id, owner_id: user.id },
     });
 
     if (!organisation) {
-      throw new HttpException('Organisation not found', 404);
-    }
-
-    if (organisation.owner_id !== user.id) {
-      throw new HttpException(
-        'You are not the owner of this organisation',
-        403,
-      );
+      throw new HttpException('You do not own this organisation', 404);
     }
 
     const type = await this.prisma.type.create({
       data: {
         ...data,
         organisation: {
-          connect: { id: organisation_id },
+          connect: { id: organisation.id },
         },
       },
     });
