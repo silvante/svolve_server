@@ -1,16 +1,8 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Param,
-  Post,
-  Req,
-  UseGuards,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req } from '@nestjs/common';
 import { TypesService } from './types.service';
+import { CreateTypeDto } from './dto/create-type.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { RequestWithUser } from 'src/interfaces/request-with-user.interface';
-import { CreateTypeDto } from './dtos/createType.dto';
 
 @Controller('types')
 export class TypesController {

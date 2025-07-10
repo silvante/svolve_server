@@ -1,6 +1,7 @@
 import { HttpException, Injectable } from '@nestjs/common';
-import { connect } from 'http2';
+import { CreateTypeDto } from './dto/create-type.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { RequestWithUser } from 'src/interfaces/request-with-user.interface';
 
 @Injectable()
 export class TypesService {
@@ -16,7 +17,7 @@ export class TypesService {
     return types;
   }
 
-  async createType(req: any, organisation_id: number, data: any) {
+  async createType(req: RequestWithUser, organisation_id: number, data: CreateTypeDto) {
     const user = req.user;
     const organisation = await this.prisma.organisation.findUnique({
       where: { id: organisation_id },
