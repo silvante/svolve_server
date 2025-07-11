@@ -85,6 +85,6 @@ export class OrganisationsService {
       throw new HttpException('Invalid pincode', 400);
     }
 
-    return { validation: true };
+    return { validation: true, organisation: organisation };
   }
 }
