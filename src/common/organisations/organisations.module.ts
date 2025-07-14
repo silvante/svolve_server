@@ -6,9 +6,10 @@ import { PrismaModule } from 'src/prisma/prisma.module';
 import { AppJwtModule } from 'src/jwt/jwt.module';
 import { JobsModule } from 'src/jobs/jobs.module';
 import { TypesModule } from './types/types.module';
+import { ClientsModule } from './clients/clients.module';
 
 @Module({
-  imports: [PrismaModule, GlobalModule, AppJwtModule, JobsModule, TypesModule],
+  imports: [PrismaModule, GlobalModule, AppJwtModule, JobsModule, TypesModule, ClientsModule],
   controllers: [OrganisationsController],
   providers: [OrganisationsService],
 })

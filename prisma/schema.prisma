@@ -49,7 +49,7 @@ model Client {
   id              Int          @id @default(autoincrement())
   name            String
   surname         String
-  born_in         DateTime
+  born_in         Int
   origin          String
   price           Int
   type            Type?        @relation(fields: [type_id], references: [id])
