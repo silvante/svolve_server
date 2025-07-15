@@ -39,6 +39,9 @@ export class ClientsService {
           },
         },
       },
+      include: {
+        type: true,
+      },
     });
 
     return client;
@@ -62,6 +65,9 @@ export class ClientsService {
           gte: day_start,
           lte: day_end,
         },
+      },
+      include: {
+        type: true,
       },
     });
     if (!clients) {
