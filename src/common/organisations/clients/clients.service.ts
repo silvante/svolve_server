@@ -91,6 +91,9 @@ export class ClientsService {
       data: {
         is_checked: true,
       },
+      include: {
+        type: true,
+      },
     });
 
     if (!updated) {
