@@ -52,6 +52,7 @@ model Client {
   born_in         Int
   origin          String
   price           Int
+  is_checked      Boolean      @default(false)
   type            Type?        @relation(fields: [type_id], references: [id])
   type_id         Int?
   organisation    Organisation @relation(fields: [organisation_id], references: [id])
