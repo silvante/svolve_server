@@ -6,6 +6,7 @@ import {
   Req,
   Param,
   Get,
+  Put,
 } from '@nestjs/common';
 import { ClientsService } from './clients.service';
 import { CreateClientDto } from './dto/create-client.dto';
@@ -33,5 +34,15 @@ export class ClientsController {
     @Param('org_id') org_id: string,
   ) {
     return this.clientsService.findTodayClients(req, +org_id);
+  }
+
+  @UseGuards(AuthGuard)
+  @Put('check/:client_id')
+  checkClient(
+    @Req() req: RequestWithUser,
+    @Param('org_id') org_id: string,
+    @Param('client_id') client_id: string,
+  ) {
+    return this.clientsService.checkClient(req, +org_id, +client_id);
   }
 }

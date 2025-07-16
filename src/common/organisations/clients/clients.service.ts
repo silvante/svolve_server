@@ -82,4 +82,24 @@ export class ClientsService {
       types: types,
     };
   }
+
+  async checkClient(req: RequestWithUser, org_id: number, client_id: number) {
+    const user = req.user;
+
+    const updated = await this.prisma.client.update({
+      where: { id: client_id, owner_id: user.id, organisation_id: org_id },
+      data: {
+        is_checked: true,
+      },
+    });
+
+    if (!updated) {
+      throw new HttpException('INternal server error', 404);
+    }
+
+    return {
+      checked: true,
+      client: updated,
+    };
+  }
 }
