@@ -46,8 +46,8 @@ export class TypesService {
       },
     });
 
-    if (type) {
-      await this.typeCounter.count(organisation.id);
+    if (type.organisation_id) {
+      await this.typeCounter.count(type.organisation_id);
     }
 
     return type;
