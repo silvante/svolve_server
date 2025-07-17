@@ -1,10 +1,14 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { RequestWithUser } from 'src/interfaces/request-with-user.interface';
+import { TypeCountQueue } from 'src/jobs/type_count/type_count.queue';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class TypesService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly typeCounter: TypeCountQueue,
+  ) {}
 
   async findAll(org_id: number, req: RequestWithUser) {
     const user = req.user;
@@ -41,6 +45,10 @@ export class TypesService {
         },
       },
     });
+
+    if (type) {
+      await this.typeCounter.count(organisation.id);
+    }
 
     return type;
   }
