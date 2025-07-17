@@ -4,6 +4,7 @@ import {
   Get,
   Param,
   Post,
+  Put,
   Req,
   UseGuards,
 } from '@nestjs/common';
@@ -12,6 +13,7 @@ import { AuthGuard } from 'src/guards/auth/auth.guard';
 import { RequestWithUser } from 'src/interfaces/request-with-user.interface';
 import { CreateOrganisationDto } from './dtos/create_organisation.dto';
 import { ValidateOrganisationDto } from './dtos/validate.dto';
+import { UpdateOrganisationDto } from './dtos/update_organisation.dto';
 
 @Controller('organisations')
 export class OrganisationsController {
@@ -50,5 +52,15 @@ export class OrganisationsController {
       unique_name,
       data,
     );
+  }
+
+  @UseGuards(AuthGuard)
+  @Put('/:org_id/update')
+  updateOrganisation(
+    @Req() req: RequestWithUser,
+    @Param('org_id') org_id: number,
+    @Body() data: UpdateOrganisationDto,
+  ) {
+    return this.organistaionService.EditOrganisation(req, +org_id, data);
   }
 }

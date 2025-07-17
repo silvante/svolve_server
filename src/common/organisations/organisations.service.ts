@@ -7,6 +7,7 @@ import { GenerateUniquenameService } from 'src/global/generate_uniquename/genera
 import { ValidateOrganisationDto } from './dtos/validate.dto';
 import * as bcrypt from 'bcrypt';
 import { SALT_RESULT } from 'src/constants';
+import { UpdateOrganisationDto } from './dtos/update_organisation.dto';
 
 @Injectable()
 export class OrganisationsService {
@@ -86,5 +87,29 @@ export class OrganisationsService {
     }
 
     return { validation: true, organisation: organisation };
+  }
+
+  async EditOrganisation(
+    req: RequestWithUser,
+    org_id: number,
+    data: UpdateOrganisationDto,
+  ) {
+    const user = req.user;
+
+    const updated_organisation = await this.prisma.organisation.update({
+      where: { id: org_id, owner_id: user.id },
+      data: {
+        ...data,
+      },
+    });
+
+    if (!updated_organisation) {
+      throw new HttpException(
+        'You do not own this organisation or internal server error',
+        404,
+      );
+    }
+
+    return updated_organisation;
   }
 }

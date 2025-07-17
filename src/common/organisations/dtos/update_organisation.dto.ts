@@ -1,6 +1,6 @@
 import { IsString } from 'class-validator';
 
-export class CreateOrganisationDto {
+export class UpdateOrganisationDto {
   @IsString()
   name: string;
 
@@ -12,7 +12,4 @@ export class CreateOrganisationDto {
 
   @IsString()
   logo: string;
-
-  @IsString()
-  pincode: string;
 }
