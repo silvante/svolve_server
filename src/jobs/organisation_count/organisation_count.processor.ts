@@ -18,6 +18,8 @@ export class OrganisationCountProcessor extends WorkerHost {
         where: { id: user_id },
         data: { organisation_count: count },
       });
+
+      console.log('Organisation Count Job, terminate');
     }
   }
 }

@@ -18,6 +18,8 @@ export class TypeCountProcessor extends WorkerHost {
         where: { id: org_id },
         data: { type_count: count },
       });
+
+      console.log('Type Count Job, terminate');
     }
   }
 }

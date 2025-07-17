@@ -9,6 +9,8 @@ import { OrganisationCountProcessor } from './organisation_count/organisation_co
 import { PrismaModule } from 'src/prisma/prisma.module';
 import { TypeCountQueue } from './type_count/type_count.queue';
 import { TypeCountProcessor } from './type_count/type_count.processor';
+import { ClientCountQueue } from './client_count/client_count.queue';
+import { ClientCountProcessor } from './client_count/client_count.processor';
 
 @Module({
   imports: [
@@ -31,8 +33,15 @@ import { TypeCountProcessor } from './type_count/type_count.processor';
     OrganisationCountProcessor,
     TypeCountQueue,
     TypeCountProcessor,
+    ClientCountQueue,
+    ClientCountProcessor,
   ],
-  exports: [MailQueue, OrganisationCountQueue, TypeCountQueue],
+  exports: [
+    MailQueue,
+    OrganisationCountQueue,
+    TypeCountQueue,
+    ClientCountQueue,
+  ],
 })
 export class JobsModule {}
 ``;

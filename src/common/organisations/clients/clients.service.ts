@@ -3,10 +3,14 @@ import { CreateClientDto } from './dto/create-client.dto';
 import { RequestWithUser } from 'src/interfaces/request-with-user.interface';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { startOfDay, endOfDay } from 'date-fns';
+import { ClientCountQueue } from 'src/jobs/client_count/client_count.queue';
 
 @Injectable()
 export class ClientsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly ClientCounter: ClientCountQueue,
+  ) {}
 
   async create(req: RequestWithUser, org_id: number, data: CreateClientDto) {
     const user = req.user;
@@ -33,16 +37,15 @@ export class ClientsService {
             id: organisation.id,
           },
         },
-        owner: {
-          connect: {
-            id: organisation.owner_id,
-          },
-        },
       },
       include: {
         type: true,
       },
     });
+
+    if (client) {
+      await this.ClientCounter.count(client);
+    }
 
     return client;
   }
@@ -86,8 +89,16 @@ export class ClientsService {
   async checkClient(req: RequestWithUser, org_id: number, client_id: number) {
     const user = req.user;
 
+    const org = await this.prisma.organisation.findUnique({
+      where: { id: org_id, owner_id: user.id },
+    });
+
+    if (!org) {
+      throw new HttpException('you do not own this organisation', 404);
+    }
+
     const updated = await this.prisma.client.update({
-      where: { id: client_id, owner_id: user.id, organisation_id: org_id },
+      where: { id: client_id, organisation_id: org?.id },
       data: {
         is_checked: true,
       },

@@ -23,8 +23,6 @@ model User {
   provider_id        String?
   organisations      Organisation[]
   organisation_count Int            @default(0)
-  clients            Client[]
-  client_count       Int            @default(0)
   created_at         DateTime       @default(now())
 }
 
@@ -57,8 +55,6 @@ model Client {
   type_id         Int?
   organisation    Organisation @relation(fields: [organisation_id], references: [id])
   organisation_id Int
-  owner           User         @relation(fields: [owner_id], references: [id])
-  owner_id        Int
   created_at      DateTime     @default(now())
 }
 
