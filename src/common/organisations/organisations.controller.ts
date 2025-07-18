@@ -56,22 +56,22 @@ export class OrganisationsController {
   }
 
   @UseGuards(AuthGuard)
-  @Put('/:org_id/update')
+  @Put('/:unique_name/update')
   updateOrganisation(
     @Req() req: RequestWithUser,
-    @Param('org_id') org_id: number,
+    @Param('unique_name') unique_name: string,
     @Body() data: UpdateOrganisationDto,
   ) {
-    return this.organistaionService.EditOrganisation(req, +org_id, data);
+    return this.organistaionService.EditOrganisation(req, unique_name, data);
   }
 
   @UseGuards(AuthGuard)
-  @Put('/:org_id/update/pincode')
+  @Put('/:unique_name/update/pincode')
   updatePincode(
     @Req() req: RequestWithUser,
-    @Param('org_id') org_id: string,
+    @Param('unique_name') unique_name: string,
     @Body() data: UpdatePincodeDto,
   ) {
-    return this.organistaionService.updatePincode(req, +org_id, data);
+    return this.organistaionService.updatePincode(req, unique_name, data);
   }
 }

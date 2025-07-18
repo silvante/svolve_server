@@ -92,13 +92,13 @@ export class OrganisationsService {
 
   async EditOrganisation(
     req: RequestWithUser,
-    org_id: number,
+    unique_name: string,
     data: UpdateOrganisationDto,
   ) {
     const user = req.user;
 
     const updated_organisation = await this.prisma.organisation.update({
-      where: { id: org_id, owner_id: user.id },
+      where: { unique_name: unique_name },
       data: {
         ...data,
       },
@@ -116,13 +116,13 @@ export class OrganisationsService {
 
   async updatePincode(
     req: RequestWithUser,
-    org_id: number,
+    unique_name: string,
     data: UpdatePincodeDto,
   ) {
     const user = req.user;
 
     const org = await this.prisma.organisation.findUnique({
-      where: { id: org_id, owner_id: user.id },
+      where: { unique_name: unique_name, owner_id: user.id },
     });
     if (!org) {
       throw new HttpException('You do not own this organisation', 404);
