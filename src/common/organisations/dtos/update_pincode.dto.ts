@@ -5,7 +5,7 @@ export class UpdatePincodeDto {
   old_pincode: string;
 
   @IsString()
-  new_pinocde: string;
+  new_pincode: string;
 
   @IsString()
   pincode_confirmation: string;

@@ -131,12 +131,12 @@ export class OrganisationsService {
     if (!is_pin_ok) {
       throw new HttpException('invalide pincode', 404);
     }
-    if (data.new_pinocde !== data.pincode_confirmation) {
+    if (data.new_pincode !== data.pincode_confirmation) {
       throw new HttpException('pincode confirmation should match', 404);
     }
     const updated = await this.prisma.organisation.update({
       where: { id: org.id },
-      data: { pincode: bcrypt.hashSync(data.new_pinocde, SALT_RESULT) },
+      data: { pincode: bcrypt.hashSync(data.new_pincode, SALT_RESULT) },
     });
     if (!updated) {
       throw new HttpException('internal server error', 404);
