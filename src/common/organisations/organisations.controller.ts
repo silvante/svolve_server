@@ -14,6 +14,7 @@ import { RequestWithUser } from 'src/interfaces/request-with-user.interface';
 import { CreateOrganisationDto } from './dtos/create_organisation.dto';
 import { ValidateOrganisationDto } from './dtos/validate.dto';
 import { UpdateOrganisationDto } from './dtos/update_organisation.dto';
+import { UpdatePincodeDto } from './dtos/update_pincode.dto';
 
 @Controller('organisations')
 export class OrganisationsController {
@@ -62,5 +63,15 @@ export class OrganisationsController {
     @Body() data: UpdateOrganisationDto,
   ) {
     return this.organistaionService.EditOrganisation(req, +org_id, data);
+  }
+
+  @UseGuards(AuthGuard)
+  @Put('/:org_id/update/pincode')
+  updatePincode(
+    @Req() req: RequestWithUser,
+    @Param('org_id') org_id: string,
+    @Body() data: UpdatePincodeDto,
+  ) {
+    return this.organistaionService.updatePincode(req, +org_id, data);
   }
 }

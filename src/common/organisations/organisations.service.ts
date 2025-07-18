@@ -8,6 +8,7 @@ import { ValidateOrganisationDto } from './dtos/validate.dto';
 import * as bcrypt from 'bcrypt';
 import { SALT_RESULT } from 'src/constants';
 import { UpdateOrganisationDto } from './dtos/update_organisation.dto';
+import { UpdatePincodeDto } from './dtos/update_pincode.dto';
 
 @Injectable()
 export class OrganisationsService {
@@ -111,5 +112,35 @@ export class OrganisationsService {
     }
 
     return updated_organisation;
+  }
+
+  async updatePincode(
+    req: RequestWithUser,
+    org_id: number,
+    data: UpdatePincodeDto,
+  ) {
+    const user = req.user;
+
+    const org = await this.prisma.organisation.findUnique({
+      where: { id: org_id, owner_id: user.id },
+    });
+    if (!org) {
+      throw new HttpException('You do not own this organisation', 404);
+    }
+    const is_pin_ok = bcrypt.compareSync(data.old_pincode, org.pincode);
+    if (!is_pin_ok) {
+      throw new HttpException('invalide pincode', 404);
+    }
+    if (data.new_pinocde !== data.pincode_confirmation) {
+      throw new HttpException('pincode confirmation should match', 404);
+    }
+    const updated = await this.prisma.organisation.update({
+      where: { id: org.id },
+      data: { pincode: bcrypt.hashSync(data.new_pinocde, SALT_RESULT) },
+    });
+    if (!updated) {
+      throw new HttpException('internal server error', 404);
+    }
+    return updated;
   }
 }
