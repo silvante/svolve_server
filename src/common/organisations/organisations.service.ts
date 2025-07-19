@@ -94,7 +94,7 @@ export class OrganisationsService {
     const user = req.user;
 
     const updated_organisation = await this.prisma.organisation.update({
-      where: { unique_name: unique_name },
+      where: { unique_name: unique_name, owner_id: user.id },
       data: {
         ...data,
       },
