@@ -78,6 +78,13 @@ export class ClientsService {
     }
     const types = await this.prisma.type.findMany({
       where: { organisation_id: organisation.id },
+      include: {
+        _count: {
+          select: {
+            clients: true,
+          },
+        },
+      },
     });
 
     return {
