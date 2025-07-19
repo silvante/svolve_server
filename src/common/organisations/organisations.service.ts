@@ -2,7 +2,6 @@ import { HttpException, Injectable } from '@nestjs/common';
 import { RequestWithUser } from 'src/interfaces/request-with-user.interface';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateOrganisationDto } from './dtos/create_organisation.dto';
-import { OrganisationCountQueue } from 'src/jobs/organisation_count/organisation_count.queue';
 import { GenerateUniquenameService } from 'src/global/generate_uniquename/generate_uniquename.service';
 import { ValidateOrganisationDto } from './dtos/validate.dto';
 import * as bcrypt from 'bcrypt';
@@ -15,7 +14,6 @@ export class OrganisationsService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly uniquename: GenerateUniquenameService,
-    private readonly OrganisationCountQueue: OrganisationCountQueue,
   ) {}
 
   async getOrganisations(req: RequestWithUser) {
@@ -45,8 +43,6 @@ export class OrganisationsService {
     });
     if (!new_organisation) {
       throw new Error('Failed to create organisation');
-    } else {
-      await this.OrganisationCountQueue.count(user.id);
     }
     return new_organisation;
   }

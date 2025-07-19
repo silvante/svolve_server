@@ -4,13 +4,7 @@ import { Module } from '@nestjs/common';
 import { QUEUE_NAME } from 'src/constants';
 import { MailQueue } from './processors/mail/mail.queue';
 import { MailProcessor } from './processors/mail/mail.processor';
-import { OrganisationCountQueue } from './organisation_count/organisation_count.queue';
-import { OrganisationCountProcessor } from './organisation_count/organisation_count.processor';
 import { PrismaModule } from 'src/prisma/prisma.module';
-import { TypeCountQueue } from './type_count/type_count.queue';
-import { TypeCountProcessor } from './type_count/type_count.processor';
-import { ClientCountQueue } from './client_count/client_count.queue';
-import { ClientCountProcessor } from './client_count/client_count.processor';
 
 @Module({
   imports: [
@@ -26,22 +20,8 @@ import { ClientCountProcessor } from './client_count/client_count.processor';
     }),
     PrismaModule,
   ],
-  providers: [
-    MailQueue,
-    MailProcessor,
-    OrganisationCountQueue,
-    OrganisationCountProcessor,
-    TypeCountQueue,
-    TypeCountProcessor,
-    ClientCountQueue,
-    ClientCountProcessor,
-  ],
-  exports: [
-    MailQueue,
-    OrganisationCountQueue,
-    TypeCountQueue,
-    ClientCountQueue,
-  ],
+  providers: [MailQueue, MailProcessor],
+  exports: [MailQueue],
 })
 export class JobsModule {}
 ``;

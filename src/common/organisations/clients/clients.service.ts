@@ -3,13 +3,11 @@ import { CreateClientDto } from './dto/create-client.dto';
 import { RequestWithUser } from 'src/interfaces/request-with-user.interface';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { startOfDay, endOfDay } from 'date-fns';
-import { ClientCountQueue } from 'src/jobs/client_count/client_count.queue';
 
 @Injectable()
 export class ClientsService {
   constructor(
     private readonly prisma: PrismaService,
-    private readonly ClientCounter: ClientCountQueue,
   ) {}
 
   async create(req: RequestWithUser, org_id: number, data: CreateClientDto) {
@@ -42,10 +40,6 @@ export class ClientsService {
         type: true,
       },
     });
-
-    if (client) {
-      await this.ClientCounter.count(client);
-    }
 
     return client;
   }
