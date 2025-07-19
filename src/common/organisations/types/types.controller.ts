@@ -1,8 +1,18 @@
-import { Body, Controller, Get, Param, Post, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Put,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { TypesService } from './types.service';
 import { AuthGuard } from 'src/guards/auth/auth.guard';
 import { RequestWithUser } from 'src/interfaces/request-with-user.interface';
 import { CreateTypeDto } from './dto/create-type.dto';
+import { UpdateTypeDto } from './dto/update-type.dto';
 
 @Controller('organisations/:org_id/types')
 export class TypesController {
@@ -22,5 +32,19 @@ export class TypesController {
     @Body() data: CreateTypeDto,
   ) {
     return this.typesService.createType(req, +org_id, data);
+  }
+
+  @UseGuards(AuthGuard)
+  @Put('/:type_id/update')
+  updateType(
+    @Req() req: RequestWithUser,
+    @Param() params: { org_id: string; type_id: string },
+    @Body() data: UpdateTypeDto,
+  ) {
+    return this.typesService.updateType(
+      req,
+      { org_id: +params.org_id, type_id: +params.type_id },
+      data,
+    );
   }
 }
