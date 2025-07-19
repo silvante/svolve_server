@@ -21,6 +21,13 @@ export class TypesService {
     }
     const types = await this.prisma.type.findMany({
       where: { organisation_id: org_id },
+      include: {
+        _count: {
+          select: {
+            clients: true,
+          },
+        },
+      },
     });
     if (!types) {
       throw new HttpException('Server error, please try again later', 404);
@@ -43,6 +50,13 @@ export class TypesService {
         ...data,
         organisation: {
           connect: { id: organisation.id },
+        },
+      },
+      include: {
+        _count: {
+          select: {
+            clients: true,
+          },
         },
       },
     });
@@ -71,6 +85,13 @@ export class TypesService {
     const updated = await this.prisma.type.update({
       where: { id: params.type_id, organisation_id: org.id },
       data: data,
+      include: {
+        _count: {
+          select: {
+            clients: true,
+          },
+        },
+      },
     });
 
     if (!updated) {
