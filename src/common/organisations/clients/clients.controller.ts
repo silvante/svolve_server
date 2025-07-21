@@ -7,6 +7,7 @@ import {
   Param,
   Get,
   Put,
+  Delete,
 } from '@nestjs/common';
 import { ClientsService } from './clients.service';
 import { CreateClientDto } from './dto/create-client.dto';
@@ -59,5 +60,17 @@ export class ClientsController {
       { org_id: +params.org_id, client_id: +params.client_id },
       data,
     );
+  }
+
+  @UseGuards(AuthGuard)
+  @Delete('/:client_id/delete')
+  deleteClient(
+    @Req() req: RequestWithUser,
+    @Param() params: { org_id: string; client_id: string },
+  ) {
+    return this.clientsService.DeleteClients(req, {
+      org_id: +params.org_id,
+      client_id: +params.client_id,
+    });
   }
 }
