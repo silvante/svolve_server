@@ -141,18 +141,9 @@ export class ClientsService {
       throw new HttpException('you do not own this organisation', 404);
     }
 
-    const isToday = (date: Date) => {
-      const today = new Date();
-      return (
-        date.getFullYear() === today.getFullYear() &&
-        date.getMonth() === today.getMonth() &&
-        date.getDate() === today.getDate()
-      );
-    };
-
-    if (!isToday(client.created_at)) {
+    if (client.is_checked) {
       throw new HttpException(
-        'You can update client only if it has created today',
+        'You can not update client if it has already checked',
         404,
       );
     }
@@ -174,5 +165,41 @@ export class ClientsService {
     });
 
     return updated;
+  }
+
+  async DeleteClients(
+    req: RequestWithUser,
+    params: { org_id: number; client_id: number },
+  ) {
+    const user = req.user;
+    const client = await this.prisma.client.findUnique({
+      where: { id: params.client_id, organisation_id: params.org_id },
+      include: {
+        organisation: true,
+      },
+    });
+
+    if (!client) {
+      throw new HttpException(
+        'this organisation does not own this client, or server error',
+        404,
+      );
+    }
+
+    if (client.organisation.owner_id !== user.id) {
+      throw new HttpException('you do not own this organisation', 404);
+    }
+
+    if (client.is_checked) {
+      throw new HttpException(
+        'You can not delete client if it has already checked',
+        404,
+      );
+    }
+
+    await this.prisma.client.delete({ where: { id: client.id } });
+    return {
+      deleted: true,
+    };
   }
 }
