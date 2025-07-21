@@ -3,12 +3,11 @@ import { CreateClientDto } from './dto/create-client.dto';
 import { RequestWithUser } from 'src/interfaces/request-with-user.interface';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { startOfDay, endOfDay } from 'date-fns';
+import { UpdateClientDto } from './dto/update-client.dto';
 
 @Injectable()
 export class ClientsService {
-  constructor(
-    private readonly prisma: PrismaService,
-  ) {}
+  constructor(private readonly prisma: PrismaService) {}
 
   async create(req: RequestWithUser, org_id: number, data: CreateClientDto) {
     const user = req.user;
@@ -116,5 +115,64 @@ export class ClientsService {
       checked: true,
       client: updated,
     };
+  }
+
+  async updateClient(
+    req: RequestWithUser,
+    params: { org_id: number; client_id: number },
+    data: UpdateClientDto,
+  ) {
+    const user = req.user;
+    const client = await this.prisma.client.findUnique({
+      where: { id: params.client_id, organisation_id: params.org_id },
+      include: {
+        organisation: true,
+      },
+    });
+
+    if (!client) {
+      throw new HttpException(
+        'this organisation does not own this client, or server error',
+        404,
+      );
+    }
+
+    if (client.organisation.owner_id !== user.id) {
+      throw new HttpException('you do not own this organisation', 404);
+    }
+
+    const isToday = (date: Date) => {
+      const today = new Date();
+      return (
+        date.getFullYear() === today.getFullYear() &&
+        date.getMonth() === today.getMonth() &&
+        date.getDate() === today.getDate()
+      );
+    };
+
+    if (!isToday(client.created_at)) {
+      throw new HttpException(
+        'You can update client only if it has created today',
+        404,
+      );
+    }
+
+    const { type_id, ...updateData } = data;
+    const updated = await this.prisma.client.update({
+      where: { id: client.id },
+      data: {
+        ...updateData,
+        type: {
+          connect: {
+            id: type_id,
+          },
+        },
+      },
+      include: {
+        type: true,
+      },
+    });
+
+    return updated;
   }
 }
