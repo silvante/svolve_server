@@ -38,7 +38,7 @@ export class ClientsController {
   }
 
   @UseGuards(AuthGuard)
-  @Put('check/:client_id')
+  @Put('/:client_id/check')
   checkClient(
     @Req() req: RequestWithUser,
     @Param('org_id') org_id: string,
