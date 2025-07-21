@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -46,5 +47,17 @@ export class TypesController {
       { org_id: +params.org_id, type_id: +params.type_id },
       data,
     );
+  }
+
+  @UseGuards(AuthGuard)
+  @Delete('/:type_id/delete')
+  deleteType(
+    @Req() req: RequestWithUser,
+    @Param() params: { org_id: string; type_id: string },
+  ) {
+    return this.typesService.deleteType(req, {
+      org_id: +params.org_id,
+      type_id: +params.type_id,
+    });
   }
 }

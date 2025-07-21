@@ -95,4 +95,39 @@ export class TypesService {
 
     return updated;
   }
+
+  async deleteType(
+    req: RequestWithUser,
+    params: { org_id: number; type_id: number },
+  ) {
+    const user = req.user;
+
+    const type = await this.prisma.type.findUnique({
+      where: { id: params.type_id, organisation_id: params.org_id },
+      include: {
+        organisation: true,
+        _count: {
+          select: {
+            clients: true,
+          },
+        },
+      },
+    });
+
+    if (type?.organisation?.owner_id !== user.id) {
+      throw new HttpException('You do not own this organisation', 404);
+    }
+
+    if (type._count.clients > 0) {
+      throw new HttpException(
+        'You can not delete this type, it has clients attached.',
+        404,
+      );
+    }
+
+    await this.prisma.type.delete({ where: { id: type.id } });
+    return {
+      deleted: true,
+    };
+  }
 }
