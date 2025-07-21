@@ -52,8 +52,8 @@ export class ClientsController {
   @Put('/:client_id/update')
   updateClient(
     @Req() req: RequestWithUser,
-    params: { org_id: string; client_id: string },
-    data: UpdateClientDto,
+    @Param() params: { org_id: string; client_id: string },
+    @Body() data: UpdateClientDto,
   ) {
     return this.clientsService.updateClient(
       req,
