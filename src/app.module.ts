@@ -8,6 +8,7 @@ import { JobsModule } from './jobs/jobs.module';
 import { AuthModule } from './auth/auth.module';
 import { GlobalModule } from './global/global.module';
 import { OrganisationsModule } from './common/organisations/organisations.module';
+import { UploadsModule } from './common/uploads/uploads.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { OrganisationsModule } from './common/organisations/organisations.module
     AuthModule,
     GlobalModule,
     OrganisationsModule,
+    UploadsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
