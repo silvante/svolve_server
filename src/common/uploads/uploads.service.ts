@@ -1,26 +1,23 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUploadDto } from './dto/create-upload.dto';
-import { UpdateUploadDto } from './dto/update-upload.dto';
+import { S3Client } from '@aws-sdk/client-s3';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class UploadsService {
-  create(createUploadDto: CreateUploadDto) {
-    return 'This action adds a new upload';
-  }
+  private s3: S3Client;
+  private bucket_name: string;
 
-  findAll() {
-    return `This action returns all uploads`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} upload`;
-  }
-
-  update(id: number, updateUploadDto: UpdateUploadDto) {
-    return `This action updates a #${id} upload`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} upload`;
+  constructor(private configService: ConfigService) {
+    this.s3 = new S3Client({
+      region: this.configService.get<string>('AWS_S3_REGION', ''),
+      credentials: {
+        accessKeyId: this.configService.get<string>('AWS_S3_ACCESS_KEY', ''),
+        secretAccessKey: this.configService.get<string>(
+          'AWS_S3_SECRET_KEY',
+          '',
+        ),
+      },
+    });
+    this.bucket_name = this.configService.get<string>('AWS_S3_BUCKET_NAME', '');
   }
 }
