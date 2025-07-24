@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { S3Client } from '@aws-sdk/client-s3';
+import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { ConfigService } from '@nestjs/config';
 import { RequestWithUser } from 'src/interfaces/request-with-user.interface';
 import { randomUUID } from 'crypto';
@@ -34,7 +34,22 @@ export class UploadsService {
     if (file.mimetype === 'image/svg+xml') {
       optimisedBuffer = file.buffer;
     } else {
-      
+      optimisedBuffer = await sharp(file.buffer)
+        .resize({ width: 400, height: 400 })
+        .toFormat('webp', { quality: 80 })
+        .toBuffer();
     }
+
+    const command = new PutObjectCommand({
+      Bucket: this.bucket_name,
+      Key: key.endsWith('.webp') ? key.replace(/\.[^.]+$/, '.webp') : key,
+      Body: optimisedBuffer,
+      ContentType:
+        file.mimetype === 'image/svg+xml' ? 'image/svg+xml' : 'image/webp',
+    });
+
+    await this.s3.send(command);
+
+    return `https://${this.bucket_name}.s3.amazonaws.com/${command.input.Key}`;
   }
 }

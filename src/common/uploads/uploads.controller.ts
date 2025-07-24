@@ -23,5 +23,7 @@ export class UploadsController {
   uploadAvatar(
     @Req() req: RequestWithUser,
     @UploadedFile() file: Express.Multer.File,
-  ) {}
+  ) {
+    return this.uploadsService.uploadAvatar(req, file);
+  }
 }
