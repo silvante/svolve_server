@@ -15,29 +15,39 @@ datasource db {
 }
 
 model User {
-  id                 Int            @id @default(autoincrement())
-  name               String
-  username           String         @unique
-  email              String         @unique
-  provider           String
-  provider_id        String?
-  organisations      Organisation[]
-  created_at         DateTime       @default(now())
+  id            Int            @id @default(autoincrement())
+  name          String
+  username      String         @unique
+  email         String         @unique
+  avatar        String?
+  provider      String
+  provider_id   String?
+  organisations Organisation[]
+  created_at    DateTime       @default(now())
 }
 
 model Organisation {
-  id           Int      @id @default(autoincrement())
-  name         String
-  unique_name  String   @unique
-  description  String?
-  banner       String?
-  logo         String?
-  pincode      String
-  owner_id     Int
-  owner        User     @relation(fields: [owner_id], references: [id])
-  clients      Client[]
-  types        Type[]
-  created_at   DateTime @default(now())
+  id          Int      @id @default(autoincrement())
+  name        String
+  unique_name String   @unique
+  description String?
+  banner      Banner?
+  logo        String?
+  pincode     String
+  owner_id    Int
+  owner       User     @relation(fields: [owner_id], references: [id])
+  clients     Client[]
+  types       Type[]
+  created_at  DateTime @default(now())
+  bannerId    Int?
+}
+
+model Banner {
+  id              Int          @id @default(autoincrement())
+  original        String
+  thumbnail       String
+  organisation    Organisation @relation(fields: [organisation_id], references: [id])
+  organisation_id Int          @unique
 }
 
 model Client {
