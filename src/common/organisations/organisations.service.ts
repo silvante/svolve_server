@@ -26,7 +26,7 @@ export class OrganisationsService {
 
   async createOrganisation(req: RequestWithUser, data: CreateOrganisationDto) {
     const user = req.user;
-    const { pincode, ...form_data } = data;
+    const { pincode, banner, ...form_data } = data;
     const hashed_pincode = bcrypt.hashSync(pincode, SALT_RESULT);
     const unique_name = await this.uniquename.generate(data.name);
     const new_organisation = await this.prisma.organisation.create({
@@ -37,6 +37,12 @@ export class OrganisationsService {
         owner: {
           connect: {
             id: user.id,
+          },
+        },
+        banner: {
+          create: {
+            original: banner.original,
+            thumbnail: banner.thumbnail,
           },
         },
       },
@@ -93,10 +99,17 @@ export class OrganisationsService {
   ) {
     const user = req.user;
 
+    const { banner, ...updateData } = data;
     const updated_organisation = await this.prisma.organisation.update({
       where: { unique_name: unique_name, owner_id: user.id },
       data: {
-        ...data,
+        ...updateData,
+        banner: {
+          update: {
+            original: banner.original,
+            thumbnail: banner.thumbnail,
+          },
+        },
       },
     });
 

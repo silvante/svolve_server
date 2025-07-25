@@ -1,4 +1,4 @@
-import { IsString } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 
 export class UpdateOrganisationDto {
   @IsString()
@@ -7,9 +7,18 @@ export class UpdateOrganisationDto {
   @IsString()
   description: string;
 
-  @IsString()
-  banner: string;
+  @IsOptional()
+  banner: OrgBanner;
 
+  @IsOptional()
   @IsString()
   logo: string;
+}
+
+export class OrgBanner {
+  @IsString()
+  original: string;
+
+  @IsString()
+  thumbnail: string;
 }
