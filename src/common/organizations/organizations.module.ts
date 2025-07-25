@@ -13,4 +13,4 @@ import { ClientsModule } from './clients/clients.module';
   controllers: [OrganizationsController],
   providers: [OrganizationsService],
 })
-export class OrganisationsModule {}
+export class OrganizationsModule {}

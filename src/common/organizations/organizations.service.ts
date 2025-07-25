@@ -1,12 +1,12 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { RequestWithUser } from 'src/interfaces/request-with-user.interface';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { CreateOrganisationDto } from './dtos/create_organisation.dto';
+import { CreateOrganizationDto } from './dtos/create_organization.dto';
 import { GenerateUniquenameService } from 'src/global/generate_uniquename/generate_uniquename.service';
-import { ValidateOrganisationDto } from './dtos/validate.dto';
+import { ValidateOrganizationDto } from './dtos/validate.dto';
 import * as bcrypt from 'bcrypt';
 import { SALT_RESULT } from 'src/constants';
-import { UpdateOrganisationDto } from './dtos/update_organisation.dto';
+import { UpdateOrganizationDto } from './dtos/update_organization.dto';
 import { UpdatePincodeDto } from './dtos/update_pincode.dto';
 
 @Injectable()
@@ -16,20 +16,20 @@ export class OrganizationsService {
     private readonly uniquename: GenerateUniquenameService,
   ) {}
 
-  async getOrganisations(req: RequestWithUser) {
+  async getOrganizations(req: RequestWithUser) {
     const user = req.user;
-    const organisations = await this.prisma.organization.findMany({
+    const organizations = await this.prisma.organization.findMany({
       where: { owner_id: user.id },
     });
-    return organisations;
+    return organizations;
   }
 
-  async createOrganisation(req: RequestWithUser, data: CreateOrganisationDto) {
+  async createOrganization(req: RequestWithUser, data: CreateOrganizationDto) {
     const user = req.user;
     const { pincode, banner, ...form_data } = data;
     const hashed_pincode = bcrypt.hashSync(pincode, SALT_RESULT);
     const unique_name = await this.uniquename.generate(data.name);
-    const new_organisation = await this.prisma.organization.create({
+    const new_organization = await this.prisma.organization.create({
       data: {
         ...form_data,
         unique_name,
@@ -47,60 +47,60 @@ export class OrganizationsService {
         },
       },
     });
-    if (!new_organisation) {
-      throw new Error('Failed to create organisation');
+    if (!new_organization) {
+      throw new Error('Failed to create organization');
     }
-    return new_organisation;
+    return new_organization;
   }
 
-  async getOrganisationById(req: RequestWithUser, id: number) {
+  async getOrganizationById(req: RequestWithUser, id: number) {
     const user = req.user;
-    const organisation = await this.prisma.organization.findUnique({
+    const organization = await this.prisma.organization.findUnique({
       where: { id: id, owner_id: user.id },
     });
-    if (!organisation) {
-      throw new HttpException('Organisation is not defined', 404);
+    if (!organization) {
+      throw new HttpException('Organization is not defined', 404);
     }
-    return organisation;
+    return organization;
   }
 
-  async ValidateOrganisation(
+  async ValidateOrganization(
     req: RequestWithUser,
     unique_name: string,
-    data: ValidateOrganisationDto,
+    data: ValidateOrganizationDto,
   ) {
     const user = req.user;
-    const organisation = await this.prisma.organization.findUnique({
+    const organization = await this.prisma.organization.findUnique({
       where: { unique_name: unique_name, owner_id: user.id },
     });
 
     // Put the payment validation logic here in the future
 
-    if (!organisation) {
-      throw new HttpException('You do not own this organisation', 404);
+    if (!organization) {
+      throw new HttpException('You do not own this organization', 404);
     }
 
     const is_pincode_valid = bcrypt.compareSync(
       data.pincode,
-      organisation.pincode,
+      organization.pincode,
     );
 
     if (!is_pincode_valid) {
       throw new HttpException('Invalid pincode', 400);
     }
 
-    return { validation: true, organisation: organisation };
+    return { validation: true, organization: organization };
   }
 
-  async EditOrganisation(
+  async EditOrganization(
     req: RequestWithUser,
     unique_name: string,
-    data: UpdateOrganisationDto,
+    data: UpdateOrganizationDto,
   ) {
     const user = req.user;
 
     const { banner, ...updateData } = data;
-    const updated_organisation = await this.prisma.organization.update({
+    const updated_organization = await this.prisma.organization.update({
       where: { unique_name: unique_name, owner_id: user.id },
       data: {
         ...updateData,
@@ -113,14 +113,14 @@ export class OrganizationsService {
       },
     });
 
-    if (!updated_organisation) {
+    if (!updated_organization) {
       throw new HttpException(
-        'You do not own this organisation or internal server error',
+        'You do not own this organization or internal server error',
         404,
       );
     }
 
-    return updated_organisation;
+    return updated_organization;
   }
 
   async updatePincode(
@@ -134,7 +134,7 @@ export class OrganizationsService {
       where: { unique_name: unique_name, owner_id: user.id },
     });
     if (!org) {
-      throw new HttpException('You do not own this organisation', 404);
+      throw new HttpException('You do not own this organization', 404);
     }
     const is_pin_ok = bcrypt.compareSync(data.old_pincode, org.pincode);
     if (!is_pin_ok) {

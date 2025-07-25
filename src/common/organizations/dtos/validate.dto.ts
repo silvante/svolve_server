@@ -1,6 +1,6 @@
 import { IsString } from 'class-validator';
 
-export class ValidateOrganisationDto {
+export class ValidateOrganizationDto {
   @IsString()
   pincode: string;
 }

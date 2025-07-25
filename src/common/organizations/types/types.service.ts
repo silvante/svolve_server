@@ -13,7 +13,7 @@ export class TypesService {
       where: { owner_id: user.id, id: org_id },
     });
     if (!org) {
-      throw new HttpException('you do not own this organisation', 404);
+      throw new HttpException('you do not own this organization', 404);
     }
     const types = await this.prisma.type.findMany({
       where: { organization_id: org_id },
@@ -71,7 +71,7 @@ export class TypesService {
     });
 
     if (!org) {
-      throw new HttpException('You do not own this organisation', 404);
+      throw new HttpException('You do not own this organization', 404);
     }
 
     const updated = await this.prisma.type.update({
@@ -115,7 +115,7 @@ export class TypesService {
     });
 
     if (type?.organization?.owner_id !== user.id) {
-      throw new HttpException('You do not own this organisation', 404);
+      throw new HttpException('You do not own this organization', 404);
     }
 
     if (type._count.clients > 0) {

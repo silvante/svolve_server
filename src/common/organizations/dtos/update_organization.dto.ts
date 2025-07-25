@@ -8,7 +8,7 @@ export class OrgBanner {
   thumbnail: string;
 }
 
-export class UpdateOrganisationDto {
+export class UpdateOrganizationDto {
   @IsString()
   name: string;
 

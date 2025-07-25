@@ -12,12 +12,12 @@ export class ClientsService {
   async create(req: RequestWithUser, org_id: number, data: CreateClientDto) {
     const user = req.user;
 
-    const organisation = await this.prisma.organization.findUnique({
+    const organization = await this.prisma.organization.findUnique({
       where: { id: org_id, owner_id: user.id },
     });
 
-    if (!organisation) {
-      throw new HttpException('you do not own this organisation', 404);
+    if (!organization) {
+      throw new HttpException('you do not own this organization', 404);
     }
 
     const { type_id, ...clientData } = data;
@@ -31,7 +31,7 @@ export class ClientsService {
         },
         organization: {
           connect: {
-            id: organisation.id,
+            id: organization.id,
           },
         },
       },
@@ -94,7 +94,7 @@ export class ClientsService {
     });
 
     if (!org) {
-      throw new HttpException('you do not own this organisation', 404);
+      throw new HttpException('you do not own this organization', 404);
     }
 
     const updated = await this.prisma.client.update({
@@ -132,13 +132,13 @@ export class ClientsService {
 
     if (!client) {
       throw new HttpException(
-        'this organisation does not own this client, or server error',
+        'this organization does not own this client, or server error',
         404,
       );
     }
 
     if (client.organization.owner_id !== user.id) {
-      throw new HttpException('you do not own this organisation', 404);
+      throw new HttpException('you do not own this organization', 404);
     }
 
     if (client.is_checked) {
@@ -181,13 +181,13 @@ export class ClientsService {
 
     if (!client) {
       throw new HttpException(
-        'this organisation does not own this client, or server error',
+        'this organization does not own this client, or server error',
         404,
       );
     }
 
     if (client.organization.owner_id !== user.id) {
-      throw new HttpException('you do not own this organisation', 404);
+      throw new HttpException('you do not own this organization', 404);
     }
 
     if (client.is_checked) {

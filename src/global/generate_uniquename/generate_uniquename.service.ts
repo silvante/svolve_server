@@ -14,10 +14,10 @@ export class GenerateUniquenameService {
     let isUnique = false;
 
     while (!isUnique) {
-      const existing_organisation = await this.prisma.organization.findUnique({
+      const existing_organization = await this.prisma.organization.findUnique({
         where: { unique_name: unique_name },
       });
-      if (!existing_organisation) {
+      if (!existing_organization) {
         isUnique = true;
       } else {
         const randomSuffix = Math.floor(1000 + Math.random() * 9000);

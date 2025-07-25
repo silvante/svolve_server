@@ -11,9 +11,9 @@ import {
 import { OrganizationsService } from './organizations.service';
 import { AuthGuard } from 'src/guards/auth/auth.guard';
 import { RequestWithUser } from 'src/interfaces/request-with-user.interface';
-import { CreateOrganisationDto } from './dtos/create_organisation.dto';
-import { ValidateOrganisationDto } from './dtos/validate.dto';
-import { UpdateOrganisationDto } from './dtos/update_organisation.dto';
+import { CreateOrganizationDto } from './dtos/create_organization.dto';
+import { ValidateOrganizationDto } from './dtos/validate.dto';
+import { UpdateOrganizationDto } from './dtos/update_organization.dto';
 import { UpdatePincodeDto } from './dtos/update_pincode.dto';
 
 @Controller('organizations')
@@ -22,33 +22,33 @@ export class OrganizationsController {
 
   @UseGuards(AuthGuard)
   @Get('')
-  getUsersOrganisations(@Req() req: RequestWithUser) {
-    return this.organiztaionService.getOrganisations(req);
+  getUsersOrganizations(@Req() req: RequestWithUser) {
+    return this.organiztaionService.getOrganizations(req);
   }
 
   @UseGuards(AuthGuard)
   @Post('/new')
-  createOrganisation(
+  createOrganization(
     @Req() req: RequestWithUser,
-    @Body() data: CreateOrganisationDto,
+    @Body() data: CreateOrganizationDto,
   ) {
-    return this.organiztaionService.createOrganisation(req, data);
+    return this.organiztaionService.createOrganization(req, data);
   }
 
   @UseGuards(AuthGuard)
   @Get('/:id')
-  getOrganisationById(@Req() req: RequestWithUser, @Param('id') id: string) {
-    return this.organiztaionService.getOrganisationById(req, +id);
+  getOrganizationById(@Req() req: RequestWithUser, @Param('id') id: string) {
+    return this.organiztaionService.getOrganizationById(req, +id);
   }
 
   @UseGuards(AuthGuard)
   @Post('/:unique_name/validate')
-  ValidateOrganisation(
+  ValidateOrganization(
     @Req() req: RequestWithUser,
     @Param('unique_name') unique_name: string,
-    @Body() data: ValidateOrganisationDto,
+    @Body() data: ValidateOrganizationDto,
   ) {
-    return this.organiztaionService.ValidateOrganisation(
+    return this.organiztaionService.ValidateOrganization(
       req,
       unique_name,
       data,
@@ -57,12 +57,12 @@ export class OrganizationsController {
 
   @UseGuards(AuthGuard)
   @Put('/:unique_name/update')
-  updateOrganisation(
+  updateOrganization(
     @Req() req: RequestWithUser,
     @Param('unique_name') unique_name: string,
-    @Body() data: UpdateOrganisationDto,
+    @Body() data: UpdateOrganizationDto,
   ) {
-    return this.organiztaionService.EditOrganisation(req, unique_name, data);
+    return this.organiztaionService.EditOrganization(req, unique_name, data);
   }
 
   @UseGuards(AuthGuard)
