@@ -22,11 +22,11 @@ model User {
   avatar        String?
   provider      String
   provider_id   String?
-  organisations Organisation[]
+  organizations Organization[]
   created_at    DateTime       @default(now())
 }
 
-model Organisation {
+model Organization {
   id          Int      @id @default(autoincrement())
   name        String
   unique_name String   @unique
@@ -46,8 +46,8 @@ model Banner {
   id              Int          @id @default(autoincrement())
   original        String
   thumbnail       String
-  organisation    Organisation @relation(fields: [organisation_id], references: [id])
-  organisation_id Int          @unique
+  organization    Organization @relation(fields: [organization_id], references: [id])
+  organization_id Int          @unique
 }
 
 model Client {
@@ -60,8 +60,8 @@ model Client {
   is_checked      Boolean      @default(false)
   type            Type?        @relation(fields: [type_id], references: [id])
   type_id         Int?
-  organisation    Organisation @relation(fields: [organisation_id], references: [id])
-  organisation_id Int
+  organization    Organization @relation(fields: [organization_id], references: [id])
+  organization_id Int
   created_at      DateTime     @default(now())
 }
 
@@ -71,7 +71,7 @@ model Type {
   description     String?
   clients         Client[]
   price           Int
-  organisation    Organisation? @relation(fields: [organisation_id], references: [id])
-  organisation_id Int?
+  organization    Organization? @relation(fields: [organization_id], references: [id])
+  organization_id Int?
   created_at      DateTime      @default(now())
 }

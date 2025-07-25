@@ -8,7 +8,7 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
-import { OrganisationsService } from './organisations.service';
+import { OrganizationsService } from './organizations.service';
 import { AuthGuard } from 'src/guards/auth/auth.guard';
 import { RequestWithUser } from 'src/interfaces/request-with-user.interface';
 import { CreateOrganisationDto } from './dtos/create_organisation.dto';
@@ -16,14 +16,14 @@ import { ValidateOrganisationDto } from './dtos/validate.dto';
 import { UpdateOrganisationDto } from './dtos/update_organisation.dto';
 import { UpdatePincodeDto } from './dtos/update_pincode.dto';
 
-@Controller('organisations')
-export class OrganisationsController {
-  constructor(private readonly organistaionService: OrganisationsService) {}
+@Controller('organizations')
+export class OrganizationsController {
+  constructor(private readonly organiztaionService: OrganizationsService) {}
 
   @UseGuards(AuthGuard)
   @Get('')
   getUsersOrganisations(@Req() req: RequestWithUser) {
-    return this.organistaionService.getOrganisations(req);
+    return this.organiztaionService.getOrganisations(req);
   }
 
   @UseGuards(AuthGuard)
@@ -32,13 +32,13 @@ export class OrganisationsController {
     @Req() req: RequestWithUser,
     @Body() data: CreateOrganisationDto,
   ) {
-    return this.organistaionService.createOrganisation(req, data);
+    return this.organiztaionService.createOrganisation(req, data);
   }
 
   @UseGuards(AuthGuard)
   @Get('/:id')
   getOrganisationById(@Req() req: RequestWithUser, @Param('id') id: string) {
-    return this.organistaionService.getOrganisationById(req, +id);
+    return this.organiztaionService.getOrganisationById(req, +id);
   }
 
   @UseGuards(AuthGuard)
@@ -48,7 +48,7 @@ export class OrganisationsController {
     @Param('unique_name') unique_name: string,
     @Body() data: ValidateOrganisationDto,
   ) {
-    return this.organistaionService.ValidateOrganisation(
+    return this.organiztaionService.ValidateOrganisation(
       req,
       unique_name,
       data,
@@ -62,7 +62,7 @@ export class OrganisationsController {
     @Param('unique_name') unique_name: string,
     @Body() data: UpdateOrganisationDto,
   ) {
-    return this.organistaionService.EditOrganisation(req, unique_name, data);
+    return this.organiztaionService.EditOrganisation(req, unique_name, data);
   }
 
   @UseGuards(AuthGuard)
@@ -72,6 +72,6 @@ export class OrganisationsController {
     @Param('unique_name') unique_name: string,
     @Body() data: UpdatePincodeDto,
   ) {
-    return this.organistaionService.updatePincode(req, unique_name, data);
+    return this.organiztaionService.updatePincode(req, unique_name, data);
   }
 }

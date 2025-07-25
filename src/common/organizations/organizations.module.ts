@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { OrganisationsController } from './organisations.controller';
-import { OrganisationsService } from './organisations.service';
+import { OrganizationsController } from './organizations.controller';
+import { OrganizationsService } from './organizations.service';
 import { GlobalModule } from 'src/global/global.module';
 import { PrismaModule } from 'src/prisma/prisma.module';
 import { AppJwtModule } from 'src/jwt/jwt.module';
@@ -10,7 +10,7 @@ import { ClientsModule } from './clients/clients.module';
 
 @Module({
   imports: [PrismaModule, GlobalModule, AppJwtModule, JobsModule, TypesModule, ClientsModule],
-  controllers: [OrganisationsController],
-  providers: [OrganisationsService],
+  controllers: [OrganizationsController],
+  providers: [OrganizationsService],
 })
 export class OrganisationsModule {}

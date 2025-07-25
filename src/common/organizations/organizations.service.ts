@@ -10,7 +10,7 @@ import { UpdateOrganisationDto } from './dtos/update_organisation.dto';
 import { UpdatePincodeDto } from './dtos/update_pincode.dto';
 
 @Injectable()
-export class OrganisationsService {
+export class OrganizationsService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly uniquename: GenerateUniquenameService,

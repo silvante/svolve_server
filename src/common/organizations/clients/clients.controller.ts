@@ -15,7 +15,7 @@ import { AuthGuard } from 'src/guards/auth/auth.guard';
 import { RequestWithUser } from 'src/interfaces/request-with-user.interface';
 import { UpdateClientDto } from './dto/update-client.dto';
 
-@Controller('organisations/:org_id/clients')
+@Controller('organizations/:org_id/clients')
 export class ClientsController {
   constructor(private readonly clientsService: ClientsService) {}
 

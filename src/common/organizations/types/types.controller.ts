@@ -15,7 +15,7 @@ import { RequestWithUser } from 'src/interfaces/request-with-user.interface';
 import { CreateTypeDto } from './dto/create-type.dto';
 import { UpdateTypeDto } from './dto/update-type.dto';
 
-@Controller('organisations/:org_id/types')
+@Controller('organizations/:org_id/types')
 export class TypesController {
   constructor(private readonly typesService: TypesService) {}
 
