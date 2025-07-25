@@ -1,5 +1,13 @@
 import { IsOptional, IsString } from 'class-validator';
 
+export class OrgBanner {
+  @IsString()
+  original: string;
+
+  @IsString()
+  thumbnail: string;
+}
+
 export class UpdateOrganisationDto {
   @IsString()
   name: string;
@@ -13,12 +21,4 @@ export class UpdateOrganisationDto {
   @IsOptional()
   @IsString()
   logo: string;
-}
-
-export class OrgBanner {
-  @IsString()
-  original: string;
-
-  @IsString()
-  thumbnail: string;
 }
