@@ -39,12 +39,14 @@ export class OrganizationsService {
             id: user.id,
           },
         },
-        banner: {
-          create: {
-            original: banner.original,
-            thumbnail: banner.thumbnail,
+        ...(banner && {
+          banner: {
+            create: {
+              original: banner.original,
+              thumbnail: banner.thumbnail,
+            },
           },
-        },
+        }),
       },
     });
     if (!new_organization) {
@@ -104,12 +106,14 @@ export class OrganizationsService {
       where: { unique_name: unique_name, owner_id: user.id },
       data: {
         ...updateData,
-        banner: {
-          update: {
-            original: banner.original,
-            thumbnail: banner.thumbnail,
+        ...(banner && {
+          banner: {
+            update: {
+              original: banner.original,
+              thumbnail: banner.thumbnail,
+            },
           },
-        },
+        }),
       },
     });
 
