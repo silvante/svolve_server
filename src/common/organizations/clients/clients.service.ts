@@ -12,7 +12,7 @@ export class ClientsService {
   async create(req: RequestWithUser, org_id: number, data: CreateClientDto) {
     const user = req.user;
 
-    const organisation = await this.prisma.organisation.findUnique({
+    const organisation = await this.prisma.organization.findUnique({
       where: { id: org_id, owner_id: user.id },
     });
 
@@ -29,7 +29,7 @@ export class ClientsService {
             id: type_id,
           },
         },
-        organisation: {
+        organization: {
           connect: {
             id: organisation.id,
           },
@@ -45,11 +45,11 @@ export class ClientsService {
 
   async findTodayClients(req: RequestWithUser, org_id: number) {
     const user = req.user;
-    const organisation = await this.prisma.organisation.findUnique({
+    const organization = await this.prisma.organization.findUnique({
       where: { id: org_id, owner_id: user.id },
     });
-    if (!organisation) {
-      throw new HttpException('you do not own this organisation', 404);
+    if (!organization) {
+      throw new HttpException('you do not own this organization', 404);
     }
 
     const day_start = startOfDay(new Date());
@@ -70,7 +70,7 @@ export class ClientsService {
       throw new HttpException('Server error, please try again later', 404);
     }
     const types = await this.prisma.type.findMany({
-      where: { organisation_id: organisation.id },
+      where: { organization_id: organization.id },
       include: {
         _count: {
           select: {
@@ -89,7 +89,7 @@ export class ClientsService {
   async checkClient(req: RequestWithUser, org_id: number, client_id: number) {
     const user = req.user;
 
-    const org = await this.prisma.organisation.findUnique({
+    const org = await this.prisma.organization.findUnique({
       where: { id: org_id, owner_id: user.id },
     });
 
@@ -98,7 +98,7 @@ export class ClientsService {
     }
 
     const updated = await this.prisma.client.update({
-      where: { id: client_id, organisation_id: org?.id },
+      where: { id: client_id, organization_id: org?.id },
       data: {
         is_checked: true,
       },
@@ -124,9 +124,9 @@ export class ClientsService {
   ) {
     const user = req.user;
     const client = await this.prisma.client.findUnique({
-      where: { id: params.client_id, organisation_id: params.org_id },
+      where: { id: params.client_id, organization_id: params.org_id },
       include: {
-        organisation: true,
+        organization: true,
       },
     });
 
@@ -137,7 +137,7 @@ export class ClientsService {
       );
     }
 
-    if (client.organisation.owner_id !== user.id) {
+    if (client.organization.owner_id !== user.id) {
       throw new HttpException('you do not own this organisation', 404);
     }
 
@@ -173,9 +173,9 @@ export class ClientsService {
   ) {
     const user = req.user;
     const client = await this.prisma.client.findUnique({
-      where: { id: params.client_id, organisation_id: params.org_id },
+      where: { id: params.client_id, organization_id: params.org_id },
       include: {
-        organisation: true,
+        organization: true,
       },
     });
 
@@ -186,7 +186,7 @@ export class ClientsService {
       );
     }
 
-    if (client.organisation.owner_id !== user.id) {
+    if (client.organization.owner_id !== user.id) {
       throw new HttpException('you do not own this organisation', 404);
     }
 

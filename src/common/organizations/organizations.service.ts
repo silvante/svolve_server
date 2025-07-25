@@ -18,7 +18,7 @@ export class OrganizationsService {
 
   async getOrganisations(req: RequestWithUser) {
     const user = req.user;
-    const organisations = await this.prisma.organisation.findMany({
+    const organisations = await this.prisma.organization.findMany({
       where: { owner_id: user.id },
     });
     return organisations;
@@ -29,7 +29,7 @@ export class OrganizationsService {
     const { pincode, banner, ...form_data } = data;
     const hashed_pincode = bcrypt.hashSync(pincode, SALT_RESULT);
     const unique_name = await this.uniquename.generate(data.name);
-    const new_organisation = await this.prisma.organisation.create({
+    const new_organisation = await this.prisma.organization.create({
       data: {
         ...form_data,
         unique_name,
@@ -55,7 +55,7 @@ export class OrganizationsService {
 
   async getOrganisationById(req: RequestWithUser, id: number) {
     const user = req.user;
-    const organisation = await this.prisma.organisation.findUnique({
+    const organisation = await this.prisma.organization.findUnique({
       where: { id: id, owner_id: user.id },
     });
     if (!organisation) {
@@ -70,7 +70,7 @@ export class OrganizationsService {
     data: ValidateOrganisationDto,
   ) {
     const user = req.user;
-    const organisation = await this.prisma.organisation.findUnique({
+    const organisation = await this.prisma.organization.findUnique({
       where: { unique_name: unique_name, owner_id: user.id },
     });
 
@@ -100,7 +100,7 @@ export class OrganizationsService {
     const user = req.user;
 
     const { banner, ...updateData } = data;
-    const updated_organisation = await this.prisma.organisation.update({
+    const updated_organisation = await this.prisma.organization.update({
       where: { unique_name: unique_name, owner_id: user.id },
       data: {
         ...updateData,
@@ -130,7 +130,7 @@ export class OrganizationsService {
   ) {
     const user = req.user;
 
-    const org = await this.prisma.organisation.findUnique({
+    const org = await this.prisma.organization.findUnique({
       where: { unique_name: unique_name, owner_id: user.id },
     });
     if (!org) {
@@ -143,7 +143,7 @@ export class OrganizationsService {
     if (data.new_pincode !== data.pincode_confirmation) {
       throw new HttpException('pincode confirmation should match', 404);
     }
-    const updated = await this.prisma.organisation.update({
+    const updated = await this.prisma.organization.update({
       where: { id: org.id },
       data: { pincode: bcrypt.hashSync(data.new_pincode, SALT_RESULT) },
     });

@@ -14,7 +14,7 @@ export class GenerateUniquenameService {
     let isUnique = false;
 
     while (!isUnique) {
-      const existing_organisation = await this.prisma.organisation.findUnique({
+      const existing_organisation = await this.prisma.organization.findUnique({
         where: { unique_name: unique_name },
       });
       if (!existing_organisation) {
