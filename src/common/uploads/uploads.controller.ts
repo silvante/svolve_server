@@ -26,4 +26,14 @@ export class UploadsController {
   ) {
     return this.uploadsService.uploadAvatar(req, file);
   }
+
+  @UseGuards(AuthGuard)
+  @Post('/banner')
+  @UseInterceptors(FileInterceptor('file', multerOptions))
+  uploadBanner(
+    @Req() req: RequestWithUser,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    return this.uploadsService.uploadBanner(req, file);
+  }
 }
