@@ -104,4 +104,33 @@ export class UploadsService {
       thumbnail: `https://${this.bucket_name}.s3.amazonaws.com/${command_thumbnail.input.Key}`,
     };
   }
+
+  async uploadLogo(req: RequestWithUser, file: Express.Multer.File) {
+    const user = req.user;
+    const folder = 'avatars';
+    const key = `${folder}/${user.username}-${randomUUID()}-${file.originalname}`;
+
+    let optimisedBuffer: Buffer;
+
+    if (file.mimetype === 'image/svg+xml') {
+      optimisedBuffer = file.buffer;
+    } else {
+      optimisedBuffer = await sharp(file.buffer)
+        .resize({ height: 200 })
+        .toFormat('webp', { quality: 80 })
+        .toBuffer();
+    }
+
+    const command = new PutObjectCommand({
+      Bucket: this.bucket_name,
+      Key: key.endsWith('.webp') ? key.replace(/\.[^.]+$/, '.webp') : key,
+      Body: optimisedBuffer,
+      ContentType:
+        file.mimetype === 'image/svg+xml' ? 'image/svg+xml' : 'image/webp',
+    });
+
+    await this.s3.send(command);
+
+    return `https://${this.bucket_name}.s3.amazonaws.com/${command.input.Key}`;
+  }
 }
