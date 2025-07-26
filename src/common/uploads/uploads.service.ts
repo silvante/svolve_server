@@ -3,7 +3,7 @@ import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { ConfigService } from '@nestjs/config';
 import { RequestWithUser } from 'src/interfaces/request-with-user.interface';
 import { randomUUID } from 'crypto';
-import sharp from 'sharp';
+import * as sharp from 'sharp';
 
 @Injectable()
 export class UploadsService {
