@@ -2,7 +2,7 @@ import { MulterOptions } from '@nestjs/platform-express/multer/interfaces/multer
 
 export const multerOptions: MulterOptions = {
   limits: {
-    fileSize: 25 * 1024 * 1024, // ✅ 25 MB
+    fileSize: 25 * 1024 * 1024, // max 25mb files
   },
   fileFilter: (req, file, cb) => {
     if (!file.mimetype.match(/^image\/(jpeg|png|jpg|webp|svg\+xml)$/)) {
