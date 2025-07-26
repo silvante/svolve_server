@@ -107,7 +107,7 @@ export class UploadsService {
 
   async uploadLogo(req: RequestWithUser, file: Express.Multer.File) {
     const user = req.user;
-    const folder = 'avatars';
+    const folder = 'logos';
     const key = `${folder}/${user.username}-${randomUUID()}-${file.originalname}`;
 
     let optimisedBuffer: Buffer;
