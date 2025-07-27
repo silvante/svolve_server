@@ -20,6 +20,9 @@ export class OrganizationsService {
     const user = req.user;
     const organizations = await this.prisma.organization.findMany({
       where: { owner_id: user.id },
+      include: {
+        banner: true,
+      },
     });
     return organizations;
   }
