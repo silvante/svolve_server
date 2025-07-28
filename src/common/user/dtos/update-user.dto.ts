@@ -6,4 +6,10 @@ export class UpdateUserDTO {
 
   @IsString()
   avatar: string;
+
+  @IsString()
+  bio: string;
+
+  @IsString()
+  contact: string;
 }
