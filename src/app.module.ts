@@ -9,6 +9,7 @@ import { AuthModule } from './auth/auth.module';
 import { GlobalModule } from './global/global.module';
 import { OrganizationsModule } from './common/organizations/organizations.module';
 import { UploadsModule } from './common/uploads/uploads.module';
+import { UserModule } from './common/user/user.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { UploadsModule } from './common/uploads/uploads.module';
     GlobalModule,
     OrganizationsModule,
     UploadsModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
