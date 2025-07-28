@@ -18,4 +18,12 @@ export class UserService {
     }
     return updating;
   }
+
+  async getUserById(id: number) {
+    const user = await this.prisma.user.findUnique({ where: { id: id } });
+    if (!user) {
+      throw new HttpException('user not defined', 404);
+    }
+    return user;
+  }
 }
