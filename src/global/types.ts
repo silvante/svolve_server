@@ -1,9 +1,9 @@
 import { IsString } from 'class-validator';
 
-export class UpdateUserDTO {
+export class OrgBanner {
   @IsString()
-  name: string;
+  original: string;
 
   @IsString()
-  avatar: string;
+  thumbnail: string;
 }
