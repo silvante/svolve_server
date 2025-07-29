@@ -137,6 +137,13 @@ export class AuthService {
   async getUserProfile(req: RequestWithUser) {
     const userdata = await this.prisma.user.findUnique({
       where: { id: req.user.id, email: req.user.email },
+      include: {
+        _count: {
+          select: {
+            organizations: true,
+          },
+        },
+      },
     });
     if (!userdata) {
       throw new HttpException('user is not defined', 404);
