@@ -12,6 +12,13 @@ export class UserService {
     const updating = await this.prisma.user.update({
       where: { id: user.id },
       data: { ...data },
+      include: {
+        _count: {
+          select: {
+            organizations: true,
+          },
+        },
+      },
     });
     if (!updating) {
       throw new HttpException('Internal Server Error, try again later', 400);
