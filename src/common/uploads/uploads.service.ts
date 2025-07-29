@@ -4,13 +4,17 @@ import { ConfigService } from '@nestjs/config';
 import { RequestWithUser } from 'src/interfaces/request-with-user.interface';
 import { randomUUID } from 'crypto';
 import * as sharp from 'sharp';
+import { NameSanitizerService } from 'src/global/name_sanitizer/name_sanitizer.service';
 
 @Injectable()
 export class UploadsService {
   private s3: S3Client;
   private bucket_name: string;
 
-  constructor(private configService: ConfigService) {
+  constructor(
+    private configService: ConfigService,
+    private readonly sanitizer: NameSanitizerService,
+  ) {
     this.s3 = new S3Client({
       region: this.configService.get<string>('AWS_S3_REGION', ''),
       credentials: {
@@ -27,7 +31,8 @@ export class UploadsService {
   async uploadAvatar(req: RequestWithUser, file: Express.Multer.File) {
     const user = req.user;
     const folder = 'avatars';
-    const key = `${folder}/${user.username}-${randomUUID()}-${file.originalname}`;
+    const filename = this.sanitizer.sanitize(file.originalname);
+    const key = `${folder}/${user.username}-${randomUUID()}-${filename}`;
 
     let optimisedBuffer: Buffer;
 
@@ -56,8 +61,9 @@ export class UploadsService {
   async uploadBanner(req: RequestWithUser, file: Express.Multer.File) {
     const user = req.user;
     const folder = 'banners';
-    const original_key = `${folder}/${user.username}-${randomUUID()}-1280-${file.originalname}`;
-    const thumbnail_key = `${folder}/${user.username}-${randomUUID()}-480-${file.originalname}`;
+    const filename = this.sanitizer.sanitize(file.originalname);
+    const original_key = `${folder}/${user.username}-${randomUUID()}-1280-${filename}`;
+    const thumbnail_key = `${folder}/${user.username}-${randomUUID()}-480-${filename}`;
 
     let optimisedOriginalBuffer: Buffer;
     let optimisedThumbnailBuffer: Buffer;
@@ -108,7 +114,8 @@ export class UploadsService {
   async uploadLogo(req: RequestWithUser, file: Express.Multer.File) {
     const user = req.user;
     const folder = 'logos';
-    const key = `${folder}/${user.username}-${randomUUID()}-${file.originalname}`;
+    const filename = this.sanitizer.sanitize(file.originalname);
+    const key = `${folder}/${user.username}-${randomUUID()}-${filename}`;
 
     let optimisedBuffer: Buffer;
 

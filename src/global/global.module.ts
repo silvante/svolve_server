@@ -6,6 +6,7 @@ import { ResetTokenService } from './reset_token/reset_token.service';
 import { AccessTokenService } from './access_token/access_token.service';
 import { AppJwtModule } from 'src/jwt/jwt.module';
 import { GenerateUniquenameService } from './generate_uniquename/generate_uniquename.service';
+import { NameSanitizerService } from './name_sanitizer/name_sanitizer.service';
 
 @Module({
   imports: [PrismaModule, AppJwtModule],
@@ -15,6 +16,7 @@ import { GenerateUniquenameService } from './generate_uniquename/generate_unique
     ResetTokenService,
     AccessTokenService,
     GenerateUniquenameService,
+    NameSanitizerService,
   ],
   exports: [
     GenerateUsernameService,
