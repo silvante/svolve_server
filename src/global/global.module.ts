@@ -24,6 +24,7 @@ import { NameSanitizerService } from './name_sanitizer/name_sanitizer.service';
     ResetTokenService,
     AccessTokenService,
     GenerateUniquenameService,
+    NameSanitizerService,
   ],
 })
 export class GlobalModule {}
