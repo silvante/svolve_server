@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -73,5 +74,14 @@ export class OrganizationsController {
     @Body() data: UpdatePincodeDto,
   ) {
     return this.organiztaionService.updatePincode(req, unique_name, data);
+  }
+
+  @UseGuards(AuthGuard)
+  @Delete('/:unique_name/delete')
+  deleteOrganization(
+    @Req() req: RequestWithUser,
+    @Param('unique_name') unique_name: string,
+  ) {
+    return this.organiztaionService.deleteOrganization(req, unique_name);
   }
 }

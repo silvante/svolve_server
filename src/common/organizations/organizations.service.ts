@@ -174,4 +174,30 @@ export class OrganizationsService {
     }
     return updated;
   }
+
+  async deleteOrganization(req: RequestWithUser, unique_name: string) {
+    const user = req.user;
+    const org = await this.prisma.organization.findUnique({
+      where: { unique_name: unique_name, owner_id: user.id },
+      include: {
+        _count: {
+          select: {
+            types: true,
+            clients: true,
+          },
+        },
+      },
+    });
+    if (!org) {
+      throw new HttpException('You do not own this organization', 404);
+    }
+    if (org._count.clients > 0 || org._count.types > 0) {
+      throw new HttpException(
+        'this organization has data attached to it, you can not delete this organization',
+        404,
+      );
+    }
+    await this.prisma.organization.delete({ where: { id: org.id } });
+    return { deleted: true };
+  }
 }
