@@ -15,33 +15,43 @@ datasource db {
 }
 
 model User {
-  id            Int            @id @default(autoincrement())
-  name          String
-  bio           String?
-  contact       String?
-  username      String         @unique
-  email         String         @unique
-  avatar        String?
-  provider      String
-  provider_id   String?
-  organizations Organization[]
-  created_at    DateTime       @default(now())
+  id                   Int                  @id @default(autoincrement())
+  name                 String
+  bio                  String?
+  contact              String?
+  username             String               @unique
+  email                String               @unique
+  avatar               String?
+  provider             String
+  provider_id          String?
+  default_organization DefaultOrganization?
+  organizations        Organization[]
+  created_at           DateTime             @default(now())
+}
+
+model DefaultOrganization {
+  id              Int          @id @default(autoincrement())
+  owner           User         @relation(fields: [owner_id], references: [id])
+  owner_id        Int          @unique
+  organization    Organization @relation(fields: [organization_id], references: [id])
+  organization_id Int          @unique
 }
 
 model Organization {
-  id          Int      @id @default(autoincrement())
-  name        String
-  unique_name String   @unique
-  description String?
-  banner      Banner?
-  logo        String?
-  pincode     String
-  owner_id    Int
-  owner       User     @relation(fields: [owner_id], references: [id])
-  clients     Client[]
-  types       Type[]
-  created_at  DateTime @default(now())
-  bannerId    Int?
+  id           Int                  @id @default(autoincrement())
+  name         String
+  unique_name  String               @unique
+  description  String?
+  banner       Banner?
+  logo         String?
+  pincode      String
+  owner_id     Int
+  owner        User                 @relation(fields: [owner_id], references: [id])
+  clients      Client[]
+  types        Type[]
+  created_at   DateTime             @default(now())
+  bannerId     Int?
+  default_user DefaultOrganization?
 }
 
 model Banner {
