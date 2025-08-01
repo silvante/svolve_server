@@ -200,4 +200,39 @@ export class OrganizationsService {
     await this.prisma.organization.delete({ where: { id: org.id } });
     return { deleted: true };
   }
+
+  async MakeDefault(req: RequestWithUser, unique_name: string) {
+    const user = req.user;
+    const org = await this.prisma.organization.findUnique({
+      where: { unique_name: unique_name, owner_id: user.id },
+    });
+
+    if (!org) {
+      throw new HttpException('You do not own this organization', 404);
+    }
+
+    const updated_user = await this.prisma.user.update({
+      where: { id: user.id },
+      data: {
+        default_organization: {
+          update: {
+            organization: {
+              connect: {
+                id: org?.id,
+              },
+            },
+          },
+        },
+      },
+      include: {
+        default_organization: true,
+      },
+    });
+
+    if (!updated_user) {
+      throw new HttpException('internal server error', 404);
+    }
+
+    return updated_user;
+  }
 }
