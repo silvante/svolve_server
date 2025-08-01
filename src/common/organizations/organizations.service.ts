@@ -8,6 +8,7 @@ import * as bcrypt from 'bcrypt';
 import { SALT_RESULT } from 'src/constants';
 import { UpdateOrganizationDto } from './dtos/update_organization.dto';
 import { UpdatePincodeDto } from './dtos/update_pincode.dto';
+import { connect } from 'http2';
 
 @Injectable()
 export class OrganizationsService {
@@ -211,28 +212,40 @@ export class OrganizationsService {
       throw new HttpException('You do not own this organization', 404);
     }
 
-    const updated_user = await this.prisma.user.update({
-      where: { id: user.id },
-      data: {
-        default_organization: {
-          update: {
-            organization: {
-              connect: {
-                id: org?.id,
-              },
+    const exisiting_DO = await this.prisma.defaultOrganization.findUnique({
+      where: { owner_id: user.id },
+    });
+
+    if (exisiting_DO) {
+      await this.prisma.defaultOrganization.update({
+        where: { id: exisiting_DO.id },
+        data: {
+          organization: {
+            connect: {
+              id: org.id,
             },
           },
         },
-      },
-      include: {
-        default_organization: true,
-      },
-    });
-
-    if (!updated_user) {
-      throw new HttpException('internal server error', 404);
+      });
+    } else {
+      await this.prisma.defaultOrganization.create({
+        data: {
+          owner: {
+            connect: {
+              id: user.id,
+            },
+          },
+          organization: {
+            connect: {
+              id: org.id,
+            },
+          },
+        },
+      });
     }
 
-    return updated_user;
+    return {
+      success: true,
+    };
   }
 }
