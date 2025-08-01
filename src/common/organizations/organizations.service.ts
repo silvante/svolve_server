@@ -54,11 +54,13 @@ export class OrganizationsService {
       },
       include: {
         banner: true,
+        owner: true,
       },
     });
     if (!new_organization) {
       throw new Error('Failed to create organization');
     }
+
     return new_organization;
   }
 

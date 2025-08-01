@@ -24,14 +24,14 @@ model User {
   avatar               String?
   provider             String
   provider_id          String?
-  default_organization DefaultOrganization?
+  default_organization DefaultOrganization? @relation("user_default_organization")
   organizations        Organization[]
   created_at           DateTime             @default(now())
 }
 
 model DefaultOrganization {
   id              Int          @id @default(autoincrement())
-  owner           User         @relation(fields: [owner_id], references: [id])
+  owner           User         @relation("user_default_organization", fields: [owner_id], references: [id])
   owner_id        Int          @unique
   organization    Organization @relation(fields: [organization_id], references: [id])
   organization_id Int          @unique
