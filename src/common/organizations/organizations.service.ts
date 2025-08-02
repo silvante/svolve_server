@@ -8,7 +8,6 @@ import * as bcrypt from 'bcrypt';
 import { SALT_RESULT } from 'src/constants';
 import { UpdateOrganizationDto } from './dtos/update_organization.dto';
 import { UpdatePincodeDto } from './dtos/update_pincode.dto';
-import { connect } from 'http2';
 
 @Injectable()
 export class OrganizationsService {
@@ -54,11 +53,19 @@ export class OrganizationsService {
       },
       include: {
         banner: true,
-        owner: true,
+        owner: {
+          include: {
+            default_organization: true,
+          },
+        },
       },
     });
     if (!new_organization) {
       throw new Error('Failed to create organization');
+    }
+
+    if (!new_organization.owner.default_organization) {
+      await this.MakeDefault(req, new_organization.unique_name);
     }
 
     return new_organization;
