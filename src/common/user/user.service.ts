@@ -18,6 +18,15 @@ export class UserService {
             organizations: true,
           },
         },
+        default_organization: {
+          include: {
+            organization: {
+              include: {
+                banner: true,
+              },
+            },
+          },
+        },
       },
     });
     if (!updating) {
