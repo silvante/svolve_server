@@ -10,6 +10,7 @@ import { GlobalModule } from './global/global.module';
 import { OrganizationsModule } from './common/organizations/organizations.module';
 import { UploadsModule } from './common/uploads/uploads.module';
 import { UserModule } from './common/user/user.module';
+import { VacancyModule } from './common/vacancy/vacancy.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { UserModule } from './common/user/user.module';
     OrganizationsModule,
     UploadsModule,
     UserModule,
+    VacancyModule,
   ],
   controllers: [AppController],
   providers: [AppService],
