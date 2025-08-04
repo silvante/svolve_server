@@ -37,6 +37,7 @@ model Vacancy {
   user_id Int
   age     Int
   about   String
+  origin  String
   name    String
   contact String
 }
