@@ -27,6 +27,27 @@ model User {
   default_organization DefaultOrganization? @relation("user_default_organization")
   organizations        Organization[]
   created_at           DateTime             @default(now())
+  vacancies            Vacancy[]
+  works                Worker[]
+}
+
+model Vacancy {
+  id      Int    @id @default(autoincrement())
+  user    User   @relation(fields: [user_id], references: [id])
+  user_id Int
+  age     Int
+  about   String
+  name    String
+  contact String
+}
+
+model Worker {
+  id              Int          @id @default(autoincrement())
+  worker          User         @relation(fields: [worker_id], references: [id])
+  worker_id       Int
+  organization    Organization @relation(fields: [organization_id], references: [id])
+  organization_id Int
+  role            String       @default("receptionist")
 }
 
 model DefaultOrganization {
@@ -52,6 +73,7 @@ model Organization {
   created_at   DateTime             @default(now())
   bannerId     Int?
   default_user DefaultOrganization?
+  workers      Worker[]
 }
 
 model Banner {
