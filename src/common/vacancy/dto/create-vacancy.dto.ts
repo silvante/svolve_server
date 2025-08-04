@@ -9,4 +9,7 @@ export class CreateVacancyDto {
 
   @IsString()
   contact: string;
+
+  @IsString()
+  origin: string;
 }
