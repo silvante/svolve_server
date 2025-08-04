@@ -9,4 +9,7 @@ export class UpdatePincodeDto {
 
   @IsString()
   pincode_confirmation: string;
+
+  @IsString()
+  origin: string;
 }

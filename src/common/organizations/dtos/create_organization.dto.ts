@@ -17,4 +17,7 @@ export class CreateOrganizationDto {
 
   @IsString()
   pincode: string;
+
+  @IsString()
+  origin: string;
 }
