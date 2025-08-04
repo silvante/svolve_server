@@ -68,6 +68,7 @@ model Organization {
   description  String?
   banner       Banner?
   logo         String?
+  origin       String
   pincode      String
   owner_id     Int
   owner        User                 @relation(fields: [owner_id], references: [id])
