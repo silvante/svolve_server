@@ -18,6 +18,9 @@ export class VacancyService {
           },
         },
       },
+      include: {
+        user: true,
+      },
     });
     if (!new_vacancy) {
       throw new HttpException('Internal server error', 404);
@@ -25,8 +28,18 @@ export class VacancyService {
     return new_vacancy;
   }
 
-  findAll() {
-    return `This action returns all vacancy`;
+  async findMyAll(req: RequestWithUser) {
+    const user = req.user;
+    const vacancies = await this.prisma.vacancy.findMany({
+      where: { user_id: user.id },
+      include: {
+        user: true,
+      },
+    });
+    if (!vacancies) {
+      throw new HttpException('Internal server error', 404);
+    }
+    return vacancies;
   }
 
   async findOne(id: number) {

@@ -20,7 +20,7 @@ export class VacancyController {
   constructor(private readonly vacancyService: VacancyService) {}
 
   @UseGuards(AuthGuard)
-  @Post('/create')
+  @Post('create')
   create(
     @Req() req: RequestWithUser,
     @Body() createVacancyDto: CreateVacancyDto,
@@ -28,9 +28,10 @@ export class VacancyController {
     return this.vacancyService.create(req, createVacancyDto);
   }
 
-  @Get()
-  findAll() {
-    return this.vacancyService.findAll();
+  @UseGuards(AuthGuard)
+  @Get('mine')
+  findAllMyVacancies(@Req() req: RequestWithUser) {
+    return this.vacancyService.findMyAll(req);
   }
 
   @Get(':id')
