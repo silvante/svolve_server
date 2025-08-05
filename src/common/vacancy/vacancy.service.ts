@@ -12,7 +12,6 @@ export class VacancyService {
     const new_vacancy = await this.prisma.vacancy.create({
       data: {
         ...data,
-        name: user.name,
         user: {
           connect: {
             id: user.id,
