@@ -15,4 +15,7 @@ export class CreateVacancyDto {
 
   @IsString()
   origin: string;
+
+  @IsString()
+  job: string;
 }

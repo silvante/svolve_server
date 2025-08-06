@@ -38,6 +38,7 @@ model Vacancy {
   age        Int
   about      String
   origin     String
+  job        String
   name       String
   contact    String
   created_at DateTime @default(now())
