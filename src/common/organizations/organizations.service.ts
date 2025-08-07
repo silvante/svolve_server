@@ -71,10 +71,10 @@ export class OrganizationsService {
     return new_organization;
   }
 
-  async getOrganizationById(req: RequestWithUser, id: number) {
+  async getOrganizationByUniqueName(req: RequestWithUser, unique_name: string) {
     const user = req.user;
     const organization = await this.prisma.organization.findUnique({
-      where: { id: id, owner_id: user.id },
+      where: { unique_name: unique_name, owner_id: user.id },
       include: {
         banner: true,
       },

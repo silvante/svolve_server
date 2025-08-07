@@ -37,9 +37,15 @@ export class OrganizationsController {
   }
 
   @UseGuards(AuthGuard)
-  @Get('/:id')
-  getOrganizationById(@Req() req: RequestWithUser, @Param('id') id: string) {
-    return this.organiztaionService.getOrganizationById(req, +id);
+  @Get('/:unique_name')
+  getOrganizationById(
+    @Req() req: RequestWithUser,
+    @Param('unique_name') unique_name: string,
+  ) {
+    return this.organiztaionService.getOrganizationByUniqueName(
+      req,
+      unique_name,
+    );
   }
 
   @UseGuards(AuthGuard)
