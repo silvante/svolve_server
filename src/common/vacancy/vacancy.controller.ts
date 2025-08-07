@@ -3,11 +3,11 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
   UseGuards,
   Req,
+  Put,
 } from '@nestjs/common';
 import { VacancyService } from './vacancy.service';
 import { CreateVacancyDto } from './dto/create-vacancy.dto';
@@ -39,13 +39,19 @@ export class VacancyController {
     return this.vacancyService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateVacancyDto: UpdateVacancyDto) {
-    return this.vacancyService.update(+id, updateVacancyDto);
+  @UseGuards(AuthGuard)
+  @Put(':id/update')
+  update(
+    @Req() req: RequestWithUser,
+    @Param('id') id: string,
+    @Body() updateVacancyDto: UpdateVacancyDto,
+  ) {
+    return this.vacancyService.update(req, +id, updateVacancyDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.vacancyService.remove(+id);
+  @UseGuards(AuthGuard)
+  @Delete(':id/delete')
+  remove(@Req() req: RequestWithUser, @Param('id') id: string) {
+    return this.vacancyService.remove(req, +id);
   }
 }

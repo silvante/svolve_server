@@ -55,11 +55,36 @@ export class VacancyService {
     return vacancy;
   }
 
-  update(id: number, updateVacancyDto: UpdateVacancyDto) {
-    return `This action updates a #${id} vacancy`;
+  async update(req: RequestWithUser, id: number, data: UpdateVacancyDto) {
+    const user = req.user;
+    const vacancy = await this.prisma.vacancy.update({
+      where: { id: id, user_id: user.id },
+      data: {
+        ...data,
+      },
+    });
+    if (!vacancy) {
+      throw new HttpException(
+        'Vacancy not found or You do not own this vacancy',
+        404,
+      );
+    }
+    return vacancy;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} vacancy`;
+  async remove(req: RequestWithUser, id: number) {
+    const user = req.user;
+    const deleting_obj = await this.prisma.vacancy.delete({
+      where: { id: id, user_id: user.id },
+    });
+    if (!deleting_obj) {
+      throw new HttpException(
+        'Vacancy not found or You do not own this vacancy',
+        404,
+      );
+    }
+    return {
+      deleted: true,
+    };
   }
 }
