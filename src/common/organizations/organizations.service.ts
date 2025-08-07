@@ -130,9 +130,15 @@ export class OrganizationsService {
         ...updateData,
         ...(banner && {
           banner: {
-            update: {
-              original: banner.original,
-              thumbnail: banner.thumbnail,
+            upsert: {
+              update: {
+                original: banner.original,
+                thumbnail: banner.thumbnail,
+              },
+              create: {
+                original: banner.original,
+                thumbnail: banner.thumbnail,
+              },
             },
           },
         }),
