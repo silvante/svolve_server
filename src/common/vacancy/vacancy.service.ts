@@ -62,6 +62,9 @@ export class VacancyService {
       data: {
         ...data,
       },
+      include: {
+        user: true,
+      },
     });
     if (!vacancy) {
       throw new HttpException(
