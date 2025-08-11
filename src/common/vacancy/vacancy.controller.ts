@@ -20,6 +20,16 @@ import { RequestWithUser } from 'src/interfaces/request-with-user.interface';
 export class VacancyController {
   constructor(private readonly vacancyService: VacancyService) {}
 
+  @Get('search')
+  searchVacancyes(
+    @Query('origin') origin: string = 'andijon',
+    @Query('q') q: string = '',
+    @Query('page') page: string = '1',
+    @Query('limit') limit: string = '10',
+  ) {
+    return this.vacancyService.search(origin, q, Number(page), Number(limit));
+  }
+
   @UseGuards(AuthGuard)
   @Post('create')
   create(
@@ -54,15 +64,5 @@ export class VacancyController {
   @Delete(':id/delete')
   remove(@Req() req: RequestWithUser, @Param('id') id: string) {
     return this.vacancyService.remove(req, +id);
-  }
-
-  @Get('search')
-  searchVacancyes(
-    @Query('origin') origin: string = 'andijon',
-    @Query('q') q: string = '',
-    @Query('page') page: string = '1',
-    @Query('limit') limit: string = '10',
-  ) {
-    return this.vacancyService.search(origin, q, Number(page), Number(limit));
   }
 }
