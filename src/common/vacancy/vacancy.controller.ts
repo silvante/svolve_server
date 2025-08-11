@@ -8,6 +8,7 @@ import {
   UseGuards,
   Req,
   Put,
+  Query,
 } from '@nestjs/common';
 import { VacancyService } from './vacancy.service';
 import { CreateVacancyDto } from './dto/create-vacancy.dto';
@@ -53,5 +54,15 @@ export class VacancyController {
   @Delete(':id/delete')
   remove(@Req() req: RequestWithUser, @Param('id') id: string) {
     return this.vacancyService.remove(req, +id);
+  }
+
+  @Get('search')
+  searchVacancyes(
+    @Query('origin') origin: string = 'andijon',
+    @Query('q') q: string = '',
+    @Query('page') page: string = '1',
+    @Query('limit') limit: string = '10',
+  ) {
+    return this.vacancyService.search(origin, q, Number(page), Number(limit));
   }
 }

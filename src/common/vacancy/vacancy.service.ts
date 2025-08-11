@@ -90,4 +90,41 @@ export class VacancyService {
       deleted: true,
     };
   }
+
+  async search(origin: string, query: string, page: number, limit: number) {
+    const skip = (page - 1) * limit;
+
+    const [data, total] = await Promise.all([
+      this.prisma.vacancy.findMany({
+        where: {
+          origin: origin,
+          name: {
+            contains: query,
+            mode: 'insensitive',
+          },
+        },
+        skip,
+        take: limit,
+        orderBy: { created_at: 'desc' },
+      }),
+      this.prisma.vacancy.count({
+        where: {
+          origin: origin,
+          name: {
+            contains: query,
+            mode: 'insensitive',
+          },
+        },
+      }),
+    ]);
+
+    return {
+      data,
+      meta: {
+        total: total,
+        page: page,
+        last_page: Math.ceil(total / limit),
+      },
+    };
+  }
 }
