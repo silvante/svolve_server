@@ -45,13 +45,22 @@ model Vacancy {
 }
 
 model Worker {
-  id              Int          @id @default(autoincrement())
-  worker          User         @relation(fields: [worker_id], references: [id])
+  id              Int                  @id @default(autoincrement())
+  worker          User                 @relation(fields: [worker_id], references: [id])
   worker_id       Int
-  organization    Organization @relation(fields: [organization_id], references: [id])
+  organization    Organization         @relation(fields: [organization_id], references: [id])
   organization_id Int
-  role            String       @default("receptionist")
-  created_at      DateTime     @default(now())
+  role            String               @default("receptionist")
+  created_at      DateTime             @default(now())
+  attached_types  WorkerAttachedType[]
+}
+
+model WorkerAttachedType {
+  id        Int    @id @default(autoincrement())
+  type      Type   @relation(fields: [type_id], references: [id])
+  type_id   Int
+  worker    Worker @relation(fields: [worker_id], references: [id])
+  worker_id Int
 }
 
 model DefaultOrganization {
@@ -105,12 +114,13 @@ model Client {
 }
 
 model Type {
-  id              Int           @id @default(autoincrement())
-  name            String
-  description     String?
-  clients         Client[]
-  price           Int
-  organization    Organization? @relation(fields: [organization_id], references: [id])
-  organization_id Int?
-  created_at      DateTime      @default(now())
+  id               Int                  @id @default(autoincrement())
+  name             String
+  description      String?
+  clients          Client[]
+  price            Int
+  organization     Organization?        @relation(fields: [organization_id], references: [id])
+  organization_id  Int?
+  created_at       DateTime             @default(now())
+  attached_workers WorkerAttachedType[]
 }
