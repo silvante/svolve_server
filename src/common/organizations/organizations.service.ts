@@ -95,6 +95,13 @@ export class OrganizationsService {
       where: { unique_name: unique_name, owner_id: user.id },
       include: {
         banner: true,
+        _count: {
+          select: {
+            workers: true,
+            types: true,
+            clients: true,
+          },
+        },
       },
     });
 
