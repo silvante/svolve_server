@@ -1,0 +1,1014 @@
+clear
+npm prisma-console.ts
+npx prisma-console.ts
+git push
+git commit -m "Unknown error fixed"
+git add .
+npm run start:dev
+code .
+git commit -m "Unknown error"
+CLEAR
+git commit -m "search vacancies"
+cd ../server && clear && npm run start:dev
+code . && clear && npm run dev
+cd client
+cd svolve
+cd devs
+gemini
+export GOOGLE_CLOUD_PROJECT="svolve"
+clar
+cd ..
+git commit -m "user attached types -- migrations"
+npx prisma migrate dev --name worker_attached_types
+clea
+cd server
+npm run dev
+git commit -m "contacts"
+cd wayprint-app/
+git pushg
+git commit -m "using AI "
+npx prisma migrate dev
+cd ../..
+c d..
+npm i
+git clone git@github.com:wayprint/wayprint-app.git
+cat ~/.ssh/id_ed25519.pub
+ssh-keygen -t ed25519 -C "khamidov.ko@gmail.com"
+git clone https://silvante@github.com/wayprint/wayprint-app.git
+git clone https://github.com/wayprint/wayprint-app.git
+git commit -m "delete"
+git commit -m "delete module is working even in list"
+git commit -m "delete module is working"
+git commit -m "update error finally fixed"
+sudo npm install -g @google/gemini-cli
+npm install -g @google/gemini-cli
+npm install -g @google/gemini
+node -v
+flatpak install io.github.zen_browser.zen
+sudo apt install flatpak
+sudo apt install gnome-software-plugin-flatpak
+flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+flatpak install io.github.zen_browser.zen
+
+zen
+sudo ln -s /opt/zen-browser/zen /usr/local/bin/zen
+sudo mv ~/Downloads/zen.linux-x86_64 /opt/zen-browser
+cd ~
+sudo mv ~/Downloads/zen.linux-x86_64.tar.xz /opt/zen-browser
+sudo ln -s /opt/zen-browser/zen /usr/local/bin/zen
+
+sudo mv ~/Downloads/zen-browser-* /opt/zen-browser
+sudo ln -s /opt/zen-browser/zen /usr/local/bin/zen
+
+zen
+
+./zen
+
+cd zen.linux-x86_64/zen/
+tar -xf zen.linux-x86_64.tar.xz
+cd Downloads/
+git commit -m "Update page fully functional"
+npx shadcn@latest add alert-dialog
+git commit -m "API"
+git commit -m "Api services"
+git git add .
+git commit -m "get organization by UniqueName"
+git commit -m "vacancy update and delete is ready for test"
+cd .
+git commit -m "vacancy update page"
+git commit -m "vacancy details page"
+git commit -m "vacancy page"
+git commit -m "adding job to vacancy"
+npx ts-node prisma-console.ts
+
+cd  server/
+npx tailwindcss init
+
+git opush
+npx prisma migrate dev --name job_to_vacancy
+git commit -m "git all vacancies and saving them into redux"
+git commit -m "get all my vacancies"
+git add /
+git commit -m "migrations"
+git commit -m "Create vacancy"
+npx prisma db push
+
+npx prisma migrate dev --name add-origin-to-organization
+
+npm run0
+cd ser
+git commit -m "enough"
+npx prisma generate
+
+cear
+npx prisma migrate dev --name origin_of_org
+git commit -m "just"
+git commit -m "vacancy"
+npx prisma migrate dev --name vacancy_origin
+git commit -m "vacancy create"
+nest g resource common/vacancy
+git commit -m "vacancyes"
+npx prisma migrate dev --name vacancyes_and_workers
+code . && clear && npm run start:dev
+cd
+git commit -m "default org"
+git ad .
+git commit -m "including organization"
+git commit -m "truncate"
+git commit -m "oops"
+git commit -m "profile page danger zone"
+git commit -m "Profile page is better now"
+git commit -m "Just normal day again"
+git commit -m "Just normal day"
+git commit -m "a lot of erros"
+npx prisma migrate dev --name named_relationships
+npx prisma migrate dev --name default_organization_named
+git commit -m "Maybe it is fixed now"
+git commit -m "BTN"
+git commit -m "api services"
+git commit -m "Controllers"
+npx prisma migrate dev --name default_organization
+git commit -m "default organization"
+nvim .
+cd ruby
+cbonsai --live
+cbonsai --seed 119 --live
+tmux
+cmatrix
+ruby ex1.rb
+ls
+ruby -v
+git commit -m "delete organisation"
+git commit -m "back to panel"
+git commit -m "Name sanitizer"
+nest g service global/name_sanitizer
+git commit -m "logos in organisation"
+git commit -m "update user profile picture is working"
+git commit -m "logos in organisation list"
+clear && npm run dev
+git commit -m "Some improvements"
+git commit -m "Update profile page is working"
+git commit -m "settings page"
+git commit -m "user profile page full"
+git commit -m "organisation count"
+git commit -m "some improvements"
+git commit -m "profile page"
+git commit -m "User services"
+git commit -m "User"
+c;ear
+git commit -m "User page"
+git commit -m "bio and contact"
+npx prisma migrate dev --name bio_contact
+git commit -m "get user by id"
+git commit -m "updating user"
+cd serve
+git commit -m "Users arch"
+nest g resource common/user
+clear && npm run start:dev
+git commit -m "update org"
+git commit -m "Finally every thing is working, probably"
+clewar
+cd wallpaper/
+
+git clone https://github.com/dracula/wallpaper.git
+
+
+git commit -m "Some errors are fixed"
+git commit -m "update form"
+git commit -m "banner error detected and fixed"
+psql -U admin -p
+git commit -m "delete btns"
+git commit -m "delete btns "
+git commit -m "including banners"
+git commit -m "Upload functions are finally working"
+git commit -m "sharp error"
+git commit -m "Create type first error"
+git commit -m "organisation banner error fixed"
+git commit -m "organisations => organizations"
+git commit -m "organisations error fully fixed"
+git commit -m "organisation error fixed"
+git commit -m "error hell here"
+npx prisma migrate dev --name organizations
+npx prisma migrate reset
+
+git commit -m "upload services"
+git commit -m "upload logo"
+git commit -m "fixing organizations"
+npx prisma migrate dev --name banner
+git commit -m "db schemas"
+git commit -m "banners are ready for the test"
+git commit -m "avatars are ready for the test"
+git commit -m "sharp"
+npm install sharp
+
+npm install --save-dev @types/multer
+
+git commit -m "IDK"
+npm install @nestjs/config
+npm install @aws-sdk/client-s3 multer multer-s3 @nestjs/platform-express
+
+claer
+git commit -m "uploads architecture"
+nest g resource common/uploads
+git commit -m "backbtns"
+exit
+sudo snap install chromium
+
+wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+sudo apt install ./google-chrome-stable_current_amd64.deb
+
+git commit -m "back btn"
+git commit -m "client update form"
+git commit -m "fix"
+git commit -m "delete client btns"
+git commit -m "delete clients"
+git commit -m "delete clients router"
+git commit -m "delete client"
+git commit -m "update client api service"
+git commit -m "update client"
+git commit -m "Maybe some dirty but bug fixed"
+git commit -m "Just upgarte"
+git commit -m "delete type fully functional"
+git commit -m "delete type"
+git commit -m "delete type api services"
+git commit -m "That is enought for today"
+git commit -m "clearing logs"
+code . && npm run dev
+npx prisma migrate dev --name clearing_counts
+git commit -m "clearing background job logics for counts"
+git commit -m "skill updated"
+git commit -m "Type table"
+git commit -m "Type update"
+git commit -m "Type update service"
+git commit -m "update types 2"
+git commit -m "update types"
+git commit -m "Home page"
+npm tun dev
+cd svolve/
+cd  devs
+git commit -m "Update pincode "
+git commit -m "update and pincode "
+git commit -m "update organisation services"
+git commit -m "unique name"
+git commit -m "update pincode"
+git add ,
+help
+figlet Relax... Man
+git commit -m "update organisation"
+ruby arr.rb
+git commit -m "Reversed array"
+git commit -m "IDK why but type clount error fixed"
+ps aux | grep redis
+
+redis-cli ping
+
+redis-benchmark
+git commit -m "Jobs are done"
+git commit -m "client count"
+npx prisma migrate dev --name fixing
+git commit -m "type count"
+git commit -m "enough for today"
+git commit -m "end for today"
+npm urn dev
+git commit -m "checkclient services"
+git commit -m "checkClient"
+git commit -m "is_checked"
+npx prisma migrate dev --name is_checked
+git commit -m "Marketting page"
+git commit -m "Pincode animation"
+lcear
+git commit -m "Total price and improved form"
+git commit -m "form is fully functional now"
+git commit -m "Perfect"
+git commit -m "not Perfect but basics of form"
+cd des
+git commit -m "lottie errors"
+git commit -m "lottie files"
+npm i lottie-react
+lottie-react
+git commit -m "enough for now"
+git commit -m "client slice"
+git commit -m "only search error"
+git commit -m "accordion"
+npx shadcn@latest add popover
+npx shadcn@latest add accordion
+git commit -m "client api services"
+git commit -m "find today's clients"
+npm install date-fns
+git commit -m "schemas and services of client"
+npx prisma migrate dev --name integers
+nest g resource common/organisations/clients
+git commit -m "Types table"
+git commit -m "fixing layouts"
+git commit -m "Type Slice redux"
+code /
+git commit -m "I hate typeScript 2"
+git commit -m "I hate typeScript"
+git commit -m "code"
+git commit -m "finally layouts are clean"
+git commit -m "I added additional server side layout"
+git commit -m "error in layout fixed, but I had to make origin management client side :("
+wisdom
+figlet Xamidov uz
+figlet Xamidov.uz
+git commit -m "types"
+git commit -m "aside shortcut"
+git commit
+git commit -m "types services"
+git commit -m "type table"
+npx shadcn@latest add button
+npm install @tanstack/react-table
+npx shadcn@latest add table
+git ADD .
+git commit -m "aside design"
+cd client/
+vlear
+tmux kill
+clclear
+git commit -m "org lock shortcut"
+npx shadcn@latest add command
+git commit -m "nonsence"
+git commit -m "finally"
+nest g resource common/organisations/types
+npm run start:devdev
+cd clar
+dc //
+git commit -m "create types"
+git commit -m "types structure"
+nest g service common/organisations/types
+nest g controller common/organisations/types
+nest g module common/organisations/types
+npx prisma migrate dev --name clients_and_types
+git commit -m "schemas"
+git commit -m "Org Breadcrubs"
+cleear
+git commit -m "Org header"
+figlet Ruby on rails
+sl
+cd blogapp
+cd rails
+code
+snap install wisdom
+sudo rm -r example-app
+sudo rm -r example
+cd ..c
+cd example-app/
+kickstart new example-app
+kickstart version
+kickstart info
+git commit -m "validation fully functional"
+git commit -m "validation error"
+git commit -m "pincode"
+git commit -m "pincode "
+npx prisma migrate dev --name pincode
+git commit -m "uniquename service"
+nest g service global/generate_uniquename
+git commit -m "new organisations page is fully functional"
+git commit -m "form is working"
+cd debs
+npm nur dev
+git commit -m "Organisations new form full"
+git commit -m "Organisations new form"
+git commit -m "Fixing erros"
+npx prisma migrate dev --name userId
+npx prisma migrate dev --name org_desc
+npx shadcn@latest add input-otp
+git commit -m "Organisations new"
+npx shadcn@latest add input
+npx shadcn@latest add dropdown-menu
+git commit -m "Organisations fetch"
+cd ..cd
+git commit -m "Breadcrumbs"
+git commit -m "improving Panel"
+git commit -m "improving userSlice"
+git add.
+git commit -m "organisation endpoints and services"
+git commit -m "organisation count job and get by id"
+git commit -m "organisation tested"
+git commit -m "organisations test"
+git commit -m "organisations"
+npx prisma migrate dev --name counts
+nest g service common/organisations
+nest g controller common/organisations
+nest g module common/organisations
+npx prisma migrate dev --name organisation_relations
+git commit -m "organisation schema"
+npx prisma migrate dev --name organisation_initial
+cd mene_market/
+cd node
+cd ls
+bin/dev
+rails db:migrate
+rails g scaffold Movies title:string
+cd cd rails/
+composer run dev
+cd laravel
+cd la
+rails s
+rails generate scaffold Post title:string
+rails scaffold Post title:string
+rails generate scaffold Post string:title
+rails generate scaffonld Post string:title
+rails generate scaffonld Post title:string
+rails new blogapp
+mysql -u root -p
+php artisan migrate
+php artisan migrate:fresh
+php artisan make:view category.index
+php artisan make:view category.show
+php artisan make:view category.new
+php artisan make:controller categoryController
+php artisan make:model Category -m
+php artisan make:migration add_relations_to_posts
+php artisan octane:start
+php artisan octane:run
+php artisan octane:install
+composer require laravel/octane
+lc
+php artisan serve
+php artisan server
+sudo simplescreenrecorder
+
+sudo apt install pavucontrol
+
+arecord -l
+
+sudo fuser -k /dev/snd/*
+
+fuser -v /dev/snd/*
+
+php artisan octane:start
+
+composer require laravel/octane
+php artisan octane:install
+
+php artisan make:view post.new
+php artisan make:controller PostController
+php artisan migrate
+
+php artisan make:model Post -m
+npm install tailwindcss @tailwindcss/vite
+php artisan make:view layouts/main
+clearclear
+php artisan make:view hello/welcome
+php artisan make:controller HelloController
+php artisan migrate:refresh --help
+php artisan migrate:refresh help
+php artisan migrate help
+php artisan queue help
+sudo rm -r blog-app
+cd example/
+cd blog-app/
+kickstart new blog-app
+cd svol
+php -S localhost:8002
+cd php
+mkdir php
+cd blogapp/
+laravel new blogapp
+laravel --version
+echo 'export PATH="$HOME/.config/composer/vendor/bin:$PATH"' >> ~/.zshrc
+source ~/.zshrc
+
+echo 'export PATH="$HOME/.config/composer/vendor/bin:$PATH"' >> ~/.bashrc
+source ~/.bashrc
+
+composer global require laravel/installer
+
+laravel new example-app
+cd laravel/
+mkdir laravel
+cd dev
+composer global require laravel/installer
+composer
+/bin/bash -c "$(curl -fsSL https://php.new/install/linux/8.4)"
+curl -sS https://getcomposer.org/installer | php
+sudo mv composer.phar /usr/local/bin/composer
+composer --version
+
+php -v
+sudo apt update && sudo apt upgrade -y
+sudo apt install curl unzip git php-cli php-mbstring php-xml php-bcmath php-curl php-zip php-mysql php-tokenizer php-common php-mysql php-gd php-sqlite3 php-mysqlnd composer -y
+
+git commit -m "kickstart_js"
+cd portfolio
+cd react
+git commit -m "SEO"
+git commit -m "code vise"
+git commit -m "responcive is done"
+npx shadcn@latest add sidebar
+cleare
+npx shadcn@latest init
+git commit -m "and now I should do responsive :("
+git commit -m "installation"
+git commit -m "fucking css"
+git commit -m "aside link"
+cd kickstart_client/
+cd kickstart_js_share
+git commit -m "asides"
+git commit -m "layouts"
+git commit -m "main frameworks"
+git commit -m "copy input"
+git commit -m "hero"
+git commit -m "layout and Header"
+npm i clsx
+npm install lucide-react
+git commit -m "adding client and publishing package"
+npx create-next-app@latest
+sudo npm install -g @xamidov_uz/kickstart
+
+sudo npm uninstall -g @xamidov_uz/kickstart
+npm uninstall -g @xamidov_uz/kickstart
+npm publish --access public
+
+cd kickstart_js/
+cd //
+kickstart_js version
+kickstart -v
+sudo rm /usr/bin/kickstart_js
+
+sudo npm i -g @xamidov_uz/kickstart
+npm i -g @xamidov_uz/kickstart
+npm i @xamidov_uz/kickstart
+sudo npm i @xamidov_uz/kickstart
+sudo rm -r blogapp/
+sudo rm -r kickstarter/
+sudo rm -r records
+npm publish --access public
+npm publish
+
+npm login
+
+sudo npm login
+sudo npm unlink -g
+
+npm unlink -g
+
+chmod +x index.js
+
+coe .
+git push -u origin main
+git remote set-url origin git@github.com:silvante/kickstart_js_share.git
+git remote add origin https://github.com/silvante/kickstart_js_share.git
+git branch -M main
+git push -u origin main
+git commit -m "initial commit"
+touch README.md
+rm -r README.md
+;s
+rm -r README.MD
+touch README.MD
+cd kickstart_js_share/
+mkdir kickstart_js_share
+mkdir kickstart_js
+kickstart_js new blogapp
+sudo npm link
+
+kickstart_js new
+kickstart_js new records
+sudo npm link
+cd clear
+cd kickstarter/
+cd records
+mkdir example
+kickstart_js info
+kickstart_js --version
+kickstart_js -v
+kickstart_js random
+kickstart_js
+kickstart_js my-project
+npm link
+
+npm init
+git pull --rebase
+git pull
+git psh
+git commit -m "changing icons and heros"
+cd nest_next/
+cd auth
+git remote set-url origin git@github.com:silvante/kickstart_js.git
+git remote add origin https://github.com/silvante/kickstart_js.git
+git branch -M main
+git push -u origin main
+git commit -m "clearing log"
+git commit -m "clearing and fixing"
+git commit -m "using reset token"
+git commit -m "reset token"
+npx prisma generate
+code ..
+git commit -m "redirects"
+git commit -m "header"
+git commit -m "removing dash
+"
+git commit -m "removing dash"
+git commit -m "dispatch"
+git commit -m "dispatcher"
+git commit -m "dispatching user with github and google "
+git commit -m "dispatched user in verification"
+git commit -m "redux errors fixed and userSlice created"
+git commit -m "Freaking redux made hell here"
+git commit -m "installing redux"
+npm install @reduxjs/toolkit react-redux
+
+npm un dev
+git commit -m "checkbox"
+git commit -m "shadcn ui"
+npx shadcn@latest add checkbox
+git commit -m "forms"
+git commit -m "auth is ready for set"
+clkear
+nest g service mailers/verify_mail
+git commit -m "userService cleaned"
+npx prisma migrate dev --name optional_provider_id
+git commit -m "token services"
+git commit -m "hell here"
+nest g service global/access_token
+nest g service global/reset_token
+nest g service common/reset_token
+nest g service common/access_token
+npx prisma migrate dev --name rm_password
+git commit -m "removing password forget"
+git commit -m "removing password"
+git commit -m "forgot password"
+c.ear
+cd sv
+curl -I https://www.xamidov.uz/sitemap.xml
+
+curl -I https://xamidov.uz/sitemap.xml
+
+git commit -m "forgot password routing"
+nest g service common/identity
+nest g controller common/identity
+nest g module common/identity
+git commit -m "error message"
+git commit -m "forgot password UI"
+git commit -m "forgot password init"
+npm create nuxt@latest
+cd nuxt
+mkdir nuxt
+curl -I https://www.xamidov.uz/sitemap.xml
+git commit -m "switching errors"
+cd txe/
+npm run build
+npm run start
+
+git commit -m "switching erroir fixed"
+sudo rm -r node_modules
+git commit -m "switching to Next js"
+rm -rf .next
+
+npm run build
+cd next-portfolio/
+npm run build
+
+npm install next-sitemap --force
+npm install next-sitemap
+
+git commit -m "TG ID"
+npm install react-hot-toast --force
+npm install react-hot-toast
+
+npm i axios --force
+npm i axios
+npm install react-loader-spinner --force
+npm install react-loader-spinner
+sudo npm install react-loader-spinner
+npm install react-loader-spinner --save
+npm i react-loader-spinner
+npm install lottie-react lucide-react flowbite-react
+git commit -m "Social media messages"
+git commit -m "messgaes"
+git commit -m "messages"
+git commit -m "Proven social auth messages"
+git commit -m "Proven messages"
+dc
+git commit -m "responder fioxed"
+git commit -m "google btn"
+git commit -m "responder error"
+cd cli
+git commit -m "create data in shcema"
+npx prisma migrate dev --name create_date
+git commit -m "response service"
+git commit -m "google auth pt1"
+nest g service global/social_auth_responce
+npm install passport-google-oauth20
+
+git commit -m "redirect to panel"
+git commit -m "provider error message"
+git commit -m "github auth privider"
+git commit -m "auth_provider in schema"
+npx prisma migrate dev --name auth_provider
+psql -U admin
+psql -U admin -d svolve
+git commit -m "panel layout components shadowing"
+git commit -m "panel layout components"
+git commit -m "panel layout"
+git add .,
+git commit -m "github auth fixed"
+tmux kill-server
+
+tmux list
+tmux --help
+sudo apt install tmux
+gnome-terminal -- fish
+
+git commit -m "github auth"
+git commit -m "github authentication is not complate"
+git commit -m "github id"
+git commit -m "github strategy proved"
+cd svolves
+git commit -m "github strategy"
+npm install @nestjs/passport passport passport-github2 @nestjs/jwt
+
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+ssh root@147.93.72.141
+git commit -m "changing number"
+ssh root@45.93.137.182
+git commit -m "verification is fully ready"
+git commit -m "verification"
+git commit -m "fixing urls"
+git commit -m "onboarding"
+ckear
+code ,
+git commit -m "sign up"
+git commit -m "fixing ports"
+git commit -m "sign in"
+npm install react-spinners --save
+git commit -m "api service"
+git commit -m "Auth Quards & Profile fetcher"
+cd ~/devs
+git commit -m "guard"
+c++
+git commit -m "verification is vorking"
+git commit -m "login and sign up"
+nest g service global/generate_username
+nest g module global
+npm install bcrypt
+npm install --save-dev @types/bcrypt
+
+git commit -m "Jobs are working"
+npm i class-validator
+nest g service auth
+nest g controller auth
+nest g module auth
+git commit -m "mail jobs"
+sudo systemctl status redis
+
+sudo apt install redis -y
+
+sudo apt update
+sudo apt upgrade -y
+
+git commit -m "jobs"
+nest g module jobs
+npm install bullmq @nestjs/bullmq ioredis
+
+git commit -m "mailers"
+npm install handlebars
+
+npm install handlebars @nestjs-modules/mailer-adapter-handlebars
+
+npm install @nestjs-modules/mailer nodemailer
+
+nest g module mailers
+sudo rm -r mailer
+cd src
+nest g module mailer
+git commit -m "jwt & guards"
+nest g guard guards/auth
+npm i @nestjs/jwt jsonwebtoken
+npm i @nestjs/jwt
+nest g module jwt
+git commit -m "prisma service"
+nest g service prisma
+nest g module prisma
+nest g model prisma
+git commit -m "prisma init"
+npx prisma migrate dev --name init
+npx prisma init
+npm install prisma --save-dev
+sudo -i -u postgres
+
+sudo systemctl start postgresql
+
+sudo systemctl status postgresql
+
+psql
+sudo apt update
+sudo apt install postgresql postgresql-contrib
+
+git commit -m "home page"
+git commit -m "favicon"
+git commit -m "Author title & home page"
+git commit -m "Seo"
+git commit -m "google & github buttons"
+mkdir icons
+sudo rm -r icons/
+cd public
+sudo chown -R $USER:$USER .
+
+sudo mkdir icons
+coode .
+cd~
+git remote set-url origin git@github.com:silvante/svolve_client.git
+git remote -v
+git remote add origin https://github.com/silvante/svolve_client.git
+git branch -M main
+git push -u origin main
+git remote add origin https://github.com:silvante/svolve_client.git
+git branch -M main
+git push -u origin main
+git commit -m "initial"
+git remote set-url origin git@github.com:silvante/svolve_server.git
+history
+git remote add origin https://github.com/silvante/svolve_server.git
+git branch -M main
+git push -u origin main
+cd devs/svolve
+sudo npx create-next-app@latest .
+mkdir client
+sudo rm -r client
+npx create-next-app@latest .
+nest new .
+mkdir server
+mkdir svolve
+nest -v
+nest js
+cd nestjs
+nest g resource post
+
+npx prisma init
+
+sudo npm install prisma --save-dev
+npm install @prisma/client
+
+npm install prisma --save-dev
+npm install @prisma/client
+
+npm i prisma
+cd nest
+git commit -m "album media"
+git commit -m "album"
+git remote set-url origin git@github.com:silvante/portfolio.git
+git commit -m "pfp"
+git clone https://github.com/silvante/portfolio.git
+mkdir react
+cd nuna-core-server/
+cd nuna
+cd universal-rails-authentication/
+nano ~/.config/nvim/init.lua
+cd zero
+nvim
+nvim ~/.config/nvim/init.lua
+
+code ~/.config/nvim/init.lua
+
+touch ~/.config/nvim/init.lua
+
+mkdir ~/.config/nvim/
+git commit -m "view components"
+rails g component Icon
+rails g component Header
+rails g component Aside
+bundle install
+rails generate view_component:install
+
+mkdir -p app/components/previews
+mkdir -p app/components
+
+bin/rails generate view_component:install
+
+rails g view_component:install
+bundle add view_component
+./bin/rails tailwindcss:install
+./bin/bundle add tailwindcss-rails
+./bin/bundle add tailwindcss-ruby
+./bin/bundle add tailwindcss-ruby./bin/bundle add tailwindcss-rails./bin/rails tailwindcss:install
+rails c
+rails dbconsole
+
+rails db:create
+rails db:migrate
+
+bundle install
+
+sudo apt update
+sudo apt install libpq-dev
+
+rails db:create
+rails db:cretae
+rails db:drop db:create db:migrate
+
+sudo mysql
+
+sudo systemctl restart mysql
+
+sudo mysql
+mysql -u admin -p
+bin/deb
+bundle add mysql2
+gem install mysql2
+sudo apt update
+sudo apt install mysql-server libmysqlclient-dev
+
+sudo systemctl start mysql
+
+mysql -u root
+
+sudo mysqld_safe --skip-grant-tables &
+
+sudo systemctl stop mysql
+
+sudo mysql_secure_installation
+
+mysql
+sudo apt install mysql-server -y
+
+cd luxury-stays/
+git clone https://github.com/kengreeff/luxury-stays.git
+rails app:template LOCATION="https://railsbytes.com/sctipt/zJos05"
+git commit -m "formating"
+git clone https://github.com/silvante/mene_market.git
+mkdir node
+sudo apt install sl
+cc;ear
+nano .
+nest new records
+cd nuna-core-client/
+git clone https://github.com/nuna82/nuna-core-client.git
+git clone https://github.com/nuna82/nuna-core-server.git
+mkdir nuna
+sudo npm i -g @nestjs/cli
+sodo npm i -g @nestjs/cli
+mkdir nestjs
+git commit -m "style"
+git commit -m "auth layout"
+git push origin main
+
+git remote set-url origin git@github.com:silvante/universal-rails-authentication.git
+
+cat ~/.ssh/id_ed25519.pub
+
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/id_ed25519
+
+ssh-keygen -t ed25519 -C "khamidov.ko@gmail.com"
+
+ssh-keygen -t ed25519 -C "your_email@example.com"
+
+git commit -m "new era"
+git config --global user.email
+git config --global user.email "khamidov.ko@gmail.com"
+git config --global user.name "silvante"
+git clone https://github.com/silvante/universal-rails-authentication.git
+git clone
+cd redords
+rails generate authentication
+bundle add authentication-zero
+rails new zero
+code -v
+touch arr.rb
+sudo apt update
+sudo apt install neovim -y
+
+rails generate inertia:install
+bundle add inertia_rails
+./bin/bundle add tailwindcss-ruby
+./bin/bundle add tailwindcss-rails
+./bin/rails tailwindcss:install
+fish
+h2ph
+ruby classes.rb
+ruby ex2.rb
+mkdir ruby
+rails new records
+mkdir rails
+mkdir devs
+curl -fsSL https://raw.githubusercontent.com/yeongpin/cursor-free-vip/main/scripts/install.sh -o install.sh && chmod +x install.sh && ./install.sh
+node -v
+npm -v
+
+sudo apt install -y nodejs
+
+curl -fsSL https://deb.nodesource.com/setup_current.x | sudo -E bash -
+
+sudo apt update
+sudo apt install -y curl
+
+gnome-text-editor $HOME/.config/fish/config.fish
+
+set -U fish_user_paths /home/xamidov/.rbenv/shims:/home/xamidov/.rbenv/bin:/home/xamidov/.rbenv/shims:/home/xamidov/.rbenv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin $fish_user_paths
+bash
+fc-cache -f -v
+
+unzip $HOME/Downloads/firacode.zip -d $HOME/.local/share/fonts
+
+wget https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/FiraCode.zip -O $HOME/Downloads/firacode.zip
+
+mkdir -p $HOME/.local/share/fonts
+
+sudo chmod +x /usr/local/bin/oh-my-posh
+
+sudo wget https://github.com/JanDeDobbeleer/oh-my-posh/releases/latest/download/posh-linux-amd64 -O /usr/local/bin/oh-my-posh
+
+sudo apt-get upgrade

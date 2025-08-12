@@ -106,6 +106,9 @@ export class VacancyService {
         skip,
         take: limit,
         orderBy: { created_at: 'desc' },
+        include: {
+          user: true,
+        },
       }),
       this.prisma.vacancy.count({
         where: {
