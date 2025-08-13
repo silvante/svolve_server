@@ -1,17 +1,6 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  UseGuards,
-  Req,
-} from '@nestjs/common';
+import { Controller, Post, Body, Param, UseGuards, Req } from '@nestjs/common';
 import { WorkersService } from './workers.service';
 import { CreateWorkerDto } from './dto/create-worker.dto';
-import { UpdateWorkerDto } from './dto/update-worker.dto';
 import { AuthGuard } from 'src/guards/auth/auth.guard';
 import { RequestWithUser } from 'src/interfaces/request-with-user.interface';
 
