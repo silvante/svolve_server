@@ -14,6 +14,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// enums
+enum WorkerRoles {
+  receptionist
+  doctor
+}
+
 model User {
   id                   Int                  @id @default(autoincrement())
   name                 String
@@ -50,7 +56,7 @@ model Worker {
   worker_id       Int
   organization    Organization         @relation(fields: [organization_id], references: [id])
   organization_id Int
-  role            String               @default("receptionist")
+  role            WorkerRoles          @default(receptionist)
   created_at      DateTime             @default(now())
   attached_types  WorkerAttachedType[]
 }
