@@ -15,7 +15,7 @@ export class WorkersController {
     @Param() params: { org_id: string; vacancy_id: string },
     @Body() data: CreateWorkerDto,
   ) {
-    return this.workersService.create(
+    return this.workersService.hire(
       req,
       { org_id: +params.org_id, vacancy_id: +params.vacancy_id },
       data,
