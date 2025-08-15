@@ -9,7 +9,7 @@ export class WorkersController {
   constructor(private readonly workersService: WorkersService) {}
 
   @UseGuards(AuthGuard)
-  @Post('hire/:vacancy_id')
+  @Post(':vacancy_id/hire')
   create(
     @Req() req: RequestWithUser,
     @Param() params: { org_id: string; vacancy_id: string },

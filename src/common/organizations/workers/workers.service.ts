@@ -15,6 +15,9 @@ export class WorkersService {
     const user = req.user;
     const organization = await this.prisma.organization.findUnique({
       where: { owner_id: user.id, id: params.org_id },
+      include: {
+        workers: true,
+      },
     });
     if (!organization) {
       throw new HttpException('You do not own this organization', 404);
@@ -27,6 +30,12 @@ export class WorkersService {
     });
     if (!vacancy) {
       throw new HttpException('Vacancy not found', 404);
+    }
+    const existing_worker = organization.workers.find(
+      (w) => w.worker_id === vacancy.user_id,
+    );
+    if (existing_worker) {
+      throw new HttpException('You already hired this worker', 404);
     }
 
     const { attached_types, role } = data;
@@ -46,13 +55,19 @@ export class WorkersService {
           },
           role: 'doctor',
           attached_types: {
-            connect: attached_types.map((id) => ({ id })),
+            create: attached_types.map((id) => ({
+              type: {
+                connect: {
+                  id: id,
+                },
+              },
+            })),
           },
         },
         include: {
           worker: true,
           attached_types: {
-            select: {
+            include: {
               type: true,
             },
           },
@@ -78,7 +93,7 @@ export class WorkersService {
         include: {
           worker: true,
           attached_types: {
-            select: {
+            include: {
               type: true,
             },
           },
