@@ -51,6 +51,11 @@ export class WorkersService {
         },
         include: {
           worker: true,
+          attached_types: {
+            select: {
+              type: true,
+            },
+          },
         },
       });
 
@@ -72,6 +77,11 @@ export class WorkersService {
         },
         include: {
           worker: true,
+          attached_types: {
+            select: {
+              type: true,
+            },
+          },
         },
       });
 
