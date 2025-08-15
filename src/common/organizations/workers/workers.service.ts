@@ -118,4 +118,37 @@ export class WorkersService {
     }
     return workers;
   }
+
+  async getAWorker(
+    req: RequestWithUser,
+    params: { org_id: number; id: number },
+  ) {
+    const user = req.user;
+    const worker = await this.prisma.worker.findUnique({
+      where: {
+        id: params.id,
+        organization_id: params.org_id,
+        organization: { owner_id: user.id },
+      },
+    });
+    if (!worker) {
+      throw new HttpException('Internal server error', 404);
+    }
+    return worker;
+  }
+
+  async deleteAWorker(
+    req: RequestWithUser,
+    params: { org_id: number; id: number },
+  ) {
+    const user = req.user;
+    await this.prisma.worker.delete({
+      where: {
+        id: params.id,
+        organization_id: params.org_id,
+        organization: { owner_id: user.id },
+      },
+    });
+    return { deleted: true };
+  }
 }

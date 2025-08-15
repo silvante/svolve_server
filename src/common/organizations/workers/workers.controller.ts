@@ -6,6 +6,7 @@ import {
   UseGuards,
   Req,
   Get,
+  Delete,
 } from '@nestjs/common';
 import { WorkersService } from './workers.service';
 import { CreateWorkerDto } from './dto/create-worker.dto';
@@ -34,5 +35,29 @@ export class WorkersController {
   @Get()
   getWorkers(@Req() req: RequestWithUser, @Param('org_id') org_id: string) {
     return this.workersService.getWorkers(req, +org_id);
+  }
+
+  @UseGuards(AuthGuard)
+  @Get(':id')
+  getAWorker(
+    @Req() req: RequestWithUser,
+    @Param() params: { org_id: string; id: string },
+  ) {
+    return this.workersService.getAWorker(req, {
+      org_id: +params.org_id,
+      id: +params.id,
+    });
+  }
+
+  @UseGuards(AuthGuard)
+  @Delete(':id')
+  deleteAWorker(
+    @Req() req: RequestWithUser,
+    @Param() params: { org_id: string; id: string },
+  ) {
+    return this.workersService.deleteAWorker(req, {
+      org_id: +params.org_id,
+      id: +params.id,
+    });
   }
 }
