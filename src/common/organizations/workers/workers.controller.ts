@@ -50,7 +50,7 @@ export class WorkersController {
   }
 
   @UseGuards(AuthGuard)
-  @Delete(':id')
+  @Delete(':id/delete')
   deleteAWorker(
     @Req() req: RequestWithUser,
     @Param() params: { org_id: string; id: string },
