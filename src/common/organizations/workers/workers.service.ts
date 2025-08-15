@@ -36,7 +36,10 @@ export class WorkersService {
     );
 
     if (existing_worker) {
-      throw new HttpException('You already hired worker with the same account.', 404);
+      throw new HttpException(
+        'You already hired worker with the same account.',
+        404,
+      );
     }
 
     const { attached_types, role } = data;
@@ -103,5 +106,16 @@ export class WorkersService {
 
       return new_worker;
     }
+  }
+
+  async getWorkers(req: RequestWithUser, org_id: number) {
+    const user = req.user;
+    const workers = await this.prisma.worker.findMany({
+      where: { organization_id: org_id, organization: { owner_id: user.id } },
+    });
+    if (!workers) {
+      throw new HttpException('Internal server error', 404);
+    }
+    return workers;
   }
 }

@@ -1,4 +1,12 @@
-import { Controller, Post, Body, Param, UseGuards, Req } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Param,
+  UseGuards,
+  Req,
+  Get,
+} from '@nestjs/common';
 import { WorkersService } from './workers.service';
 import { CreateWorkerDto } from './dto/create-worker.dto';
 import { AuthGuard } from 'src/guards/auth/auth.guard';
@@ -20,5 +28,11 @@ export class WorkersController {
       { org_id: +params.org_id, vacancy_id: +params.vacancy_id },
       data,
     );
+  }
+
+  @UseGuards(AuthGuard)
+  @Get()
+  getWorkers(@Req() req: RequestWithUser, @Param('org_id') org_id: string) {
+    return this.workersService.getWorkers(req, +org_id);
   }
 }
