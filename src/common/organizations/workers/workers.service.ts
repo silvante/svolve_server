@@ -34,8 +34,9 @@ export class WorkersService {
     const existing_worker = organization.workers.find(
       (w) => w.worker_id === vacancy.user_id,
     );
+
     if (existing_worker) {
-      throw new HttpException('You already hired this worker', 404);
+      throw new HttpException('You already hired worker with the same account.', 404);
     }
 
     const { attached_types, role } = data;
