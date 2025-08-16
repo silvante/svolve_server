@@ -112,6 +112,14 @@ export class WorkersService {
     const user = req.user;
     const workers = await this.prisma.worker.findMany({
       where: { organization_id: org_id, organization: { owner_id: user.id } },
+      include: {
+        worker: true,
+        attached_types: {
+          include: {
+            type: true,
+          },
+        },
+      },
     });
     if (!workers) {
       throw new HttpException('Internal server error', 404);
@@ -129,6 +137,14 @@ export class WorkersService {
         id: params.id,
         organization_id: params.org_id,
         organization: { owner_id: user.id },
+      },
+      include: {
+        worker: true,
+        attached_types: {
+          include: {
+            type: true,
+          },
+        },
       },
     });
     if (!worker) {
