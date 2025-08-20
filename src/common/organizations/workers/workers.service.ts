@@ -185,9 +185,41 @@ export class WorkersService {
 
     const { attached_types, role } = data;
 
-    if (role === 'doctor') {
-      
+    let updateData: any = {};
+    if (role) {
+      updateData.role = role;
+
+      if (role === 'doctor') {
+        if (attached_types) {
+          updateData.attached_types = {
+            deleteMany: {}, // clear old
+            create: attached_types.map((id) => ({
+              type: { connect: { id } },
+            })),
+          };
+        }
+      } else {
+        // any non-doctor role → remove all types
+        updateData.attached_types = { deleteMany: {} };
+      }
     }
+
+    const updated_worker = await this.prisma.worker.update({
+      where: {
+        id: existing_worker.id,
+      },
+      data: updateData,
+      include: {
+        worker: true,
+        attached_types: {
+          include: {
+            type: true,
+          },
+        },
+      },
+    });
+
+    return updated_worker;
   }
 
   async deleteAWorker(
