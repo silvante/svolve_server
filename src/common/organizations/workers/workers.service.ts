@@ -173,7 +173,7 @@ export class WorkersService {
     }
 
     const existing_worker = organization.workers.find(
-      (w) => w.worker_id === params.id,
+      (w) => w.id === params.id,
     );
 
     if (!existing_worker) {
