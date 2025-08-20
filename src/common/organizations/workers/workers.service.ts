@@ -2,6 +2,7 @@ import { HttpException, Injectable } from '@nestjs/common';
 import { CreateWorkerDto } from './dto/create-worker.dto';
 import { RequestWithUser } from 'src/interfaces/request-with-user.interface';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { UpdateWorkerDto } from './dto/update-worker.dto';
 
 @Injectable()
 export class WorkersService {
@@ -151,6 +152,42 @@ export class WorkersService {
       throw new HttpException('Internal server error', 404);
     }
     return worker;
+  }
+
+  async updateWorker(
+    req: RequestWithUser,
+    params: { org_id: number; id: number },
+    data: UpdateWorkerDto,
+  ) {
+    const user = req.user;
+
+    const organization = await this.prisma.organization.findUnique({
+      where: { owner_id: user.id, id: params.org_id },
+      include: {
+        workers: true,
+      },
+    });
+
+    if (!organization) {
+      throw new HttpException('You do not own this organization', 404);
+    }
+
+    const existing_worker = organization.workers.find(
+      (w) => w.worker_id === params.id,
+    );
+
+    if (!existing_worker) {
+      throw new HttpException(
+        'You do not have this worker in your organization',
+        404,
+      );
+    }
+
+    const { attached_types, role } = data;
+
+    if (role === 'doctor') {
+      
+    }
   }
 
   async deleteAWorker(

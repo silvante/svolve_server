@@ -7,11 +7,13 @@ import {
   Req,
   Get,
   Delete,
+  Put,
 } from '@nestjs/common';
 import { WorkersService } from './workers.service';
 import { CreateWorkerDto } from './dto/create-worker.dto';
 import { AuthGuard } from 'src/guards/auth/auth.guard';
 import { RequestWithUser } from 'src/interfaces/request-with-user.interface';
+import { UpdateWorkerDto } from './dto/update-worker.dto';
 
 @Controller('organizations/:org_id/workers')
 export class WorkersController {
@@ -47,6 +49,20 @@ export class WorkersController {
       org_id: +params.org_id,
       id: +params.id,
     });
+  }
+
+  @UseGuards(AuthGuard)
+  @Put(':id/update')
+  updateWorker(
+    @Req() req: RequestWithUser,
+    @Param() params: { org_id: string; id: string },
+    @Body() data: UpdateWorkerDto,
+  ) {
+    return this.workersService.updateWorker(
+      req,
+      { org_id: +params.org_id, id: +params.id },
+      data,
+    );
   }
 
   @UseGuards(AuthGuard)
