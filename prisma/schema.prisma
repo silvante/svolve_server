@@ -62,10 +62,10 @@ model Worker {
 }
 
 model WorkerAttachedType {
-  id        Int    @id @default(autoincrement())
-  type      Type   @relation(fields: [type_id], references: [id])
+  id        Int  @id @default(autoincrement())
+  type      Type @relation(fields: [type_id], references: [id])
   type_id   Int
-  worker    Worker @relation(fields: [worker_id], references: [id])
+  worker    Worker @relation(fields: [worker_id], references: [id], onDelete: Cascade)
   worker_id Int
 }
 
