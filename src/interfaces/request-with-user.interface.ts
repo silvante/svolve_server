@@ -1,3 +1,4 @@
+import { Organization } from '@prisma/client';
 import { Request } from 'express';
 
 export interface RequestWithUser extends Request {
@@ -10,4 +11,6 @@ export interface RequestWithUser extends Request {
     provider: string;
     provider_id: string;
   };
+
+  organization: Organization;
 }
