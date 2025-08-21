@@ -9,16 +9,8 @@ import { UpdateClientDto } from './dto/update-client.dto';
 export class ClientsService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(req: RequestWithUser, org_id: number, data: CreateClientDto) {
-    const user = req.user;
-
-    const organization = await this.prisma.organization.findUnique({
-      where: { id: org_id, owner_id: user.id },
-    });
-
-    if (!organization) {
-      throw new HttpException('you do not own this organization', 404);
-    }
+  async create(req: RequestWithUser, data: CreateClientDto) {
+    const organization = req.organization;
 
     const { type_id, ...clientData } = data;
     const client = await this.prisma.client.create({
