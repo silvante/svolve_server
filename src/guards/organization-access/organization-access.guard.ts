@@ -4,6 +4,7 @@ import {
   HttpException,
   Injectable,
 } from '@nestjs/common';
+import { Organization } from '@prisma/client';
 import { RequestWithUser } from 'src/interfaces/request-with-user.interface';
 import { PrismaService } from 'src/prisma/prisma.service';
 
@@ -20,18 +21,12 @@ export class OrganizationAccessGuard implements CanActivate {
       throw new HttpException('Unauthorized', 401);
     }
 
-    let organization: any = null;
+    const where = unique_name ? { unique_name } : { id: Number(org_id) };
 
-    if (unique_name) {
-      organization = await this.prisma.organization.findUnique({
-        where: { unique_name: unique_name },
-        include: { workers: { select: { worker_id: true } } },
-      });
-    } else {
-      organization = await this.prisma.organization.findUnique({
-        where: { id: Number(org_id) },
-      });
-    }
+    const organization = await this.prisma.organization.findUnique({
+      where,
+      include: { workers: { select: { worker_id: true } } },
+    });
 
     if (!organization) {
       throw new HttpException('Organization not found', 404);
