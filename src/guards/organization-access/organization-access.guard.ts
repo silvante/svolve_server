@@ -25,7 +25,17 @@ export class OrganizationAccessGuard implements CanActivate {
 
     const organization = await this.prisma.organization.findUnique({
       where,
-      include: { workers: { select: { worker_id: true } } },
+      include: {
+        workers: {
+          select: {
+            worker_id: true,
+            role: true,
+            attached_types: {
+              select: { id: true },
+            },
+          },
+        },
+      },
     });
 
     if (!organization) {
@@ -34,11 +44,16 @@ export class OrganizationAccessGuard implements CanActivate {
 
     const isOwner = organization.owner_id === user.id;
     const isWorker = organization.workers.some((w) => w.worker_id === user.id);
+    const worker = organization.workers.find((w) => w.worker_id === user.id);
 
     if (!isOwner && !isWorker) {
       throw new HttpException('Forbidden', 403);
     }
+    if (!worker) {
+      throw new HttpException('worker is not defined', 403);
+    }
 
+    req.worker = worker;
     req.organization = organization;
 
     return true;

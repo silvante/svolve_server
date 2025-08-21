@@ -13,4 +13,12 @@ export interface RequestWithUser extends Request {
   };
 
   organization: Organization;
+
+  worker: {
+    worker_id: number;
+    role: string;
+    attached_types: {
+      id: number;
+    }[];
+  };
 }

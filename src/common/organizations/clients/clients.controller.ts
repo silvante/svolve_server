@@ -15,12 +15,13 @@ import { AuthGuard } from 'src/guards/auth/auth.guard';
 import { RequestWithUser } from 'src/interfaces/request-with-user.interface';
 import { UpdateClientDto } from './dto/update-client.dto';
 import { OrganizationAccessGuard } from 'src/guards/organization-access/organization-access.guard';
+import { ReceptionistAccessGuard } from 'src/guards/receptionist-access/receptionist-access.guard';
 
 @Controller('organizations/:org_id/clients')
 export class ClientsController {
   constructor(private readonly clientsService: ClientsService) {}
 
-  @UseGuards(AuthGuard, OrganizationAccessGuard)
+  @UseGuards(AuthGuard, OrganizationAccessGuard, ReceptionistAccessGuard)
   @Post('new')
   create(
     @Req() req: RequestWithUser,
