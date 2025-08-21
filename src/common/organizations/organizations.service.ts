@@ -71,17 +71,8 @@ export class OrganizationsService {
     return new_organization;
   }
 
-  async getOrganizationByUniqueName(req: RequestWithUser, unique_name: string) {
-    const user = req.user;
-    const organization = await this.prisma.organization.findUnique({
-      where: { unique_name: unique_name, owner_id: user.id },
-      include: {
-        banner: true,
-      },
-    });
-    if (!organization) {
-      throw new HttpException('Organization is not defined', 404);
-    }
+  async getOrganizationByUniqueName(req: RequestWithUser) {
+    const organization = req.organization;
     return organization;
   }
 

@@ -16,6 +16,7 @@ import { CreateOrganizationDto } from './dtos/create_organization.dto';
 import { ValidateOrganizationDto } from './dtos/validate.dto';
 import { UpdateOrganizationDto } from './dtos/update_organization.dto';
 import { UpdatePincodeDto } from './dtos/update_pincode.dto';
+import { OrganizationAccessGuard } from 'src/guards/organization-access/organization-access.guard';
 
 @Controller('organizations')
 export class OrganizationsController {
@@ -36,16 +37,10 @@ export class OrganizationsController {
     return this.organiztaionService.createOrganization(req, data);
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, OrganizationAccessGuard)
   @Get('/:unique_name')
-  getOrganizationById(
-    @Req() req: RequestWithUser,
-    @Param('unique_name') unique_name: string,
-  ) {
-    return this.organiztaionService.getOrganizationByUniqueName(
-      req,
-      unique_name,
-    );
+  getOrganizationById(@Req() req: RequestWithUser) {
+    return this.organiztaionService.getOrganizationByUniqueName(req);
   }
 
   @UseGuards(AuthGuard)
