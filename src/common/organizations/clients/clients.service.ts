@@ -37,40 +37,62 @@ export class ClientsService {
 
   async findTodayClients(req: RequestWithUser) {
     const organization = req.organization;
+    const worker = req.worker;
 
     const day_start = startOfDay(new Date());
     const day_end = endOfDay(new Date());
 
-    const clients = await this.prisma.client.findMany({
-      where: {
-        organization_id: organization.id,
+    let where: any = {};
+    if (worker && worker.role === 'doctor') {
+      const typeIds = worker.attached_types.map((at) => at.id);
+      where = {
+        organization: organization.id,
         created_at: {
           gte: day_start,
           lte: day_end,
         },
-      },
+        type_id: { in: typeIds },
+      };
+    } else {
+      where = {
+        organization: organization.id,
+        created_at: {
+          gte: day_start,
+          lte: day_end,
+        },
+      };
+    }
+
+    const clients = await this.prisma.client.findMany({
+      where: where,
       include: {
         type: true,
       },
     });
+
     if (!clients) {
       throw new HttpException('Server error, please try again later', 404);
     }
-    const types = await this.prisma.type.findMany({
-      where: { organization_id: organization.id },
-      include: {
-        _count: {
-          select: {
-            clients: true,
+    if (worker && worker.role === 'doctor') {
+      return {
+        clients: clients,
+      };
+    } else {
+      const types = await this.prisma.type.findMany({
+        where: { organization_id: organization.id },
+        include: {
+          _count: {
+            select: {
+              clients: true,
+            },
           },
         },
-      },
-    });
-
-    return {
-      clients: clients,
-      types: types,
-    };
+      });
+      return {
+        clients: clients,
+        types: types,
+      };
+    }
   }
 
   async checkClient(req: RequestWithUser, org_id: number, client_id: number) {

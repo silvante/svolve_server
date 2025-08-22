@@ -30,7 +30,7 @@ export class ClientsController {
     return this.clientsService.create(req, createClientDto);
   }
 
-  @UseGuards(AuthGuard, OrganizationAccessGuard, ReceptionistAccessGuard)
+  @UseGuards(AuthGuard, OrganizationAccessGuard)
   @Get('today')
   getTodaysClients(@Req() req: RequestWithUser) {
     return this.clientsService.findTodayClients(req);
