@@ -49,11 +49,10 @@ export class OrganizationAccessGuard implements CanActivate {
     if (!isOwner && !isWorker) {
       throw new HttpException('Forbidden', 403);
     }
-    if (!worker) {
-      throw new HttpException('worker is not defined', 403);
-    }
 
-    req.worker = worker;
+    if (worker) {
+      req.worker = worker;
+    }
     req.organization = organization;
 
     return true;

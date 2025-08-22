@@ -30,13 +30,10 @@ export class ClientsController {
     return this.clientsService.create(req, createClientDto);
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, OrganizationAccessGuard, ReceptionistAccessGuard)
   @Get('today')
-  getTodaysClients(
-    @Req() req: RequestWithUser,
-    @Param('org_id') org_id: string,
-  ) {
-    return this.clientsService.findTodayClients(req, +org_id);
+  getTodaysClients(@Req() req: RequestWithUser) {
+    return this.clientsService.findTodayClients(req);
   }
 
   @UseGuards(AuthGuard)

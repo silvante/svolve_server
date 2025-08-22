@@ -35,20 +35,15 @@ export class ClientsService {
     return client;
   }
 
-  async findTodayClients(req: RequestWithUser, org_id: number) {
-    const user = req.user;
-    const organization = await this.prisma.organization.findUnique({
-      where: { id: org_id, owner_id: user.id },
-    });
-    if (!organization) {
-      throw new HttpException('you do not own this organization', 404);
-    }
+  async findTodayClients(req: RequestWithUser) {
+    const organization = req.organization;
 
     const day_start = startOfDay(new Date());
     const day_end = endOfDay(new Date());
 
     const clients = await this.prisma.client.findMany({
       where: {
+        organization_id: organization.id,
         created_at: {
           gte: day_start,
           lte: day_end,
