@@ -98,14 +98,23 @@ export class ClientsService {
   async checkClient(req: RequestWithUser, client_id: number) {
     const org = req.organization;
     const worker = req.worker;
+    const typeIds = worker.attached_types.map((at) => at.id);
+    let where: any = {};
 
-    const where: any = {};
-
-    if (worker.role && worker.role === 'doctor') {
+    if (worker && worker.role === 'doctor') {
+      where = {
+        id: client_id,
+        organization_id: org.id,
+        type_id: {
+          in: typeIds,
+        },
+      };
+    } else {
+      where = { id: client_id, organization_id: org.id };
     }
 
     const updated = await this.prisma.client.update({
-      where: { id: client_id, organization_id: org.id },
+      where: where,
       data: {
         is_checked: true,
       },
@@ -115,7 +124,7 @@ export class ClientsService {
     });
 
     if (!updated) {
-      throw new HttpException('INternal server error', 404);
+      throw new HttpException('Internal server error', 404);
     }
 
     return {
