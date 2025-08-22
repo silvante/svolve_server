@@ -16,6 +16,7 @@ import { RequestWithUser } from 'src/interfaces/request-with-user.interface';
 import { UpdateClientDto } from './dto/update-client.dto';
 import { OrganizationAccessGuard } from 'src/guards/organization-access/organization-access.guard';
 import { ReceptionistAccessGuard } from 'src/guards/receptionist-access/receptionist-access.guard';
+import { DoctorAccessGuard } from 'src/guards/doctor-access/doctor-access.guard';
 
 @Controller('organizations/:org_id/clients')
 export class ClientsController {
@@ -36,14 +37,13 @@ export class ClientsController {
     return this.clientsService.findTodayClients(req);
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, OrganizationAccessGuard, DoctorAccessGuard)
   @Put('/:client_id/check')
   checkClient(
     @Req() req: RequestWithUser,
-    @Param('org_id') org_id: string,
     @Param('client_id') client_id: string,
   ) {
-    return this.clientsService.checkClient(req, +org_id, +client_id);
+    return this.clientsService.checkClient(req, +client_id);
   }
 
   @UseGuards(AuthGuard, OrganizationAccessGuard, ReceptionistAccessGuard)

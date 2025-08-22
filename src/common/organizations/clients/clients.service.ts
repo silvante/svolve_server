@@ -46,7 +46,7 @@ export class ClientsService {
     if (worker && worker.role === 'doctor') {
       const typeIds = worker.attached_types.map((at) => at.id);
       where = {
-        organization: organization.id,
+        organization_id: organization.id,
         created_at: {
           gte: day_start,
           lte: day_end,
@@ -55,7 +55,7 @@ export class ClientsService {
       };
     } else {
       where = {
-        organization: organization.id,
+        organization_id: organization.id,
         created_at: {
           gte: day_start,
           lte: day_end,
@@ -95,19 +95,17 @@ export class ClientsService {
     }
   }
 
-  async checkClient(req: RequestWithUser, org_id: number, client_id: number) {
-    const user = req.user;
+  async checkClient(req: RequestWithUser, client_id: number) {
+    const org = req.organization;
+    const worker = req.worker;
 
-    const org = await this.prisma.organization.findUnique({
-      where: { id: org_id, owner_id: user.id },
-    });
+    const where: any = {};
 
-    if (!org) {
-      throw new HttpException('you do not own this organization', 404);
+    if (worker.role && worker.role === 'doctor') {
     }
 
     const updated = await this.prisma.client.update({
-      where: { id: client_id, organization_id: org?.id },
+      where: { id: client_id, organization_id: org.id },
       data: {
         is_checked: true,
       },

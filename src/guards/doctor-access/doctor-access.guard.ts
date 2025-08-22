@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 import { RequestWithUser } from 'src/interfaces/request-with-user.interface';
 
 @Injectable()
-export class ReceptionistAccessGuard implements CanActivate {
+export class DoctorAccessGuard implements CanActivate {
   canActivate(
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
@@ -21,7 +21,7 @@ export class ReceptionistAccessGuard implements CanActivate {
       return true;
     }
 
-    if (worker && worker.role !== 'receptionist') {
+    if (worker && worker.role !== 'doctor') {
       throw new HttpException(
         'you should be receptionist or owner to use this feature',
         404,
