@@ -111,12 +111,12 @@ export class ClientsService {
 
   async updateClient(
     req: RequestWithUser,
-    params: { org_id: number; client_id: number },
+    client_id: number,
     data: UpdateClientDto,
   ) {
-    const user = req.user;
+    const organization = req.organization;
     const client = await this.prisma.client.findUnique({
-      where: { id: params.client_id, organization_id: params.org_id },
+      where: { id: client_id, organization_id: organization.id },
       include: {
         organization: true,
       },
@@ -127,10 +127,6 @@ export class ClientsService {
         'this organization does not own this client, or server error',
         404,
       );
-    }
-
-    if (client.organization.owner_id !== user.id) {
-      throw new HttpException('you do not own this organization', 404);
     }
 
     if (client.is_checked) {
@@ -159,13 +155,10 @@ export class ClientsService {
     return updated;
   }
 
-  async DeleteClients(
-    req: RequestWithUser,
-    params: { org_id: number; client_id: number },
-  ) {
-    const user = req.user;
+  async DeleteClients(req: RequestWithUser, client_id: number) {
+    const organization = req.organization;
     const client = await this.prisma.client.findUnique({
-      where: { id: params.client_id, organization_id: params.org_id },
+      where: { id: client_id, organization_id: organization.id },
       include: {
         organization: true,
       },
@@ -176,10 +169,6 @@ export class ClientsService {
         'this organization does not own this client, or server error',
         404,
       );
-    }
-
-    if (client.organization.owner_id !== user.id) {
-      throw new HttpException('you do not own this organization', 404);
     }
 
     if (client.is_checked) {

@@ -49,29 +49,22 @@ export class ClientsController {
     return this.clientsService.checkClient(req, +org_id, +client_id);
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, OrganizationAccessGuard, ReceptionistAccessGuard)
   @Put('/:client_id/update')
   updateClient(
     @Req() req: RequestWithUser,
-    @Param() params: { org_id: string; client_id: string },
+    @Param('client_id') client_id: string,
     @Body() data: UpdateClientDto,
   ) {
-    return this.clientsService.updateClient(
-      req,
-      { org_id: +params.org_id, client_id: +params.client_id },
-      data,
-    );
+    return this.clientsService.updateClient(req, +client_id, data);
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, OrganizationAccessGuard, ReceptionistAccessGuard)
   @Delete('/:client_id/delete')
   deleteClient(
     @Req() req: RequestWithUser,
-    @Param() params: { org_id: string; client_id: string },
+    @Param('client_id') client_id: string,
   ) {
-    return this.clientsService.DeleteClients(req, {
-      org_id: +params.org_id,
-      client_id: +params.client_id,
-    });
+    return this.clientsService.DeleteClients(req, +client_id);
   }
 }
