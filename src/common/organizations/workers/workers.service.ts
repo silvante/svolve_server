@@ -26,11 +26,28 @@ export class WorkersService {
     const vacancy = await this.prisma.vacancy.findUnique({
       where: { id: params.vacancy_id },
       include: {
-        user: true,
+        user: {
+          select: {
+            id: true,
+            works: true,
+          },
+        },
       },
     });
     if (!vacancy) {
       throw new HttpException('Vacancy not found', 404);
+    }
+    if (vacancy.user.works && vacancy.user.works.length > 0) {
+      throw new HttpException(
+        'This user already has a job, you can contact with him/her.',
+        402,
+      );
+    }
+    if (vacancy.user_id === user.id) {
+      throw new HttpException(
+        'This is your own account you can not hire yourself.',
+        402,
+      );
     }
     const existing_worker = organization.workers.find(
       (w) => w.worker_id === vacancy.user_id,
