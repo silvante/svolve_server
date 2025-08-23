@@ -48,7 +48,11 @@ export class UserService {
     const work = await this.prisma.worker.findFirst({
       where: { worker_id: user.id },
       include: {
-        organization: true,
+        organization: {
+          include: {
+            banner: true,
+          },
+        },
         worker: true,
       },
     });
