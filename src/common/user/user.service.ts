@@ -42,4 +42,16 @@ export class UserService {
     }
     return user;
   }
+
+  async getMyWork(req: RequestWithUser) {
+    const user = req.user;
+    const work = await this.prisma.worker.findFirst({
+      where: { worker_id: user.id },
+      include: {
+        organization: true,
+        worker: true,
+      },
+    });
+    return work;
+  }
 }

@@ -26,4 +26,10 @@ export class UserController {
   getUserById(@Param('id') id: string) {
     return this.userService.getUserById(+id);
   }
+
+  @UseGuards(AuthGuard)
+  @Get('/works')
+  getMyWorks(@Req() req: RequestWithUser) {
+    return this.userService.getMyWork(req);
+  }
 }
