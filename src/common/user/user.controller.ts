@@ -22,14 +22,14 @@ export class UserController {
     return this.userService.updateUser(req, data);
   }
 
-  @Get(':id')
-  getUserById(@Param('id') id: string) {
-    return this.userService.getUserById(+id);
-  }
-
   @UseGuards(AuthGuard)
   @Get('/works')
   getMyWorks(@Req() req: RequestWithUser) {
     return this.userService.getMyWork(req);
+  }
+
+  @Get(':id')
+  getUserById(@Param('id') id: string) {
+    return this.userService.getUserById(+id);
   }
 }

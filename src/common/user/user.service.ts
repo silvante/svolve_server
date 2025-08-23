@@ -56,6 +56,9 @@ export class UserService {
         worker: true,
       },
     });
+    if (!work) {
+      throw new HttpException('there is no work', 404);
+    }
     return work;
   }
 }
