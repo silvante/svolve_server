@@ -189,6 +189,7 @@ export class AuthService {
           username: u_username,
           email: github_user_data.email,
           provider_id: github_user_data.provider_id,
+          avatar: github_user_data.avatar,
           provider: github_user_data.provider,
         },
       });
@@ -241,6 +242,7 @@ export class AuthService {
           username: u_username,
           email: google_user_data.email,
           provider_id: google_user_data.provider_id,
+          avatar: google_user_data.avatar,
           provider: google_user_data.provider,
         },
       });
