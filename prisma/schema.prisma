@@ -39,7 +39,7 @@ model User {
 
 model Vacancy {
   id         Int      @id @default(autoincrement())
-  user       User     @relation(fields: [user_id], references: [id])
+  user       User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id    Int
   age        Int
   about      String
@@ -52,9 +52,9 @@ model Vacancy {
 
 model Worker {
   id              Int                  @id @default(autoincrement())
-  worker          User                 @relation(fields: [worker_id], references: [id])
+  worker          User                 @relation(fields: [worker_id], references: [id], onDelete: Cascade)
   worker_id       Int
-  organization    Organization         @relation(fields: [organization_id], references: [id])
+  organization    Organization         @relation(fields: [organization_id], references: [id], onDelete: Cascade)
   organization_id Int
   role            WorkerRoles          @default(receptionist)
   created_at      DateTime             @default(now())
@@ -62,8 +62,8 @@ model Worker {
 }
 
 model WorkerAttachedType {
-  id        Int  @id @default(autoincrement())
-  type      Type @relation(fields: [type_id], references: [id])
+  id        Int    @id @default(autoincrement())
+  type      Type   @relation(fields: [type_id], references: [id])
   type_id   Int
   worker    Worker @relation(fields: [worker_id], references: [id], onDelete: Cascade)
   worker_id Int
@@ -71,7 +71,7 @@ model WorkerAttachedType {
 
 model DefaultOrganization {
   id              Int          @id @default(autoincrement())
-  owner           User         @relation("user_default_organization", fields: [owner_id], references: [id])
+  owner           User         @relation("user_default_organization", fields: [owner_id], references: [id], onDelete: Cascade)
   owner_id        Int          @unique
   organization    Organization @relation(fields: [organization_id], references: [id])
   organization_id Int          @unique
@@ -87,7 +87,7 @@ model Organization {
   origin       String
   pincode      String
   owner_id     Int
-  owner        User                 @relation(fields: [owner_id], references: [id])
+  owner        User                 @relation(fields: [owner_id], references: [id], onDelete: Cascade)
   clients      Client[]
   types        Type[]
   created_at   DateTime             @default(now())
@@ -100,7 +100,7 @@ model Banner {
   id              Int          @id @default(autoincrement())
   original        String
   thumbnail       String
-  organization    Organization @relation(fields: [organization_id], references: [id])
+  organization    Organization @relation(fields: [organization_id], references: [id], onDelete: Cascade)
   organization_id Int          @unique
 }
 
