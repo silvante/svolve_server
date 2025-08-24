@@ -8,6 +8,7 @@ import * as bcrypt from 'bcrypt';
 import { SALT_RESULT } from 'src/constants';
 import { UpdateOrganizationDto } from './dtos/update_organization.dto';
 import { UpdatePincodeDto } from './dtos/update_pincode.dto';
+import { Organization } from '@prisma/client';
 
 @Injectable()
 export class OrganizationsService {
@@ -217,11 +218,23 @@ export class OrganizationsService {
 
   async MakeDefault(req: RequestWithUser, unique_name: string) {
     const user = req.user;
-    const org = req.organization
+    let org: Organization | null;
+
+    if (!req.organization) {
+      org = await this.prisma.organization.findUnique({
+        where: { unique_name: unique_name },
+      });
+    } else {
+      org = req.organization;
+    }
 
     const exisiting_DO = await this.prisma.defaultOrganization.findUnique({
       where: { owner_id: user.id },
     });
+
+    if (!org) {
+      throw new HttpException('you do not own this organization', 404);
+    }
 
     if (exisiting_DO) {
       await this.prisma.defaultOrganization.update({
