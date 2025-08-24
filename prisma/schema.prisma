@@ -74,25 +74,25 @@ model DefaultOrganization {
   owner           User         @relation("user_default_organization", fields: [owner_id], references: [id], onDelete: Cascade)
   owner_id        Int          @unique
   organization    Organization @relation(fields: [organization_id], references: [id])
-  organization_id Int          @unique
+  organization_id Int
 }
 
 model Organization {
-  id           Int                  @id @default(autoincrement())
+  id           Int                   @id @default(autoincrement())
   name         String
-  unique_name  String               @unique
+  unique_name  String                @unique
   description  String?
   banner       Banner?
   logo         String?
   origin       String
   pincode      String
   owner_id     Int
-  owner        User                 @relation(fields: [owner_id], references: [id], onDelete: Cascade)
+  owner        User                  @relation(fields: [owner_id], references: [id], onDelete: Cascade)
   clients      Client[]
   types        Type[]
-  created_at   DateTime             @default(now())
+  created_at   DateTime              @default(now())
   bannerId     Int?
-  default_user DefaultOrganization?
+  default_user DefaultOrganization[]
   workers      Worker[]
 }
 

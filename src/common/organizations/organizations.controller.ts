@@ -86,7 +86,7 @@ export class OrganizationsController {
     return this.organiztaionService.deleteOrganization(req, unique_name);
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, OrganizationAccessGuard)
   @Post('/:unique_name/setAsDefault')
   setAsDefault(
     @Req() req: RequestWithUser,

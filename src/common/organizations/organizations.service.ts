@@ -217,13 +217,7 @@ export class OrganizationsService {
 
   async MakeDefault(req: RequestWithUser, unique_name: string) {
     const user = req.user;
-    const org = await this.prisma.organization.findUnique({
-      where: { unique_name: unique_name, owner_id: user.id },
-    });
-
-    if (!org) {
-      throw new HttpException('You do not own this organization', 404);
-    }
+    const org = req.organization
 
     const exisiting_DO = await this.prisma.defaultOrganization.findUnique({
       where: { owner_id: user.id },
