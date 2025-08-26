@@ -31,7 +31,13 @@ export class OrganizationAccessGuard implements CanActivate {
             worker_id: true,
             role: true,
             attached_types: {
-              select: { id: true },
+              select: {
+                type: {
+                  select: {
+                    id: true,
+                  },
+                },
+              },
             },
           },
         },
@@ -42,9 +48,18 @@ export class OrganizationAccessGuard implements CanActivate {
       throw new HttpException('Organization not found', 404);
     }
 
-    const isOwner = organization.owner_id === user.id;
-    const isWorker = organization.workers.some((w) => w.worker_id === user.id);
-    const worker = organization.workers.find((w) => w.worker_id === user.id);
+    // flatten attached_types
+    const transformed = {
+      ...organization,
+      workers: organization.workers.map((worker) => ({
+        ...worker,
+        attached_types: worker.attached_types.map((a) => ({ id: a.type.id })),
+      })),
+    };
+
+    const isOwner = transformed.owner_id === user.id;
+    const isWorker = transformed.workers.some((w) => w.worker_id === user.id);
+    const worker = transformed.workers.find((w) => w.worker_id === user.id);
 
     if (!isOwner && !isWorker) {
       throw new HttpException('Forbidden', 403);
