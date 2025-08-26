@@ -98,10 +98,11 @@ export class ClientsService {
   async checkClient(req: RequestWithUser, client_id: number) {
     const org = req.organization;
     const worker = req.worker;
-    const typeIds = worker.attached_types.map((at) => at.id);
     let where: any = {};
 
     if (worker && worker.role === 'doctor') {
+      const typeIds = worker.attached_types.map((at) => at.id);
+
       where = {
         id: client_id,
         organization_id: org.id,
