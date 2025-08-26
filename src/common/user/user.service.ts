@@ -54,6 +54,11 @@ export class UserService {
           },
         },
         worker: true,
+        attached_types: {
+          include: {
+            type: true,
+          },
+        },
       },
     });
     if (!work) {
