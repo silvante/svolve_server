@@ -84,6 +84,7 @@ export class ClientsService {
           _count: {
             select: {
               clients: true,
+              attached_workers: true,
             },
           },
         },
