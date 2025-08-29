@@ -21,6 +21,7 @@ export class TypesService {
         _count: {
           select: {
             clients: true,
+            attached_workers: true,
           },
         },
       },
