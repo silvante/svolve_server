@@ -8,6 +8,7 @@ import {
   Get,
   Put,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { ClientsService } from './clients.service';
 import { CreateClientDto } from './dto/create-client.dto';
@@ -17,6 +18,7 @@ import { UpdateClientDto } from './dto/update-client.dto';
 import { OrganizationAccessGuard } from 'src/guards/organization-access/organization-access.guard';
 import { ReceptionistAccessGuard } from 'src/guards/receptionist-access/receptionist-access.guard';
 import { DoctorAccessGuard } from 'src/guards/doctor-access/doctor-access.guard';
+import { SearchClientParamsDto } from './dto/search-clients.dto';
 
 @Controller('organizations/:org_id/clients')
 export class ClientsController {
@@ -29,6 +31,12 @@ export class ClientsController {
     @Body() createClientDto: CreateClientDto,
   ) {
     return this.clientsService.create(req, createClientDto);
+  }
+
+  @UseGuards(AuthGuard)
+  @Get("search")
+  searchClients(@Req() req: RequestWithUser, @Query() query: SearchClientParamsDto) {
+    
   }
 
   @UseGuards(AuthGuard, OrganizationAccessGuard)
