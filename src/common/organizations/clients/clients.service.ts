@@ -215,13 +215,54 @@ export class ClientsService {
     const org = req.organization;
     const skip = (query.page - 1) * query.limit;
 
-    const [data, total] = new Promise.all([
-      this.prisma.client.findMany({where: {
-        organization_id: org.id
-      }})
-      this.prisma.client.findMany({where: {
-        organization_id: org.id
-      }})
-    ])
+    const [data, total] = await Promise.all([
+      this.prisma.client.findMany({
+        where: {
+          organization_id: org.id,
+          is_checked: true,
+          name: {
+            contains: query.name,
+            mode: 'insensitive',
+          },
+          surname: {
+            contains: query.surname,
+            mode: 'insensitive',
+          },
+          ...(query.born_in && { born_in: query.born_in }),
+          ...(query.type_id && { type_id: query.type_id }),
+        },
+        skip,
+        take: query.limit,
+        orderBy: { created_at: 'desc' },
+        include: {
+          type: true,
+        },
+      }),
+      this.prisma.client.count({
+        where: {
+          organization_id: org.id,
+          is_checked: true,
+          name: {
+            contains: query.name,
+            mode: 'insensitive',
+          },
+          surname: {
+            contains: query.surname,
+            mode: 'insensitive',
+          },
+          ...(query.born_in && { born_in: query.born_in }),
+          ...(query.type_id && { type_id: query.type_id }),
+        },
+      }),
+    ]);
+
+    return {
+      data,
+      meta: {
+        total: total,
+        page: query.page,
+        last_page: Math.ceil(total / query.limit),
+      },
+    };
   }
 }
