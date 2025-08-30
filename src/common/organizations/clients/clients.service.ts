@@ -212,6 +212,16 @@ export class ClientsService {
   }
 
   async searchClients(req: RequestWithUser, query: SearchClientParamsDto) {
-    const user = req.user;
+    const org = req.organization;
+    const skip = (query.page - 1) * query.limit;
+
+    const [data, total] = new Promise.all([
+      this.prisma.client.findMany({where: {
+        organization_id: org.id
+      }})
+      this.prisma.client.findMany({where: {
+        organization_id: org.id
+      }})
+    ])
   }
 }

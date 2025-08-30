@@ -19,6 +19,7 @@ import { OrganizationAccessGuard } from 'src/guards/organization-access/organiza
 import { ReceptionistAccessGuard } from 'src/guards/receptionist-access/receptionist-access.guard';
 import { DoctorAccessGuard } from 'src/guards/doctor-access/doctor-access.guard';
 import { SearchClientParamsDto } from './dto/search-clients.dto';
+import { OwnerAccessGuard } from 'src/guards/owner-access/owner-access.guard';
 
 @Controller('organizations/:org_id/clients')
 export class ClientsController {
@@ -33,10 +34,13 @@ export class ClientsController {
     return this.clientsService.create(req, createClientDto);
   }
 
-  @UseGuards(AuthGuard)
-  @Get("search")
-  searchClients(@Req() req: RequestWithUser, @Query() query: SearchClientParamsDto) {
-    
+  @UseGuards(AuthGuard, OrganizationAccessGuard, OwnerAccessGuard)
+  @Get('search')
+  searchClients(
+    @Req() req: RequestWithUser,
+    @Query() query: SearchClientParamsDto,
+  ) {
+    return this.clientsService.searchClients(req, query);
   }
 
   @UseGuards(AuthGuard, OrganizationAccessGuard)

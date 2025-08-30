@@ -1,15 +1,29 @@
-import { IsString } from 'class-validator';
+
+import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { Type } from 'class-transformer';
 
 export class SearchClientParamsDto {
   @IsString()
-  name: string;
+  name: string = '';
 
   @IsString()
-  surname: string;
+  surname: string = '';
 
-  @IsString()
-  born_in: string;
+  @IsOptional()
+  @Type(() => Number)
+  @IsNumber()
+  born_in?: number;
 
-  @IsString()
-  type_id: string;
+  @IsOptional()
+  @Type(() => Number)
+  @IsNumber()
+  type_id?: number;
+
+  @Type(() => Number)
+  @IsNumber()
+  page: number = 1;
+
+  @Type(() => Number)
+  @IsNumber()
+  limit: number = 10;
 }
