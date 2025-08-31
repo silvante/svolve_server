@@ -5,6 +5,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { startOfDay, endOfDay } from 'date-fns';
 import { UpdateClientDto } from './dto/update-client.dto';
 import { SearchClientParamsDto } from './dto/search-clients.dto';
+import * as dayjs from 'dayjs';
 
 @Injectable()
 export class ClientsService {
@@ -274,10 +275,17 @@ export class ClientsService {
     const org = req.organization;
     const skip = (query.page - 1) * query.limit;
 
+    const start = dayjs(date).startOf('day').toDate();
+    const end = dayjs(date).endOf('day').toDate();
+
     const [data, total] = await Promise.all([
       this.prisma.client.findMany({
         where: {
           organization_id: org.id,
+          created_at: {
+            gte: start,
+            lte: end,
+          },
         },
         skip,
         take: query.limit,
@@ -288,8 +296,21 @@ export class ClientsService {
       this.prisma.client.count({
         where: {
           organization_id: org.id,
+          created_at: {
+            gte: start,
+            lte: end,
+          },
         },
       }),
     ]);
+
+    return {
+      data,
+      meta: {
+        total: total,
+        page: query.page,
+        last_page: Math.ceil(total / query.limit),
+      },
+    };
   }
 }
