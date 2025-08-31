@@ -265,4 +265,31 @@ export class ClientsService {
       },
     };
   }
+
+  async getClientsByDate(
+    req: RequestWithUser,
+    date: string,
+    query: { page: number; limit: number },
+  ) {
+    const org = req.organization;
+    const skip = (query.page - 1) * query.limit;
+
+    const [data, total] = await Promise.all([
+      this.prisma.client.findMany({
+        where: {
+          organization_id: org.id,
+        },
+        skip,
+        take: query.limit,
+        include: {
+          type: true,
+        },
+      }),
+      this.prisma.client.count({
+        where: {
+          organization_id: org.id,
+        },
+      }),
+    ]);
+  }
 }

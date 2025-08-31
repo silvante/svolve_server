@@ -76,4 +76,18 @@ export class ClientsController {
   ) {
     return this.clientsService.DeleteClients(req, +client_id);
   }
+
+  @UseGuards(AuthGuard, OrganizationAccessGuard, OwnerAccessGuard)
+  @Get('date/:date')
+  getByDate(
+    @Req() req: RequestWithUser,
+    @Param('date') date: string,
+    @Query('page') page: string = '1',
+    @Query('limit') limit: string = '10',
+  ) {
+    return this.clientsService.getClientsByDate(req, date, {
+      page: +page,
+      limit: +limit,
+    });
+  }
 }
