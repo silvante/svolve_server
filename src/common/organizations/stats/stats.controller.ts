@@ -14,4 +14,9 @@ export class StatsController {
   getClientsStats(@Req() req: RequestWithUser) {
     return this.statsService.getClientsStats(req);
   }
+  @UseGuards(AuthGuard, OrganizationAccessGuard, OwnerAccessGuard)
+  @Get('/revenue')
+  getRevenueStats(@Req() req: RequestWithUser) {
+    return this.statsService.getRevenueStats(req);
+  }
 }

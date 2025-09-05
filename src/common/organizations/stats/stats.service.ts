@@ -55,7 +55,9 @@ export class StatsService {
     return { clientsByMonth, clientsByDay, clientsByType };
   }
 
-  async getRevenueStats(orgId: number) {
+  async getRevenueStats(req: RequestWithUser) {
+    const org = req.organization;
+    const orgId = org.id;
     // 1. Revenue by Type
     const revenueByType = await this.prisma.client.groupBy({
       by: ['type_id'],
