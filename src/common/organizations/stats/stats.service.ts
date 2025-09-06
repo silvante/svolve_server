@@ -59,11 +59,18 @@ export class StatsService {
     const org = req.organization;
     const orgId = org.id;
     // 1. Revenue by Type
-    const revenueByType = await this.prisma.client.groupBy({
-      by: ['type_id'],
-      _sum: { price: true },
-      where: { organization_id: orgId },
-    });
+    const revenueByType = await this.prisma.$queryRaw<
+      { type_id: number; type_name: string; total: number }[]
+    >`
+      SELECT c."type_id",
+             t."name" as type_name,
+             COALESCE(SUM(c.price), 0)::int as total
+      FROM "Client" c
+      JOIN "Type" t ON t.id = c.type_id
+      WHERE c.organization_id = ${orgId}
+      GROUP BY c.type_id, t.name
+      ORDER BY total DESC;
+    `;
 
     // 2. Revenue by Month (always 12 months of before current month)
     const revenueByMonth = await this.prisma.$queryRaw<
