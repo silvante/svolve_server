@@ -46,11 +46,18 @@ export class StatsService {
     `;
 
     // Clients by Type
-    const clientsByType = await this.prisma.client.groupBy({
-      by: ['type_id'],
-      _count: { id: true },
-      where: { organization_id: orgId },
-    });
+    const clientsByType = await this.prisma.$queryRaw<
+      { type_id: number; type_name: string; total: number }[]
+    >`
+      SELECT c."type_id",
+             t."name" as type_name,
+             COUNT(c.id)::int as total
+      FROM "Client" c
+      JOIN "Type" t ON t.id = c.type_id
+      WHERE c.organization_id = ${orgId}
+      GROUP BY c.type_id, t.name
+      ORDER BY total DESC;
+    `;
 
     return { clientsByMonth, clientsByDay, clientsByType };
   }
