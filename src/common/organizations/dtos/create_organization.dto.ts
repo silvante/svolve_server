@@ -9,11 +9,11 @@ export class CreateOrganizationDto {
   description: string;
 
   @IsOptional()
-  banner: OrgBanner;
+  banner?: OrgBanner;
 
   @IsOptional()
   @IsString()
-  logo: string;
+  logo?: string;
 
   @IsString()
   pincode: string;

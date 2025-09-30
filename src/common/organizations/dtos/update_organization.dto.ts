@@ -9,9 +9,9 @@ export class UpdateOrganizationDto {
   description: string;
 
   @IsOptional()
-  banner: OrgBanner;
+  banner?: OrgBanner;
 
   @IsOptional()
   @IsString()
-  logo: string;
+  logo?: string;
 }
