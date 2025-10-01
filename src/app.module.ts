@@ -11,6 +11,7 @@ import { OrganizationsModule } from './common/organizations/organizations.module
 import { UploadsModule } from './common/uploads/uploads.module';
 import { UserModule } from './common/user/user.module';
 import { VacancyModule } from './common/vacancy/vacancy.module';
+import { SubscriptionModule } from './common/subscription/subscription.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { VacancyModule } from './common/vacancy/vacancy.module';
     UploadsModule,
     UserModule,
     VacancyModule,
+    SubscriptionModule,
   ],
   controllers: [AppController],
   providers: [AppService],

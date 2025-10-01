@@ -22,12 +22,12 @@ export class AuthGuard implements CanActivate {
     try {
       const user_data = this.jwt.verify(token);
       if (user_data.action !== 'access') {
-        throw new HttpException('invalid access token', 404);
+        throw new HttpException('invalid access token', 408);
       }
       request['user'] = user_data;
       return true;
     } catch (error) {
-      throw new HttpException('Authentication required', 404);
+      throw new HttpException('Authentication required', 408);
     }
   }
 }
