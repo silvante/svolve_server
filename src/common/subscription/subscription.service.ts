@@ -22,12 +22,19 @@ export class SubscriptionService {
         data: {
           type: 'checkouts',
           attributes: {
-            product_id: process.env.PAYMENT_PRODUCT_ID,
             checkout_data: {
               email: user.email,
               custom: {
-                organization_id: org.id,
+                organization_id: String(org.id),
               },
+            },
+          },
+          relationships: {
+            store: {
+              data: { type: 'stores', id: process.env.PAYMENT_STORE_ID },
+            },
+            variant: {
+              data: { type: 'variants', id: process.env.PAYMENT_VARIANT_ID },
             },
           },
         },
@@ -35,6 +42,7 @@ export class SubscriptionService {
     });
 
     const checkout = await response.json();
+
     return {
       organization: org,
       url: checkout.data.attributes.url,
