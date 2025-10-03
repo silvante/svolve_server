@@ -96,7 +96,6 @@ model Organization {
   workers             Worker[]
   // subscription
   is_vip              Boolean               @default(false)
-  is_active           Boolean               @default(false)
   subscription_id     String                @default("not_subscribed")
   subscription_status String                @default("not_subscribed")
   renews_at           DateTime              @default(now())
