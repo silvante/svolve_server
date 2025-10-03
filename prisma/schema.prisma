@@ -78,22 +78,29 @@ model DefaultOrganization {
 }
 
 model Organization {
-  id           Int                   @id @default(autoincrement())
-  name         String
-  unique_name  String                @unique
-  description  String?
-  banner       Banner?
-  logo         String?
-  origin       String
-  pincode      String
-  owner_id     Int
-  owner        User                  @relation(fields: [owner_id], references: [id], onDelete: Cascade)
-  clients      Client[]
-  types        Type[]
-  created_at   DateTime              @default(now())
-  bannerId     Int?
-  default_user DefaultOrganization[]
-  workers      Worker[]
+  id                  Int                   @id @default(autoincrement())
+  name                String
+  unique_name         String                @unique
+  description         String?
+  banner              Banner?
+  logo                String?
+  origin              String
+  pincode             String
+  owner_id            Int
+  owner               User                  @relation(fields: [owner_id], references: [id], onDelete: Cascade)
+  clients             Client[]
+  types               Type[]
+  created_at          DateTime              @default(now())
+  bannerId            Int?
+  default_user        DefaultOrganization[]
+  workers             Worker[]
+  // subscription
+  is_vip              Boolean               @default(false)
+  is_active           Boolean               @default(false)
+  subscription_id     String                @default("not_subscribed")
+  subscription_status String                @default("not_subscribed")
+  renews_at           DateTime              @default(now())
+  subscribed_at       DateTime              @default(now())
 }
 
 model Banner {
