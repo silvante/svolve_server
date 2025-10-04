@@ -4,7 +4,6 @@ import {
   HttpException,
   Injectable,
 } from '@nestjs/common';
-import { Organization } from '@prisma/client';
 import { RequestWithUser } from 'src/interfaces/request-with-user.interface';
 import { PrismaService } from 'src/prisma/prisma.service';
 
@@ -47,6 +46,8 @@ export class OrganizationAccessGuard implements CanActivate {
     if (!organization) {
       throw new HttpException('Organization not found', 404);
     }
+
+    // Put the payment validation logic here in the future
 
     // flatten attached_types
     const transformed = {
