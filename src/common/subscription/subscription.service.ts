@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { RequestWithUser } from 'src/interfaces/request-with-user.interface';
 import { PrismaService } from 'src/prisma/prisma.service';
 
@@ -6,9 +6,15 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class SubscriptionService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async generateCheckout(req: RequestWithUser) {
-    const org = req.organization;
+  async generateCheckout(req: RequestWithUser, unique_name: string) {
     const user = req.user;
+    const org = await this.prisma.organization.findUnique({
+      where: { unique_name, owner_id: user.id },
+    });
+
+    if (!org) {
+      throw new HttpException('Organization not found', 404);
+    }
 
     const url: string = String(process.env.PAYMENT_URL);
 

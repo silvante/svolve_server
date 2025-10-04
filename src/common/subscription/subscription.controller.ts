@@ -1,18 +1,27 @@
-import { Controller, Get, Post, Req, Res, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  Post,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { SubscriptionService } from './subscription.service';
-import { OrganizationAccessGuard } from 'src/guards/organization-access/organization-access.guard';
 import { RequestWithUser } from 'src/interfaces/request-with-user.interface';
 import { AuthGuard } from 'src/guards/auth/auth.guard';
-import { OwnerAccessGuard } from 'src/guards/owner-access/owner-access.guard';
 
 @Controller('subscription')
 export class SubscriptionController {
   constructor(private readonly subscriptionService: SubscriptionService) {}
 
-  @UseGuards(AuthGuard, OrganizationAccessGuard, OwnerAccessGuard)
+  @UseGuards(AuthGuard)
   @Get(':unique_name/checkout')
-  generateCheckout(@Req() req: RequestWithUser) {
-    return this.subscriptionService.generateCheckout(req);
+  generateCheckout(
+    @Req() req: RequestWithUser,
+    @Param('unique_name') unique_name: string,
+  ) {
+    return this.subscriptionService.generateCheckout(req, unique_name);
   }
 
   @Post('webhook')
