@@ -4,12 +4,16 @@ import {
   HttpException,
   Injectable,
 } from '@nestjs/common';
+import { SubscriptionCheckerService } from 'src/global/subscription_checker/subscription_checker.service';
 import { RequestWithUser } from 'src/interfaces/request-with-user.interface';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class OrganizationAccessGuard implements CanActivate {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly sub_checker: SubscriptionCheckerService,
+  ) {}
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const req: RequestWithUser = context.switchToHttp().getRequest();
     const user = req.user;
@@ -47,7 +51,8 @@ export class OrganizationAccessGuard implements CanActivate {
       throw new HttpException('Organization not found', 404);
     }
 
-    // Put the payment validation logic here in the future
+    // checking for subscription
+    this.sub_checker.track(organization);
 
     // flatten attached_types
     const transformed = {

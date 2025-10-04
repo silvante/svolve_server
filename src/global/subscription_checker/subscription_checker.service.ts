@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { Organization } from '@prisma/client';
 import { isAfter, isBefore } from 'date-fns';
 
@@ -11,10 +11,15 @@ export class SubscriptionCheckerService {
 
     const now = new Date();
 
-    return (
+    const is_subscribed =
       org.subscription_status === 'active' &&
       isBefore(org.subscribed_at, now) &&
-      isAfter(org.renews_at, now)
-    );
+      isAfter(org.renews_at, now);
+
+    if (!is_subscribed) {
+      throw new HttpException('organization_is_not_subscribed', 407);
+    }
+
+    return is_subscribed;
   }
 }
