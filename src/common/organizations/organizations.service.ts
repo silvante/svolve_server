@@ -35,6 +35,11 @@ export class OrganizationsService {
     const { pincode, banner, ...form_data } = data;
     const hashed_pincode = bcrypt.hashSync(pincode, SALT_RESULT);
     const unique_name = await this.uniquename.generate(data.name);
+
+    // renews at
+    const now = new Date();
+    const renews_at = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
+
     const new_organization = await this.prisma.organization.create({
       data: {
         ...form_data,
@@ -53,6 +58,9 @@ export class OrganizationsService {
             },
           },
         }),
+        // giving users +week free trial
+        renews_at,
+        subscription_status: 'active',
       },
       include: {
         banner: true,
