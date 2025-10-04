@@ -7,16 +7,13 @@ import { UpdateTypeDto } from './dto/update-type.dto';
 export class TypesService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async findAll(org_id: number, req: RequestWithUser) {
-    const user = req.user;
-    const org = await this.prisma.organization.findUnique({
-      where: { owner_id: user.id, id: org_id },
-    });
+  async findAll(req: RequestWithUser) {
+    const org = req.organization;
     if (!org) {
       throw new HttpException('you do not own this organization', 404);
     }
     const types = await this.prisma.type.findMany({
-      where: { organization_id: org_id },
+      where: { organization_id: org.id },
       include: {
         _count: {
           select: {
@@ -32,15 +29,8 @@ export class TypesService {
     return types;
   }
 
-  async createType(req: any, org_id: number, data: any) {
-    const user = req.user;
-    const organization = await this.prisma.organization.findUnique({
-      where: { id: org_id, owner_id: user.id },
-    });
-
-    if (!organization) {
-      throw new HttpException('You do not own this organization', 404);
-    }
+  async createType(req: any, data: any) {
+    const organization = req.organization;
 
     const type = await this.prisma.type.create({
       data: {
@@ -61,22 +51,11 @@ export class TypesService {
     return type;
   }
 
-  async updateType(
-    req: RequestWithUser,
-    params: { org_id: number; type_id: number },
-    data: UpdateTypeDto,
-  ) {
-    const user = req.user;
-    const org = await this.prisma.organization.findUnique({
-      where: { id: params.org_id, owner_id: user.id },
-    });
-
-    if (!org) {
-      throw new HttpException('You do not own this organization', 404);
-    }
+  async updateType(req: RequestWithUser, type_id: number, data: UpdateTypeDto) {
+    const org = req.organization;
 
     const updated = await this.prisma.type.update({
-      where: { id: params.type_id, organization_id: org.id },
+      where: { id: type_id, organization_id: org.id },
       data: data,
       include: {
         _count: {
@@ -97,14 +76,11 @@ export class TypesService {
     return updated;
   }
 
-  async deleteType(
-    req: RequestWithUser,
-    params: { org_id: number; type_id: number },
-  ) {
-    const user = req.user;
+  async deleteType(req: RequestWithUser, type_id: number) {
+    const org = req.organization;
 
     const type = await this.prisma.type.findUnique({
-      where: { id: params.type_id, organization_id: params.org_id },
+      where: { id: type_id, organization_id: org.id },
       include: {
         organization: true,
         _count: {
@@ -115,8 +91,8 @@ export class TypesService {
       },
     });
 
-    if (type?.organization?.owner_id !== user.id) {
-      throw new HttpException('You do not own this organization', 404);
+    if (!type) {
+      throw new HttpException('Type not found', 404);
     }
 
     if (type._count.clients > 0) {
