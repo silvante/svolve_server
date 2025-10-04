@@ -9,12 +9,14 @@ import { SALT_RESULT } from 'src/constants';
 import { UpdateOrganizationDto } from './dtos/update_organization.dto';
 import { UpdatePincodeDto } from './dtos/update_pincode.dto';
 import { Organization } from '@prisma/client';
+import { SubscriptionCheckerService } from 'src/global/subscription_checker/subscription_checker.service';
 
 @Injectable()
 export class OrganizationsService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly uniquename: GenerateUniquenameService,
+    private readonly sub_checker: SubscriptionCheckerService,
   ) {}
 
   async getOrganizations(req: RequestWithUser) {
@@ -97,11 +99,12 @@ export class OrganizationsService {
       },
     });
 
-    // Put the payment validation logic here in the future
-
     if (!organization) {
       throw new HttpException('You do not own this organization', 404);
     }
+
+    // checking for subscription
+    this.sub_checker.track(organization);
 
     const is_pincode_valid = bcrypt.compareSync(
       data.pincode,
