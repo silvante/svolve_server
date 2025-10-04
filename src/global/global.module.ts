@@ -7,6 +7,7 @@ import { AccessTokenService } from './access_token/access_token.service';
 import { AppJwtModule } from 'src/jwt/jwt.module';
 import { GenerateUniquenameService } from './generate_uniquename/generate_uniquename.service';
 import { NameSanitizerService } from './name_sanitizer/name_sanitizer.service';
+import { SubscriptionCheckerService } from './subscription_checker/subscription_checker.service';
 
 @Module({
   imports: [PrismaModule, AppJwtModule],
@@ -17,6 +18,7 @@ import { NameSanitizerService } from './name_sanitizer/name_sanitizer.service';
     AccessTokenService,
     GenerateUniquenameService,
     NameSanitizerService,
+    SubscriptionCheckerService,
   ],
   exports: [
     GenerateUsernameService,
@@ -25,6 +27,7 @@ import { NameSanitizerService } from './name_sanitizer/name_sanitizer.service';
     AccessTokenService,
     GenerateUniquenameService,
     NameSanitizerService,
+    SubscriptionCheckerService,
   ],
 })
 export class GlobalModule {}
