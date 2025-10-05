@@ -27,7 +27,7 @@ export class TypesController {
     return this.typesService.findAll(req);
   }
 
-  @UseGuards(AuthGuard, OwnerAccessGuard, OwnerAccessGuard)
+  @UseGuards(AuthGuard, OrganizationAccessGuard, OwnerAccessGuard)
   @Post('/new')
   createType(@Req() req: RequestWithUser, @Body() data: CreateTypeDto) {
     return this.typesService.createType(req, data);
