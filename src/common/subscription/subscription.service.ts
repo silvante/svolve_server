@@ -1,4 +1,5 @@
 import { HttpException, Injectable } from '@nestjs/common';
+import { isAfter, isBefore } from 'date-fns';
 import { RequestWithUser } from 'src/interfaces/request-with-user.interface';
 import { PrismaService } from 'src/prisma/prisma.service';
 
@@ -14,6 +15,19 @@ export class SubscriptionService {
 
     if (!org) {
       throw new HttpException('Organization not found', 404);
+    }
+
+    // subscription cheking
+
+    const now = new Date();
+
+    const is_subscribed =
+      org.subscription_status === 'active' &&
+      isBefore(org.subscribed_at, now) &&
+      isAfter(org.renews_at, now);
+
+    if (is_subscribed) {
+      return { subscription: true, organization: org, url: null };
     }
 
     const url: string = String(process.env.PAYMENT_URL);
@@ -51,6 +65,7 @@ export class SubscriptionService {
 
     return {
       organization: org,
+      subscription: false,
       url: checkout.data.attributes.url,
     };
   }
