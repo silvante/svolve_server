@@ -18,7 +18,6 @@ export class SubscriptionService {
     }
 
     // subscription cheking
-
     const now = new Date();
 
     const is_subscribed =
@@ -27,7 +26,12 @@ export class SubscriptionService {
       isAfter(org.renews_at, now);
 
     if (is_subscribed) {
-      return { subscription: true, organization: org, url: null };
+      return {
+        subscription: true,
+        organization: org,
+        url: null,
+        is_vip: org.is_vip,
+      };
     }
 
     const url: string = String(process.env.PAYMENT_URL);
@@ -67,6 +71,7 @@ export class SubscriptionService {
       organization: org,
       subscription: false,
       url: checkout.data.attributes.url,
+      is_vip: org.is_vip,
     };
   }
 }
