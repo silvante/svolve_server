@@ -30,7 +30,6 @@ export class SubscriptionService {
         subscription: true,
         organization: org,
         url: null,
-        is_vip: org.is_vip,
       };
     }
 
@@ -71,7 +70,6 @@ export class SubscriptionService {
       organization: org,
       subscription: false,
       url: checkout.data.attributes.url,
-      is_vip: org.is_vip,
     };
   }
 }
