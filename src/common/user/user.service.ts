@@ -2,10 +2,14 @@ import { HttpException, Injectable } from '@nestjs/common';
 import { RequestWithUser } from 'src/interfaces/request-with-user.interface';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UpdateUserDTO } from './dtos/update-user.dto';
+import { SubscriptionCheckerService } from 'src/global/subscription_checker/subscription_checker.service';
 
 @Injectable()
 export class UserService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly sub_checker: SubscriptionCheckerService,
+  ) {}
 
   async updateUser(req: RequestWithUser, data: UpdateUserDTO) {
     const user = req.user;
@@ -64,6 +68,10 @@ export class UserService {
     if (!work) {
       throw new HttpException('there is no work', 404);
     }
+
+    // checking for subscription
+
+    this.sub_checker.track(work.organization);
     return work;
   }
 }
