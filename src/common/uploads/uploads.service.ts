@@ -5,6 +5,7 @@ import { RequestWithUser } from 'src/interfaces/request-with-user.interface';
 import { randomUUID } from 'crypto';
 import * as sharp from 'sharp';
 import { NameSanitizerService } from 'src/global/name_sanitizer/name_sanitizer.service';
+import axios from 'axios';
 
 @Injectable()
 export class UploadsService {
@@ -40,6 +41,7 @@ export class UploadsService {
     const folder = 'avatars';
     const filename = this.sanitizer.sanitize(file.originalname);
     const key = `${folder}/${user.username}-${randomUUID()}-${filename}`;
+    const cdn_domain = `${this.storage_zone}.b-cdn.net`;
 
     let optimisedBuffer: Buffer;
 
@@ -55,16 +57,27 @@ export class UploadsService {
     const mimetype =
       file.mimetype === 'image/svg+xml' ? 'image/svg+xml' : 'image/webp';
 
-    const command = new PutObjectCommand({
-      Bucket: this.bucket_name,
-      Key: key.endsWith('.webp') ? key.replace(/\.[^.]+$/, '.webp') : key,
-      Body: optimisedBuffer,
-      ContentType: mimetype,
-    });
+    // const command = new PutObjectCommand({
+    //   Bucket: this.bucket_name,
+    //   Key: key.endsWith('.webp') ? key.replace(/\.[^.]+$/, '.webp') : key,
+    //   Body: optimisedBuffer,
+    //   ContentType: mimetype,
+    // });
 
-    await this.s3.send(command);
+    // await this.s3.send(command);
 
-    return `https://${this.bucket_name}.s3.amazonaws.com/${command.input.Key}`;
+    await axios.put(
+      `https://${this.storage_zone}.storage.bunnycdn.com/${key}`,
+      optimisedBuffer,
+      {
+        headers: {
+          AccessKey: this.storage_key,
+          'Content-Type': mimetype,
+        },
+      },
+    );
+
+    return `https://${cdn_domain}/${key}`;
   }
 
   async uploadBanner(req: RequestWithUser, file: Express.Multer.File) {
