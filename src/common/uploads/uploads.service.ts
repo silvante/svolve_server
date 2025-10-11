@@ -70,7 +70,7 @@ export class UploadsService {
     // await this.s3.send(command);
 
     await axios.put(
-      `https://${this.storage_zone}.storage.bunnycdn.com/${validKey}`,
+      `https://storage.bunnycdn.com/${this.storage_zone}/${validKey}`,
       optimisedBuffer,
       {
         headers: {
@@ -140,7 +140,7 @@ export class UploadsService {
     // };
 
     await axios.put(
-      `https://${this.storage_zone}.storage.bunnycdn.com/${valid_original_key}`,
+      `https://storage.bunnycdn.com/${this.storage_zone}/${valid_original_key}`,
       optimisedOriginalBuffer,
       {
         headers: {
@@ -151,7 +151,7 @@ export class UploadsService {
     );
 
     await axios.put(
-      `https://${this.storage_zone}.storage.bunnycdn.com/${valid_thumbnail_key}`,
+      `https://storage.bunnycdn.com/${this.storage_zone}/${valid_thumbnail_key}`,
       optimisedThumbnailBuffer,
       {
         headers: {
@@ -201,7 +201,7 @@ export class UploadsService {
     // await this.s3.send(command);
 
     await axios.put(
-      `https://${this.storage_zone}.storage.bunnycdn.com/${validKey}`,
+      `https://storage.bunnycdn.com/${this.storage_zone}/${validKey}`,
       optimisedBuffer,
       {
         headers: {
