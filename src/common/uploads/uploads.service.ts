@@ -9,8 +9,8 @@ import axios from 'axios';
 
 @Injectable()
 export class UploadsService {
-  private s3: S3Client;
-  private bucket_name: string;
+  // private s3: S3Client;
+  // private bucket_name: string;
   private storage_zone: string;
   private storage_key: string;
 
@@ -18,17 +18,17 @@ export class UploadsService {
     private configService: ConfigService,
     private readonly sanitizer: NameSanitizerService,
   ) {
-    this.s3 = new S3Client({
-      region: this.configService.get<string>('AWS_S3_REGION', ''),
-      credentials: {
-        accessKeyId: this.configService.get<string>('AWS_S3_ACCESS_KEY', ''),
-        secretAccessKey: this.configService.get<string>(
-          'AWS_S3_SECRET_KEY',
-          '',
-        ),
-      },
-    });
-    this.bucket_name = this.configService.get<string>('AWS_S3_BUCKET_NAME', '');
+    // this.s3 = new S3Client({
+    //   region: this.configService.get<string>('AWS_S3_REGION', ''),
+    //   credentials: {
+    //     accessKeyId: this.configService.get<string>('AWS_S3_ACCESS_KEY', ''),
+    //     secretAccessKey: this.configService.get<string>(
+    //       'AWS_S3_SECRET_KEY',
+    //       '',
+    //     ),
+    //   },
+    // });
+    // this.bucket_name = this.configService.get<string>('AWS_S3_BUCKET_NAME', '');
     this.storage_zone = this.configService.get<string>(
       'BUNNY_STORAGE_ZONE',
       '',
@@ -89,6 +89,7 @@ export class UploadsService {
     const filename = this.sanitizer.sanitize(file.originalname);
     const original_key = `${folder}/${user.username}-${randomUUID()}-1280-${filename}`;
     const thumbnail_key = `${folder}/${user.username}-${randomUUID()}-480-${filename}`;
+    const cdn_domain = `${this.storage_zone}.b-cdn.net`;
 
     let optimisedOriginalBuffer: Buffer;
     let optimisedThumbnailBuffer: Buffer;
@@ -109,31 +110,60 @@ export class UploadsService {
 
     const mimetype =
       file.mimetype === 'image/svg+xml' ? 'image/svg+xml' : 'image/webp';
+    const valid_original_key = original_key.endsWith('.webp')
+      ? original_key.replace(/\.[^.]+$/, '.webp')
+      : original_key;
+    const valid_thumbnail_key = thumbnail_key.endsWith('.webp')
+      ? thumbnail_key.replace(/\.[^.]+$/, '.webp')
+      : thumbnail_key;
 
-    const command_orinal = new PutObjectCommand({
-      Bucket: this.bucket_name,
-      Key: original_key.endsWith('.webp')
-        ? original_key.replace(/\.[^.]+$/, '.webp')
-        : original_key,
-      Body: optimisedOriginalBuffer,
-      ContentType: mimetype,
-    });
+    // const command_orinal = new PutObjectCommand({
+    //   Bucket: this.bucket_name,
+    //   Key: valid_original_key,
+    //   Body: optimisedOriginalBuffer,
+    //   ContentType: mimetype,
+    // });
 
-    const command_thumbnail = new PutObjectCommand({
-      Bucket: this.bucket_name,
-      Key: thumbnail_key.endsWith('.webp')
-        ? thumbnail_key.replace(/\.[^.]+$/, '.webp')
-        : thumbnail_key,
-      Body: optimisedThumbnailBuffer,
-      ContentType: mimetype,
-    });
+    // const command_thumbnail = new PutObjectCommand({
+    //   Bucket: this.bucket_name,
+    //   Key: valid_thumbnail_key,
+    //   Body: optimisedThumbnailBuffer,
+    //   ContentType: mimetype,
+    // });
 
-    await this.s3.send(command_orinal);
-    await this.s3.send(command_thumbnail);
+    // await this.s3.send(command_orinal);
+    // await this.s3.send(command_thumbnail);
+
+    // return {
+    //   original: `https://${this.bucket_name}.s3.amazonaws.com/${command_orinal.input.Key}`,
+    //   thumbnail: `https://${this.bucket_name}.s3.amazonaws.com/${command_thumbnail.input.Key}`,
+    // };
+
+    await axios.put(
+      `https://${this.storage_zone}.storage.bunnycdn.com/${valid_original_key}`,
+      optimisedOriginalBuffer,
+      {
+        headers: {
+          AccessKey: this.storage_key,
+          'Content-Type': mimetype,
+        },
+      },
+    );
+
+    await axios.put(
+      `https://${this.storage_zone}.storage.bunnycdn.com/${valid_thumbnail_key}`,
+      optimisedThumbnailBuffer,
+      {
+        headers: {
+          AccessKey: this.storage_key,
+          'Content-Type': mimetype,
+        },
+      },
+    );
 
     return {
-      original: `https://${this.bucket_name}.s3.amazonaws.com/${command_orinal.input.Key}`,
-      thumbnail: `https://${this.bucket_name}.s3.amazonaws.com/${command_thumbnail.input.Key}`,
+      original: `https://${cdn_domain}/${valid_original_key}`,
+      thumbnail: `https://${cdn_domain}/${valid_thumbnail_key}`,
     };
   }
 
