@@ -56,6 +56,9 @@ export class UploadsService {
 
     const mimetype =
       file.mimetype === 'image/svg+xml' ? 'image/svg+xml' : 'image/webp';
+    const validKey = key.endsWith('.webp')
+      ? key.replace(/\.[^.]+$/, '.webp')
+      : key;
 
     // const command = new PutObjectCommand({
     //   Bucket: this.bucket_name,
@@ -67,7 +70,7 @@ export class UploadsService {
     // await this.s3.send(command);
 
     await axios.put(
-      `https://${this.storage_zone}.storage.bunnycdn.com/${key}`,
+      `https://${this.storage_zone}.storage.bunnycdn.com/${validKey}`,
       optimisedBuffer,
       {
         headers: {
@@ -153,10 +156,13 @@ export class UploadsService {
 
     const mimetype =
       file.mimetype === 'image/svg+xml' ? 'image/svg+xml' : 'image/webp';
+    const validKey = key.endsWith('.webp')
+      ? key.replace(/\.[^.]+$/, '.webp')
+      : key;
 
     const command = new PutObjectCommand({
       Bucket: this.bucket_name,
-      Key: key.endsWith('.webp') ? key.replace(/\.[^.]+$/, '.webp') : key,
+      Key: validKey,
       Body: optimisedBuffer,
       ContentType: mimetype,
     });
