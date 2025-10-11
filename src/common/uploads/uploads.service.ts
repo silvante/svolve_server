@@ -80,7 +80,7 @@ export class UploadsService {
       },
     );
 
-    return `https://${cdn_domain}/${key}`;
+    return `https://${cdn_domain}/${validKey}`;
   }
 
   async uploadBanner(req: RequestWithUser, file: Express.Multer.File) {
@@ -142,6 +142,7 @@ export class UploadsService {
     const folder = 'logos';
     const filename = this.sanitizer.sanitize(file.originalname);
     const key = `${folder}/${user.username}-${randomUUID()}-${filename}`;
+    const cdn_domain = `${this.storage_zone}.b-cdn.net`;
 
     let optimisedBuffer: Buffer;
 
@@ -160,15 +161,26 @@ export class UploadsService {
       ? key.replace(/\.[^.]+$/, '.webp')
       : key;
 
-    const command = new PutObjectCommand({
-      Bucket: this.bucket_name,
-      Key: validKey,
-      Body: optimisedBuffer,
-      ContentType: mimetype,
-    });
+    // const command = new PutObjectCommand({
+    //   Bucket: this.bucket_name,
+    //   Key: validKey,
+    //   Body: optimisedBuffer,
+    //   ContentType: mimetype,
+    // });
 
-    await this.s3.send(command);
+    // await this.s3.send(command);
 
-    return `https://${this.bucket_name}.s3.amazonaws.com/${command.input.Key}`;
+    await axios.put(
+      `https://${this.storage_zone}.storage.bunnycdn.com/${validKey}`,
+      optimisedBuffer,
+      {
+        headers: {
+          AccessKey: this.storage_key,
+          'Content-Type': mimetype,
+        },
+      },
+    );
+
+    return `https://${cdn_domain}/${validKey}`;
   }
 }
