@@ -10,6 +10,8 @@ import { NameSanitizerService } from 'src/global/name_sanitizer/name_sanitizer.s
 export class UploadsService {
   private s3: S3Client;
   private bucket_name: string;
+  private storage_zone: string;
+  private storage_key: string;
 
   constructor(
     private configService: ConfigService,
@@ -26,6 +28,11 @@ export class UploadsService {
       },
     });
     this.bucket_name = this.configService.get<string>('AWS_S3_BUCKET_NAME', '');
+    this.storage_zone = this.configService.get<string>(
+      'BUNNY_STORAGE_ZONE',
+      '',
+    );
+    this.storage_key = this.configService.get<string>('BUNNY_STORAGE_KEY', '');
   }
 
   async uploadAvatar(req: RequestWithUser, file: Express.Multer.File) {
@@ -41,16 +48,18 @@ export class UploadsService {
     } else {
       optimisedBuffer = await sharp(file.buffer)
         .resize({ width: 400, height: 400 })
-        .toFormat('webp', { quality: 50 })
+        .toFormat('webp', { quality: 40 })
         .toBuffer();
     }
+
+    const mimetype =
+      file.mimetype === 'image/svg+xml' ? 'image/svg+xml' : 'image/webp';
 
     const command = new PutObjectCommand({
       Bucket: this.bucket_name,
       Key: key.endsWith('.webp') ? key.replace(/\.[^.]+$/, '.webp') : key,
       Body: optimisedBuffer,
-      ContentType:
-        file.mimetype === 'image/svg+xml' ? 'image/svg+xml' : 'image/webp',
+      ContentType: mimetype,
     });
 
     await this.s3.send(command);
