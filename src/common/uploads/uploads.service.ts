@@ -104,14 +104,16 @@ export class UploadsService {
         .toBuffer();
     }
 
+    const mimetype =
+      file.mimetype === 'image/svg+xml' ? 'image/svg+xml' : 'image/webp';
+
     const command_orinal = new PutObjectCommand({
       Bucket: this.bucket_name,
       Key: original_key.endsWith('.webp')
         ? original_key.replace(/\.[^.]+$/, '.webp')
         : original_key,
       Body: optimisedOriginalBuffer,
-      ContentType:
-        file.mimetype === 'image/svg+xml' ? 'image/svg+xml' : 'image/webp',
+      ContentType: mimetype,
     });
 
     const command_thumbnail = new PutObjectCommand({
@@ -120,8 +122,7 @@ export class UploadsService {
         ? thumbnail_key.replace(/\.[^.]+$/, '.webp')
         : thumbnail_key,
       Body: optimisedThumbnailBuffer,
-      ContentType:
-        file.mimetype === 'image/svg+xml' ? 'image/svg+xml' : 'image/webp',
+      ContentType: mimetype,
     });
 
     await this.s3.send(command_orinal);
@@ -150,12 +151,14 @@ export class UploadsService {
         .toBuffer();
     }
 
+    const mimetype =
+      file.mimetype === 'image/svg+xml' ? 'image/svg+xml' : 'image/webp';
+
     const command = new PutObjectCommand({
       Bucket: this.bucket_name,
       Key: key.endsWith('.webp') ? key.replace(/\.[^.]+$/, '.webp') : key,
       Body: optimisedBuffer,
-      ContentType:
-        file.mimetype === 'image/svg+xml' ? 'image/svg+xml' : 'image/webp',
+      ContentType: mimetype,
     });
 
     await this.s3.send(command);
