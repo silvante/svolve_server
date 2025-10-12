@@ -110,7 +110,6 @@ export class SubscriptionService {
         });
         break;
     }
-    console.log(event);
 
     return res.sendStatus(200);
   }
