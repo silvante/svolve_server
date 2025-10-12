@@ -10,6 +10,7 @@ import {
 import { SubscriptionService } from './subscription.service';
 import { RequestWithUser } from 'src/interfaces/request-with-user.interface';
 import { AuthGuard } from 'src/guards/auth/auth.guard';
+import { Request, Response } from 'express';
 
 @Controller('subscription')
 export class SubscriptionController {
@@ -25,5 +26,7 @@ export class SubscriptionController {
   }
 
   @Post('webhook')
-  madeLemonade(@Req() req: Request, @Res() res: Response) {}
+  madeLemonade(@Req() req: Request, @Res() res: Response) {
+    return this.subscriptionService.Webhook(req, res);
+  }
 }

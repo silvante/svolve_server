@@ -59,7 +59,7 @@ export class OrganizationsService {
           },
         }),
         // giving users +week free trial
-        renews_at,
+        // renews_at,
         subscription_status: 'active',
       },
       include: {
