@@ -4,6 +4,6 @@ import { Injectable } from '@nestjs/common';
 export class AppService {
   getHello(): string {
     console.log('Got new request! :)');
-    return 'Svolve is the word came from -Solve and -Evolve!';
+    return 'Svolve is the word came from --Solve and --Evolve!';
   }
 }
