@@ -4,12 +4,13 @@ import { Injectable } from '@nestjs/common';
 export class SocialAuthResponceService {
   respond(messages: any) {
     const str = JSON.stringify(messages);
+    const url = process.env.FRONT_ORIGIN;
 
     return `
         <html>
           <body>
             <script>
-              window.opener.postMessage(${str}, "http://localhost:3000");
+              window.opener.postMessage(${str}, "${url}");
               window.close();
             </script>
           </body>
