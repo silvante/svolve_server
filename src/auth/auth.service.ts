@@ -10,6 +10,7 @@ import { SocialAuthResponceService } from 'src/global/social_auth_responce/socia
 import { AccessTokenService } from 'src/global/access_token/access_token.service';
 import { ResetTokenService } from 'src/global/reset_token/reset_token.service';
 import { VerifyMailService } from 'src/mailers/verify_mail/verify_mail.service';
+import { MagicLinkGeneratorService } from 'src/global/magic_link_generator/magic_link_generator.service';
 
 @Injectable()
 export class AuthService {
@@ -21,6 +22,7 @@ export class AuthService {
     private access_token: AccessTokenService,
     private reset_token: ResetTokenService,
     private verify_mail: VerifyMailService,
+    private magic_link: MagicLinkGeneratorService,
   ) {}
 
   async registerUser(data: RegisterDto) {
@@ -52,7 +54,7 @@ export class AuthService {
       },
       { expiresIn: '15m' },
     );
-    const magic_link = `${process.env.FRONT_ORIGIN}/verification/?token=${verify_token}`;
+    const magic_link = this.magic_link.generate(verify_token);
 
     // sending mail
     this.verify_mail.send(data.email, magic_link);
@@ -87,7 +89,7 @@ export class AuthService {
       },
       { expiresIn: '15m' },
     );
-    const magic_link = `${process.env.FRONT_ORIGIN}/verification/?token=${verify_token}`;
+    const magic_link = this.magic_link.generate(verify_token);
     // sending mail
     this.verify_mail.send(data.email, magic_link);
 
