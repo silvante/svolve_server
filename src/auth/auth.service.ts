@@ -171,11 +171,9 @@ export class AuthService {
     });
 
     if (!existing_user && existing_email) {
-      return res.send(
-        this.window_responder.respond({
-          is_ok: false,
-          message: `provider of ${existing_email.email} is ${existing_email.provider}, please use ${existing_email.provider} to register`,
-        }),
+      const error_message = `provider of ${existing_email.email} is ${existing_email.provider}, please use ${existing_email.provider} to register`;
+      return res.redirect(
+        `${process.env.FRONT_ORIGIN}/signup/?error=${error_message}`,
       );
     }
 
@@ -224,11 +222,9 @@ export class AuthService {
     });
 
     if (!existing_user && existing_email) {
-      return res.send(
-        this.window_responder.respond({
-          is_ok: false,
-          message: `provider of ${existing_email.email} is ${existing_email.provider}, please use ${existing_email.provider} to register`,
-        }),
+      const error_message = `provider of ${existing_email.email} is ${existing_email.provider}, please use ${existing_email.provider} to register`;
+      return res.redirect(
+        `${process.env.FRONT_ORIGIN}/signup/?error=${error_message}`,
       );
     }
 
