@@ -175,7 +175,7 @@ export class AuthService {
     if (!existing_user && existing_email) {
       const error_message = `provider of ${existing_email.email} is ${existing_email.provider}, please use ${existing_email.provider} to register`;
       return res.redirect(
-        `${process.env.FRONT_ORIGIN}/signup/?error=${error_message}`,
+        `${process.env.FRONT_ORIGIN}/signin/?error=${error_message}`,
       );
     }
 
@@ -193,23 +193,26 @@ export class AuthService {
           provider: github_user_data.provider,
         },
       });
-      const access_token = this.access_token.generate(new_user);
-      const reset_token = this.reset_token.generate(new_user);
-      res.send(
-        this.window_responder.respond({
-          access_token: access_token,
-          reset_token: reset_token,
-        }),
+      const verify_token = this.jwt.sign(
+        {
+          email: new_user.email,
+          method: 'signin',
+        },
+        { expiresIn: '15m' },
       );
+      const magic_link = this.magic_link.generate(verify_token);
+
+      res.redirect(magic_link);
     } else {
-      const access_token = this.access_token.generate(existing_user);
-      const reset_token = this.reset_token.generate(existing_user);
-      res.send(
-        this.window_responder.respond({
-          access_token: access_token,
-          reset_token: reset_token,
-        }),
+      const verify_token = this.jwt.sign(
+        {
+          email: existing_user.email,
+          method: 'signin',
+        },
+        { expiresIn: '15m' },
       );
+      const magic_link = this.magic_link.generate(verify_token);
+      res.redirect(magic_link);
     }
   }
 
@@ -226,7 +229,7 @@ export class AuthService {
     if (!existing_user && existing_email) {
       const error_message = `provider of ${existing_email.email} is ${existing_email.provider}, please use ${existing_email.provider} to register`;
       return res.redirect(
-        `${process.env.FRONT_ORIGIN}/signup/?error=${error_message}`,
+        `${process.env.FRONT_ORIGIN}/signin/?error=${error_message}`,
       );
     }
 
@@ -244,23 +247,26 @@ export class AuthService {
           provider: google_user_data.provider,
         },
       });
-      const access_token = this.access_token.generate(new_user);
-      const reset_token = this.reset_token.generate(new_user);
-      res.send(
-        this.window_responder.respond({
-          access_token: access_token,
-          reset_token: reset_token,
-        }),
+      const verify_token = this.jwt.sign(
+        {
+          email: new_user.email,
+          method: 'signin',
+        },
+        { expiresIn: '15m' },
       );
+      const magic_link = this.magic_link.generate(verify_token);
+
+      res.redirect(magic_link);
     } else {
-      const access_token = this.access_token.generate(existing_user);
-      const reset_token = this.reset_token.generate(existing_user);
-      res.send(
-        this.window_responder.respond({
-          access_token: access_token,
-          reset_token: reset_token,
-        }),
+      const verify_token = this.jwt.sign(
+        {
+          email: existing_user.email,
+          method: 'signin',
+        },
+        { expiresIn: '15m' },
       );
+      const magic_link = this.magic_link.generate(verify_token);
+      res.redirect(magic_link);
     }
   }
 
