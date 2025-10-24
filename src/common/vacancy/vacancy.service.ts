@@ -3,6 +3,7 @@ import { CreateVacancyDto } from './dto/create-vacancy.dto';
 import { UpdateVacancyDto } from './dto/update-vacancy.dto';
 import { RequestWithUser } from 'src/interfaces/request-with-user.interface';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { WorkerRoles } from '@prisma/client';
 
 @Injectable()
 export class VacancyService {
@@ -94,7 +95,7 @@ export class VacancyService {
   async search(
     origin: string,
     query: string,
-    role: string | null,
+    role: WorkerRoles | null,
     job: string | null,
     page: number,
     limit: number,
@@ -109,6 +110,13 @@ export class VacancyService {
             contains: query,
             mode: 'insensitive',
           },
+          ...(role && { role: role }),
+          ...(job && {
+            job: {
+              contains: job,
+              mode: 'insensitive',
+            },
+          }),
         },
         skip,
         take: limit,

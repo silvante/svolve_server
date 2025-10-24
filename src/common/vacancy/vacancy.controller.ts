@@ -15,6 +15,7 @@ import { CreateVacancyDto } from './dto/create-vacancy.dto';
 import { UpdateVacancyDto } from './dto/update-vacancy.dto';
 import { AuthGuard } from 'src/guards/auth/auth.guard';
 import { RequestWithUser } from 'src/interfaces/request-with-user.interface';
+import { WorkerRoles } from '@prisma/client';
 
 @Controller('vacancy')
 export class VacancyController {
@@ -24,7 +25,7 @@ export class VacancyController {
   searchVacancyes(
     @Query('origin') origin: string = 'andijon',
     @Query('q') q: string = '',
-    @Query('role') role: string | null = null,
+    @Query('role') role: WorkerRoles | null = null,
     @Query('job') job: string | null = null,
     @Query('page') page: string = '1',
     @Query('limit') limit: string = '10',
