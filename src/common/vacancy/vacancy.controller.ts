@@ -24,10 +24,19 @@ export class VacancyController {
   searchVacancyes(
     @Query('origin') origin: string = 'andijon',
     @Query('q') q: string = '',
+    @Query('role') role: string | null = null,
+    @Query('job') job: string | null = null,
     @Query('page') page: string = '1',
     @Query('limit') limit: string = '10',
   ) {
-    return this.vacancyService.search(origin, q, Number(page), Number(limit));
+    return this.vacancyService.search(
+      origin,
+      q,
+      role,
+      job,
+      Number(page),
+      Number(limit),
+    );
   }
 
   @UseGuards(AuthGuard)

@@ -91,7 +91,14 @@ export class VacancyService {
     };
   }
 
-  async search(origin: string, query: string, page: number, limit: number) {
+  async search(
+    origin: string,
+    query: string,
+    role: string | null,
+    job: string | null,
+    page: number,
+    limit: number,
+  ) {
     const skip = (page - 1) * limit;
 
     const [data, total] = await Promise.all([

@@ -45,6 +45,7 @@ model Vacancy {
   about      String
   origin     String
   job        String
+  role WorkerRoles @default(receptionist)
   name       String
   contact    String
   created_at DateTime @default(now())
