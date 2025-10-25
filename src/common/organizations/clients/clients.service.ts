@@ -125,6 +125,7 @@ export class ClientsService {
       where: where,
       data: {
         is_checked: true,
+        diagnosis,
       },
       include: {
         type: true,
