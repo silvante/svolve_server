@@ -38,17 +38,17 @@ model User {
 }
 
 model Vacancy {
-  id         Int      @id @default(autoincrement())
-  user       User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  id         Int         @id @default(autoincrement())
+  user       User        @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id    Int
   age        Int
   about      String
   origin     String
   job        String
-  role WorkerRoles @default(receptionist)
+  role       WorkerRoles @default(receptionist)
   name       String
   contact    String
-  created_at DateTime @default(now())
+  created_at DateTime    @default(now())
 }
 
 model Worker {
@@ -124,6 +124,8 @@ model Client {
   organization    Organization @relation(fields: [organization_id], references: [id])
   organization_id Int
   created_at      DateTime     @default(now())
+  // adter check
+  diagnosis       String?
 }
 
 model Type {

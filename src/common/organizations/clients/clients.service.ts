@@ -98,7 +98,11 @@ export class ClientsService {
     }
   }
 
-  async checkClient(req: RequestWithUser, client_id: number) {
+  async checkClient(
+    req: RequestWithUser,
+    diagnosis: string,
+    client_id: number,
+  ) {
     const org = req.organization;
     const worker = req.worker;
     let where: any = {};

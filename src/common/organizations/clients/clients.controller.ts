@@ -53,9 +53,10 @@ export class ClientsController {
   @Put('/:client_id/check')
   checkClient(
     @Req() req: RequestWithUser,
+    @Body('diagnosis') diagnosis: string,
     @Param('client_id') client_id: string,
   ) {
-    return this.clientsService.checkClient(req, +client_id);
+    return this.clientsService.checkClient(req, diagnosis, +client_id);
   }
 
   @UseGuards(AuthGuard, OrganizationAccessGuard, ReceptionistAccessGuard)
