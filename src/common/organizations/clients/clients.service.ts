@@ -116,6 +116,7 @@ export class ClientsService {
         type_id: {
           in: typeIds,
         },
+        is_checked: false,
       };
     } else {
       where = { id: client_id, organization_id: org.id };
