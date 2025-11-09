@@ -38,7 +38,7 @@ export class OrganizationsService {
 
     // renews at
     const now = new Date();
-    const renews_at = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
+    const renews_at = new Date(now.getTime() + 14 * 24 * 60 * 60 * 1000);
 
     const new_organization = await this.prisma.organization.create({
       data: {
@@ -58,7 +58,7 @@ export class OrganizationsService {
             },
           },
         }),
-        // giving users +week free trial
+        // giving users +2week free trial
         renews_at,
         subscription_status: 'active',
       },
