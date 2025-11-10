@@ -88,7 +88,7 @@ export class SubscriptionService {
             renews_at: event.data.attributes.renews_at,
           },
         });
-        console.log(`Subscription created! organization id: ${org_id}`);
+        console.log(`=> subscription created! organization id: ${org_id}`);
         break;
       case 'subscription_payment_success':
         const ORG_ID = Number(event.meta.custom_data.organization_id);
@@ -99,7 +99,7 @@ export class SubscriptionService {
             subscription_status: 'active',
           },
         });
-        console.log(`Subscription success! organization id: ${ORG_ID}`);
+        console.log(`=> subscription success! organization id: ${ORG_ID}`);
         break;
       case 'subscription_expired':
         const orgId = Number(event.meta.custom_data.organization_id);
@@ -110,7 +110,7 @@ export class SubscriptionService {
             subscription_status: 'expired',
           },
         });
-        console.log(`Subscription expired! organization id: ${orgId}`);
+        console.log(`=> subscription expired! organization id: ${orgId}`);
         break;
       default:
         const ident = Number(event.meta.custom_data.organization_id);
@@ -121,7 +121,7 @@ export class SubscriptionService {
             subscription_status: 'failed',
           },
         });
-        console.log(`Subscription failed! organization id: ${ident}`);
+        console.log(`=> subscription failed! organization id: ${ident}`);
         break;
     }
 
