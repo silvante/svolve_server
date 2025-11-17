@@ -12,6 +12,7 @@ import { UploadsModule } from './common/uploads/uploads.module';
 import { UserModule } from './common/user/user.module';
 import { VacancyModule } from './common/vacancy/vacancy.module';
 import { SubscriptionModule } from './common/subscription/subscription.module';
+import { AdminModule } from './admin/admin.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { SubscriptionModule } from './common/subscription/subscription.module';
     UserModule,
     VacancyModule,
     SubscriptionModule,
+    AdminModule,
   ],
   controllers: [AppController],
   providers: [AppService],
