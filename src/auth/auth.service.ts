@@ -6,7 +6,6 @@ import { GenerateUsernameService } from 'src/global/generate_username/generate_u
 import { LoginDto } from './dtos/login.dto';
 import { RequestWithUser } from 'src/interfaces/request-with-user.interface';
 import { Response } from 'express';
-import { SocialAuthResponceService } from 'src/global/social_auth_responce/social_auth_responce.service';
 import { AccessTokenService } from 'src/global/access_token/access_token.service';
 import { ResetTokenService } from 'src/global/reset_token/reset_token.service';
 import { VerifyMailService } from 'src/mailers/verify_mail/verify_mail.service';
@@ -18,7 +17,6 @@ export class AuthService {
     private prisma: PrismaService,
     private jwt: JwtService,
     private unique_username: GenerateUsernameService,
-    private window_responder: SocialAuthResponceService,
     private access_token: AccessTokenService,
     private reset_token: ResetTokenService,
     private verify_mail: VerifyMailService,

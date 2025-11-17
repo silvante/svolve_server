@@ -4,7 +4,8 @@ import { AdminService } from './admin.service';
 import { AppJwtModule } from 'src/jwt/jwt.module';
 
 @Module({
-  controllers: [AdminController, AppJwtModule],
-  providers: [AdminService]
+  imports: [AppJwtModule],
+  controllers: [AdminController],
+  providers: [AdminService],
 })
 export class AdminModule {}
