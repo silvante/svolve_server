@@ -7,6 +7,6 @@ export class AdminController {
 
   @Post('auth')
   adminAuthenticate(@Body('password') password: string) {
-    return this.adminAuthenticate(password);
+    return this.adminService.authenticate(password);
   }
 }

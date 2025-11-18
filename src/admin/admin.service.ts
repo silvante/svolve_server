@@ -5,7 +5,7 @@ import { JwtService } from '@nestjs/jwt';
 export class AdminService {
   constructor(private readonly jwt: JwtService) {}
 
-  async adminAuthenticate(password: string) {
+  async authenticate(password: string) {
     const ap = process.env.ADMIN_PASSWORD;
     const secret = String(ap);
 
