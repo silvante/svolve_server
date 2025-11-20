@@ -35,6 +35,8 @@ export class SubscriptionService {
     }
 
     const url: string = String(process.env.PAYMENT_URL);
+    const success_url = `${process.env.FRONT_ORIGIN}/org/${org.unique_name}/subscription/success`;
+    const cancel_url = `${process.env.FRONT_ORIGIN}/panel`;
 
     const response = await fetch(url, {
       method: 'POST',
@@ -52,6 +54,8 @@ export class SubscriptionService {
                 organization_id: String(org.id),
               },
             },
+            success_url: success_url,
+            cancel_url: cancel_url,
           },
           relationships: {
             store: {
