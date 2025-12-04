@@ -36,8 +36,8 @@ export class SubscriptionService {
 
     const url: string = String(process.env.PAYMENT_URL);
     const success_url = `${process.env.FRONT_ORIGIN}/org/${org.unique_name}/subscription/success`;
-    // const cancel_url = `${process.env.FRONT_ORIGIN}/panel`;
 
+    // sending req
     const response = await fetch(url, {
       method: 'POST',
       headers: {
@@ -55,16 +55,9 @@ export class SubscriptionService {
                 organization_id: String(org.id),
               },
             },
-            // checkout_options: [
-            //   {
-            //     success_url: success_url,
-            //     cancel_url: cancel_url,
-            //   }
-            // ],
             product_options: {
               name: `"${org.name}" oylik to'lo'vi`,
               redirect_url: success_url,
-              // receipt_button_text: "Platformaga qaytish"
             }
           },
           relationships: {
