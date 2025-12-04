@@ -6,7 +6,7 @@ import { Request, Response } from 'express';
 
 @Injectable()
 export class SubscriptionService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) { }
 
   async generateCheckout(req: RequestWithUser, unique_name: string) {
     const user = req.user;
@@ -36,13 +36,14 @@ export class SubscriptionService {
 
     const url: string = String(process.env.PAYMENT_URL);
     const success_url = `${process.env.FRONT_ORIGIN}/org/${org.unique_name}/subscription/success`;
-    const cancel_url = `${process.env.FRONT_ORIGIN}/panel`;
+    // const cancel_url = `${process.env.FRONT_ORIGIN}/panel`;
 
     const response = await fetch(url, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${process.env.PAYMENT_API_KEY}`,
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/vnd.api+json',
+        Accept: 'application/vnd.api+json',
       },
       body: JSON.stringify({
         data: {
@@ -54,8 +55,17 @@ export class SubscriptionService {
                 organization_id: String(org.id),
               },
             },
-            success_url: success_url,
-            cancel_url: cancel_url,
+            // checkout_options: [
+            //   {
+            //     success_url: success_url,
+            //     cancel_url: cancel_url,
+            //   }
+            // ],
+            product_options: {
+              name: `${org.name} oylik to'lo'vi`,
+              redirect_url: success_url,
+              receipt_button_text: "Platformaga qaytish"
+            }
           },
           relationships: {
             store: {
