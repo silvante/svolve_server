@@ -62,9 +62,9 @@ export class SubscriptionService {
             //   }
             // ],
             product_options: {
-              name: `${org.name} oylik to'lo'vi`,
+              name: `"${org.name}" oylik to'lo'vi`,
               redirect_url: success_url,
-              receipt_button_text: "Platformaga qaytish"
+              // receipt_button_text: "Platformaga qaytish"
             }
           },
           relationships: {
