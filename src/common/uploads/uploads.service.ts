@@ -5,7 +5,7 @@ import { RequestWithUser } from 'src/interfaces/request-with-user.interface';
 import { randomUUID } from 'crypto';
 import * as sharp from 'sharp';
 import { NameSanitizerService } from 'src/global/name_sanitizer/name_sanitizer.service';
-import axios from 'axios';
+// import axios from 'axios';
 
 @Injectable()
 export class UploadsService {
@@ -19,8 +19,12 @@ export class UploadsService {
     private configService: ConfigService,
     private readonly sanitizer: NameSanitizerService,
   ) {
+    this.bucket_name = this.configService.get<string>('R2_BUCKET_NAME', '');
+    this.storage_url = this.configService.get<string>('R2_RECORDS_ENDPOINT', '');
     this.s3 = new S3Client({
-      region: this.configService.get<string>('AWS_S3_REGION', ''),
+      // region: this.configService.get<string>('AWS_S3_REGION', ''),
+      region: "auto",
+      endpoint: this.configService.get<string>('R2_ENDPOINT', ''),
       credentials: {
         accessKeyId: this.configService.get<string>('AWS_S3_ACCESS_KEY', ''),
         secretAccessKey: this.configService.get<string>(
@@ -29,8 +33,6 @@ export class UploadsService {
         ),
       },
     });
-    this.bucket_name = this.configService.get<string>('R2_BUCKET_NAME', '');
-    this.storage_url = this.configService.get<string>('R2_RECORDS_ENDPOINT', '');
     // this.storage_zone = this.configService.get<string>(
     //   'BUNNY_STORAGE_ZONE',
     //   '',
