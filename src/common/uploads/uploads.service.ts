@@ -9,31 +9,33 @@ import axios from 'axios';
 
 @Injectable()
 export class UploadsService {
-  // private s3: S3Client;
-  // private bucket_name: string;
-  private storage_zone: string;
-  private storage_key: string;
+  private s3: S3Client;
+  private bucket_name: string;
+  private storage_url: string;
+  // private storage_zone: string;
+  // private storage_key: string;
 
   constructor(
     private configService: ConfigService,
     private readonly sanitizer: NameSanitizerService,
   ) {
-    // this.s3 = new S3Client({
-    //   region: this.configService.get<string>('AWS_S3_REGION', ''),
-    //   credentials: {
-    //     accessKeyId: this.configService.get<string>('AWS_S3_ACCESS_KEY', ''),
-    //     secretAccessKey: this.configService.get<string>(
-    //       'AWS_S3_SECRET_KEY',
-    //       '',
-    //     ),
-    //   },
-    // });
-    // this.bucket_name = this.configService.get<string>('AWS_S3_BUCKET_NAME', '');
-    this.storage_zone = this.configService.get<string>(
-      'BUNNY_STORAGE_ZONE',
-      '',
-    );
-    this.storage_key = this.configService.get<string>('BUNNY_STORAGE_KEY', '');
+    this.s3 = new S3Client({
+      region: this.configService.get<string>('AWS_S3_REGION', ''),
+      credentials: {
+        accessKeyId: this.configService.get<string>('AWS_S3_ACCESS_KEY', ''),
+        secretAccessKey: this.configService.get<string>(
+          'AWS_S3_SECRET_KEY',
+          '',
+        ),
+      },
+    });
+    this.bucket_name = this.configService.get<string>('R2_BUCKET_NAME', '');
+    this.storage_url = this.configService.get<string>('R2_RECORDS_ENDPOINT', '');
+    // this.storage_zone = this.configService.get<string>(
+    //   'BUNNY_STORAGE_ZONE',
+    //   '',
+    // );
+    // this.storage_key = this.configService.get<string>('BUNNY_STORAGE_KEY', '');
   }
 
   async uploadAvatar(req: RequestWithUser, file: Express.Multer.File) {
@@ -41,7 +43,7 @@ export class UploadsService {
     const folder = 'avatars';
     const filename = this.sanitizer.sanitize(file.originalname);
     const key = `${folder}/${user.username}-${randomUUID()}-${filename}`;
-    const cdn_domain = `${this.storage_zone}.b-cdn.net`;
+    // const cdn_domain = `${this.storage_zone}.b-cdn.net`;
 
     let optimisedBuffer: Buffer;
 
@@ -60,27 +62,27 @@ export class UploadsService {
       ? key.replace(/\.[^.]+$/, '.webp')
       : key;
 
-    // const command = new PutObjectCommand({
-    //   Bucket: this.bucket_name,
-    //   Key: key.endsWith('.webp') ? key.replace(/\.[^.]+$/, '.webp') : key,
-    //   Body: optimisedBuffer,
-    //   ContentType: mimetype,
-    // });
+    const command = new PutObjectCommand({
+      Bucket: this.bucket_name,
+      Key: validKey,
+      Body: optimisedBuffer,
+      ContentType: mimetype,
+    });
 
-    // await this.s3.send(command);
+    await this.s3.send(command);
 
-    await axios.put(
-      `https://storage.bunnycdn.com/${this.storage_zone}/${validKey}`,
-      optimisedBuffer,
-      {
-        headers: {
-          AccessKey: this.storage_key,
-          'Content-Type': mimetype,
-        },
-      },
-    );
+    // await axios.put(
+    //   `https://storage.bunnycdn.com/${this.storage_zone}/${validKey}`,
+    //   optimisedBuffer,
+    //   {
+    //     headers: {
+    //       AccessKey: this.storage_key,
+    //       'Content-Type': mimetype,
+    //     },
+    //   },
+    // );
 
-    return `https://${cdn_domain}/${validKey}`;
+    return `https://${this.storage_url}/${validKey}`;
   }
 
   async uploadBanner(req: RequestWithUser, file: Express.Multer.File) {
@@ -89,7 +91,7 @@ export class UploadsService {
     const filename = this.sanitizer.sanitize(file.originalname);
     const original_key = `${folder}/${user.username}-${randomUUID()}-1280-${filename}`;
     const thumbnail_key = `${folder}/${user.username}-${randomUUID()}-480-${filename}`;
-    const cdn_domain = `${this.storage_zone}.b-cdn.net`;
+    // const cdn_domain = `${this.storage_zone}.b-cdn.net`;
 
     let optimisedOriginalBuffer: Buffer;
     let optimisedThumbnailBuffer: Buffer;
@@ -117,53 +119,53 @@ export class UploadsService {
       ? thumbnail_key.replace(/\.[^.]+$/, '.webp')
       : thumbnail_key;
 
-    // const command_orinal = new PutObjectCommand({
-    //   Bucket: this.bucket_name,
-    //   Key: valid_original_key,
-    //   Body: optimisedOriginalBuffer,
-    //   ContentType: mimetype,
-    // });
+    const command_orinal = new PutObjectCommand({
+      Bucket: this.bucket_name,
+      Key: valid_original_key,
+      Body: optimisedOriginalBuffer,
+      ContentType: mimetype,
+    });
 
-    // const command_thumbnail = new PutObjectCommand({
-    //   Bucket: this.bucket_name,
-    //   Key: valid_thumbnail_key,
-    //   Body: optimisedThumbnailBuffer,
-    //   ContentType: mimetype,
-    // });
+    const command_thumbnail = new PutObjectCommand({
+      Bucket: this.bucket_name,
+      Key: valid_thumbnail_key,
+      Body: optimisedThumbnailBuffer,
+      ContentType: mimetype,
+    });
 
-    // await this.s3.send(command_orinal);
-    // await this.s3.send(command_thumbnail);
+    await this.s3.send(command_orinal);
+    await this.s3.send(command_thumbnail);
 
     // return {
     //   original: `https://${this.bucket_name}.s3.amazonaws.com/${command_orinal.input.Key}`,
     //   thumbnail: `https://${this.bucket_name}.s3.amazonaws.com/${command_thumbnail.input.Key}`,
     // };
 
-    await axios.put(
-      `https://storage.bunnycdn.com/${this.storage_zone}/${valid_original_key}`,
-      optimisedOriginalBuffer,
-      {
-        headers: {
-          AccessKey: this.storage_key,
-          'Content-Type': mimetype,
-        },
-      },
-    );
+    // await axios.put(
+    //   `https://storage.bunnycdn.com/${this.storage_zone}/${valid_original_key}`,
+    //   optimisedOriginalBuffer,
+    //   {
+    //     headers: {
+    //       AccessKey: this.storage_key,
+    //       'Content-Type': mimetype,
+    //     },
+    //   },
+    // );
 
-    await axios.put(
-      `https://storage.bunnycdn.com/${this.storage_zone}/${valid_thumbnail_key}`,
-      optimisedThumbnailBuffer,
-      {
-        headers: {
-          AccessKey: this.storage_key,
-          'Content-Type': mimetype,
-        },
-      },
-    );
+    // await axios.put(
+    //   `https://storage.bunnycdn.com/${this.storage_zone}/${valid_thumbnail_key}`,
+    //   optimisedThumbnailBuffer,
+    //   {
+    //     headers: {
+    //       AccessKey: this.storage_key,
+    //       'Content-Type': mimetype,
+    //     },
+    //   },
+    // );
 
     return {
-      original: `https://${cdn_domain}/${valid_original_key}`,
-      thumbnail: `https://${cdn_domain}/${valid_thumbnail_key}`,
+      original: `https://${this.storage_url}/${valid_original_key}`,
+      thumbnail: `https://${this.storage_url}/${valid_thumbnail_key}`,
     };
   }
 
@@ -172,7 +174,7 @@ export class UploadsService {
     const folder = 'logos';
     const filename = this.sanitizer.sanitize(file.originalname);
     const key = `${folder}/${user.username}-${randomUUID()}-${filename}`;
-    const cdn_domain = `${this.storage_zone}.b-cdn.net`;
+    // const cdn_domain = `${this.storage_zone}.b-cdn.net`;
 
     let optimisedBuffer: Buffer;
 
@@ -191,26 +193,26 @@ export class UploadsService {
       ? key.replace(/\.[^.]+$/, '.webp')
       : key;
 
-    // const command = new PutObjectCommand({
-    //   Bucket: this.bucket_name,
-    //   Key: validKey,
-    //   Body: optimisedBuffer,
-    //   ContentType: mimetype,
-    // });
+    const command = new PutObjectCommand({
+      Bucket: this.bucket_name,
+      Key: validKey,
+      Body: optimisedBuffer,
+      ContentType: mimetype,
+    });
 
-    // await this.s3.send(command);
+    await this.s3.send(command);
 
-    await axios.put(
-      `https://storage.bunnycdn.com/${this.storage_zone}/${validKey}`,
-      optimisedBuffer,
-      {
-        headers: {
-          AccessKey: this.storage_key,
-          'Content-Type': mimetype,
-        },
-      },
-    );
+    // await axios.put(
+    //   `https://storage.bunnycdn.com/${this.storage_zone}/${validKey}`,
+    //   optimisedBuffer,
+    //   {
+    //     headers: {
+    //       AccessKey: this.storage_key,
+    //       'Content-Type': mimetype,
+    //     },
+    //   },
+    // );
 
-    return `https://${cdn_domain}/${validKey}`;
+    return `https://${this.storage_url}/${validKey}`;
   }
 }
