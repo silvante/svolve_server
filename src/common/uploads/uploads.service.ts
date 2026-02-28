@@ -26,9 +26,9 @@ export class UploadsService {
       region: "auto",
       endpoint: this.configService.get<string>('R2_ENDPOINT', ''),
       credentials: {
-        accessKeyId: this.configService.get<string>('AWS_S3_ACCESS_KEY', ''),
+        accessKeyId: this.configService.get<string>('R2_ACCESS_KEY', ''),
         secretAccessKey: this.configService.get<string>(
-          'AWS_S3_SECRET_KEY',
+          'R2_SECRET_KEY',
           '',
         ),
       },
@@ -84,7 +84,7 @@ export class UploadsService {
     //   },
     // );
 
-    return `https://${this.storage_url}/${validKey}`;
+    return `${this.storage_url}/${validKey}`;
   }
 
   async uploadBanner(req: RequestWithUser, file: Express.Multer.File) {
@@ -166,8 +166,8 @@ export class UploadsService {
     // );
 
     return {
-      original: `https://${this.storage_url}/${valid_original_key}`,
-      thumbnail: `https://${this.storage_url}/${valid_thumbnail_key}`,
+      original: `${this.storage_url}/${valid_original_key}`,
+      thumbnail: `${this.storage_url}/${valid_thumbnail_key}`,
     };
   }
 
@@ -215,6 +215,6 @@ export class UploadsService {
     //   },
     // );
 
-    return `https://${this.storage_url}/${validKey}`;
+    return `${this.storage_url}/${validKey}`;
   }
 }
