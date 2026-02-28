@@ -30,7 +30,7 @@
     "@nestjs/mapped-types": "*",
     "@nestjs/passport": "^11.0.5",
     "@nestjs/platform-express": "^11.1.5",
-    "@prisma/client": "^6.9.0",
+    "@prisma/client": "^7.1.0",
     "axios": "^1.12.2",
     "bcrypt": "^6.0.0",
     "bullmq": "^5.53.3",
