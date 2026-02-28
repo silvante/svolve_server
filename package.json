@@ -30,7 +30,7 @@
     "@nestjs/mapped-types": "*",
     "@nestjs/passport": "^11.0.5",
     "@nestjs/platform-express": "^11.1.5",
-    "@prisma/client": "^7.1.0",
+    "@prisma/client": "^6.9.0",
     "axios": "^1.12.2",
     "bcrypt": "^6.0.0",
     "bullmq": "^5.53.3",
@@ -47,7 +47,7 @@
     "passport": "^0.7.0",
     "passport-github2": "^0.1.12",
     "passport-google-oauth20": "^2.0.0",
-    "prisma": "^7.1.0",
+    "prisma": "^6.9.0",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
     "sharp": "^0.34.3"
