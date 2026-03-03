@@ -55,7 +55,7 @@ export class AuthService {
     const magic_link = this.magic_link.generate(verify_token);
 
     // sending mail
-    this.verify_mail.send(data.email, magic_link);
+    await this.verify_mail.send(data.email, magic_link);
     return {
       message: `Magic link send to ${data.email}`,
       ok: true,
@@ -89,7 +89,7 @@ export class AuthService {
     );
     const magic_link = this.magic_link.generate(verify_token);
     // sending mail
-    this.verify_mail.send(data.email, magic_link);
+    await this.verify_mail.send(data.email, magic_link);
 
     return {
       message: `welcome back, Magic link send to ${data.email}`,

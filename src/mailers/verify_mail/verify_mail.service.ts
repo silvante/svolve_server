@@ -6,14 +6,14 @@ import { SesService } from '../ses/ses.service';
 export class VerifyMailService {
   constructor(private mailer: MailerService, private ses: SesService) {}
 
-  send(email: string, magic_link: string) {
+  async send(email: string, magic_link: string) {
     // this.mailer.sendMail({
     //   to: email,
     //   subject: 'Verify your identity | Svolve',
     //   text: 'You can verify your email by clicking the link below',
     //   html: `<a href=${magic_link} target="_blanck">Verify my identity</a>`,
     // });
-    this.ses.sendEmail(
+    await this.ses.sendEmail(
       email,
       'Verify your identity | Svolve',
       'You can verify your email by clicking the link below',
