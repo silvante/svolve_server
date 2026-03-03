@@ -3,6 +3,7 @@ import { Module } from '@nestjs/common';
 import { join } from 'path';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { VerifyMailService } from './verify_mail/verify_mail.service';
+import { SesService } from './ses/ses.service';
 
 @Module({
   imports: [
@@ -28,7 +29,7 @@ import { VerifyMailService } from './verify_mail/verify_mail.service';
       },
     }),
   ],
-  providers: [VerifyMailService],
+  providers: [VerifyMailService, SesService],
   exports: [VerifyMailService],
 })
 export class MailersModule {}
