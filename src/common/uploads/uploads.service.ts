@@ -20,17 +20,17 @@ export class UploadsService {
     private readonly sanitizer: NameSanitizerService,
   ) {
     this.bucket_name = this.configService.get<string>('R2_BUCKET_NAME', '');
-    this.storage_url = this.configService.get<string>('R2_RECORDS_ENDPOINT', '');
+    this.storage_url = this.configService.get<string>(
+      'R2_RECORDS_ENDPOINT',
+      '',
+    );
     this.s3 = new S3Client({
       // region: this.configService.get<string>('AWS_S3_REGION', ''),
-      region: "auto",
+      region: 'auto',
       endpoint: this.configService.get<string>('R2_ENDPOINT', ''),
       credentials: {
         accessKeyId: this.configService.get<string>('R2_ACCESS_KEY', ''),
-        secretAccessKey: this.configService.get<string>(
-          'R2_SECRET_KEY',
-          '',
-        ),
+        secretAccessKey: this.configService.get<string>('R2_SECRET_KEY', ''),
       },
     });
     // this.storage_zone = this.configService.get<string>(

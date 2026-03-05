@@ -55,7 +55,7 @@ export class AdminService {
     });
 
     return {
-      message: `organization with unique name '${updated.unique_name}' is VIP now!`
-    }
+      message: `organization with unique name '${updated.unique_name}' is VIP now!`,
+    };
   }
 }

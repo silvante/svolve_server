@@ -6,7 +6,7 @@ import { Request, Response } from 'express';
 
 @Injectable()
 export class SubscriptionService {
-  constructor(private readonly prisma: PrismaService) { }
+  constructor(private readonly prisma: PrismaService) {}
 
   async generateCheckout(req: RequestWithUser, unique_name: string) {
     const user = req.user;
@@ -58,7 +58,7 @@ export class SubscriptionService {
             product_options: {
               name: `"${org.name}" oylik to'lo'vi`,
               redirect_url: success_url,
-            }
+            },
           },
           relationships: {
             store: {

@@ -5,8 +5,8 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class GenerateUsernameService {
   constructor(private prisma: PrismaService) {}
 
-  async generate (name: string) {
-    let baseUsername = name
+  async generate(name: string) {
+    const baseUsername = name
       .toLowerCase()
       .replace(/\s+/g, '')
       .replace(/[^a-z0-9]/g, '');
@@ -25,6 +25,5 @@ export class GenerateUsernameService {
       }
     }
     return username;
-
   }
 }

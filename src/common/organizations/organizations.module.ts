@@ -11,7 +11,16 @@ import { WorkersModule } from './workers/workers.module';
 import { StatsModule } from './stats/stats.module';
 
 @Module({
-  imports: [PrismaModule, GlobalModule, AppJwtModule, JobsModule, TypesModule, ClientsModule, WorkersModule, StatsModule],
+  imports: [
+    PrismaModule,
+    GlobalModule,
+    AppJwtModule,
+    JobsModule,
+    TypesModule,
+    ClientsModule,
+    WorkersModule,
+    StatsModule,
+  ],
   controllers: [OrganizationsController],
   providers: [OrganizationsService],
 })

@@ -9,7 +9,9 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
         console.log(`${Date.now()} => successfully connected to database`),
       )
       .catch((err) =>
-        console.log(`${Date.now()} => error while connectiong database => ${err.message}`),
+        console.log(
+          `${Date.now()} => error while connectiong database => ${err.message}`,
+        ),
       );
   }
 }

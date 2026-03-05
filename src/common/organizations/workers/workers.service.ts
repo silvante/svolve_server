@@ -202,7 +202,7 @@ export class WorkersService {
 
     const { attached_types, role } = data;
 
-    let updateData: any = {};
+    const updateData: any = {};
     if (role) {
       updateData.role = role;
 

@@ -6,7 +6,7 @@ export class GenerateUniquenameService {
   constructor(private prisma: PrismaService) {}
 
   async generate(name: string) {
-    let baseUsername = name
+    const baseUsername = name
       .toLowerCase()
       .replace(/\s+/g, '')
       .replace(/[^a-z0-9]/g, '');

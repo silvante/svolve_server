@@ -11,21 +11,26 @@ export class SesService {
     },
   });
 
-  async sendEmail(to: string, subject: string, text: string, body: string) {
+  async sendEmail(to: string, subject: string, body: string) {
     const command = new SendEmailCommand({
       Source: '"📦 Svolve" <no-reply@svolve.uz>',
       Destination: {
         ToAddresses: [to],
       },
       Message: {
-        Subject: { Data: subject },
+        Subject: {
+          Data: subject,
+          Charset: 'UTF-8',
+        },
         Body: {
-            Text: {Data: text},
-            Html: {Data: body}
-        }
+          Html: {
+            Data: body,
+            Charset: 'UTF-8',
+          },
+        },
       },
     });
 
-    return this.sesClient.send(command)
+    return this.sesClient.send(command);
   }
 }
