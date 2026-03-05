@@ -18,7 +18,7 @@ import { SesService } from './ses/ses.service';
         },
       },
       defaults: {
-        from: '"Svolve" <info@xamidov.uz>',
+        from: '"Diagnos Uz" <info@xamidov.uz>',
       },
       template: {
         dir: join(__dirname, 'templates'),

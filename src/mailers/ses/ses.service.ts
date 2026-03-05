@@ -13,7 +13,7 @@ export class SesService {
 
   async sendEmail(to: string, subject:string, body: string, textBody?: string) {
     const command = new SendEmailCommand({
-      Source: '"📦 Svolve" <no-reply@svolve.uz>',
+      Source: '"📦 Diagnos Uz" <no-reply@diagnos.uz>',
       Destination: {
         ToAddresses: [to],
       },
