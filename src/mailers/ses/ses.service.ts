@@ -11,7 +11,7 @@ export class SesService {
     },
   });
 
-  async sendEmail(to: string, subject: string, body: string) {
+  async sendEmail(to: string, subject:string, body: string, textBody?: string) {
     const command = new SendEmailCommand({
       Source: '"📦 Svolve" <no-reply@svolve.uz>',
       Destination: {
@@ -27,6 +27,10 @@ export class SesService {
             Data: body,
             Charset: 'UTF-8',
           },
+          Text: {
+            Data: textBody || body,
+            Charset: 'UTF-8',
+          }
         },
       },
     });
