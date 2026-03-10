@@ -19,9 +19,8 @@ export class VerifyMailService {
     <head>
         <style>
             .button {
-                background-color: #7c3aed; /* Violet */
-                border: none;
-                color: white;
+                border: 2px solid #7c3aed;
+                color: #7c3aed;
                 padding: 15px 32px;
                 text-align: center;
                 text-decoration: none;
@@ -29,7 +28,6 @@ export class VerifyMailService {
                 font-size: 16px;
                 margin: 4px 2px;
                 cursor: pointer;
-                border-radius: 8px;
             }
         </style>
     </head>
@@ -37,10 +35,10 @@ export class VerifyMailService {
         <table border="0" cellpadding="0" cellspacing="0" width="100%">
             <tr>
                 <td style="padding: 20px 0 30px 0;">
-                    <table align="center" border="0" cellpadding="0" cellspacing="0" width="600" style="border-collapse: collapse; background-color: #ffffff; border-radius: 10px; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);">
+                    <table align="center" border="0" cellpadding="0" cellspacing="0" width="600" style="border-collapse: collapse; background-color: #ffffff; border-radius: 20px; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);">
                         <tr>
                             <td align="center" style="padding: 40px 0 30px 0;">
-                                <img src="https://diagnos.uz/icons/logo.svg" alt="Diagnos Uz Logo" width="150" style="display: block;" />
+                                <h1 style="font-size: 28px; color: #333333; text-align: center;">🇺🇿🏆🧑🏻‍⚕️📨</h1>
                             </td>
                         </tr>
                         <tr>
@@ -60,8 +58,6 @@ export class VerifyMailService {
                         <tr>
                             <td bgcolor="#f4f4f4" style="padding: 30px 30px 30px 30px; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
                                 <p style="margin: 0; text-align: center; font-size: 14px; color: #888888;">Agar savollaringiz bo'lsa, biz bilan <span style="color: #888888;">+998 33 745 82 82</span> orqali bog'laning.</p>
-                            </td>
-                            <td bgcolor="#f4f4f4" style="padding: 30px 30px 30px 30px; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
                                 <p style="margin: 0; text-align: center; font-size: 14px; color: #888888;">© 2026 Diagnos Uz. Barcha huquqlar himoyalangan.</p>
                             </td>
                         </tr>
